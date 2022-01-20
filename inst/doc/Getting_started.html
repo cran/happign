@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Paul Carteron" />
+
+<meta name="date" content="2022-01-19" />
+
+<title>Getting started with happign</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Getting started with happign</h1>
+<h4 class="author">Paul Carteron</h4>
+<h4 class="date">2022-01-19</h4>
+
+
+
+<div id="context" class="section level1">
+<h1>Context</h1>
+<p>Since January 1, 2021, the French National Institute for Geographic and Forestry Information (IGN) has made its public data on French topography, infrastructure, and terrain freely available. The opening of IGN data under the Etalab 2.0 open license means free access and use for all.</p>
+<p>Among the important data that are now open, we can mention the BD TOPO (3D modeling of the territory and its infrastructures), the BD ORTHO (departmental orthophotography), the BD Forêt and the RGE Alti (meshed digital terrain model that describes the French relief). This represents 100 terabytes of data.</p>
+<p>To facilitate access to this data, IGN has implemented a set of APIs based on OGC standards. In other words, it is possible with correctly formatted URLs to access IGN data. In spite of a well supplied documentation, the use of APIs remains complex to set up. The <code>happign</code> package has been created to facilitate this, so let’s get started.</p>
+</div>
+<div id="load-happign-library" class="section level1">
+<h1>Load happign Library</h1>
+<p>You can install the released version of happign from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;happign&quot;</span>)</span></code></pre></div>
+<p>And the development version from <a href="https://github.com/">GitHub</a> with:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(&quot;devtools&quot;)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;paul-carteron/happign&quot;</span>)</span></code></pre></div>
+<p>We can load the <code>happign</code> package, and some additional packages we will need while we are here.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(happign)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span></code></pre></div>
+</div>
+<div id="the-wfs-wms-service" class="section level1">
+<h1>The WFS, WMS service</h1>
+<p><code>happign</code> use two data type from IGN web service :</p>
+<ul>
+<li>WMS raster : data in raster format (.tiff)</li>
+<li>WFS : data in shape format (.shp).</li>
+</ul>
+<p>More detailed information are available <a href="https://www.ogc.org/standards/wms">here</a> for WMS and <a href="https://www.ogc.org/standards/wfs">here</a> for WFS.</p>
+<p>To download data you need :</p>
+<ul>
+<li>Its layer name ;</li>
+<li>The API key corresponding to the layer ;</li>
+<li>Your area of interest in .shp format</li>
+</ul>
+<p>The layer name and API key can be directly retrieved on the <a href="https://geoservices.ign.fr/services-web-experts">IGN website in the expert web services</a> (I recommend you at this point to go and have a look).</p>
+<p>For example, if I take the first category “Administratif”, I see that the API key is “administratif” and the first layer name in WFS format is “ADMINEXPRESS-COG.LATEST:arrondissement”</p>
+<p>With <code>happign</code>, there is no need to go through the website because all api keys are available by running the function <code>get_apikeys()</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">get_apikeys</span>()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [1] &quot;administratif&quot; &quot;adresse&quot;       &quot;agriculture&quot;   &quot;altimetrie&quot;   </span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [5] &quot;cartes&quot;        &quot;cartovecto&quot;    &quot;clc&quot;           &quot;economie&quot;     </span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  [9] &quot;environnement&quot; &quot;geodesie&quot;      &quot;lambert93&quot;     &quot;ortho&quot;        </span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [13] &quot;orthohisto&quot;    &quot;parcellaire&quot;   &quot;satellite&quot;     &quot;sol&quot;          </span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [17] &quot;topographie&quot;   &quot;transports&quot;</span></span></code></pre></div>
+<p>After choosing the API key containing our resource, you can access all layer names with <code>get_layers_metadata()</code>.</p>
+<p><strong><em>Rq :</em></strong></p>
+<ul>
+<li><em>This function can be a bit slow because it connects directly to the website so that the information is up to date.</em></li>
+<li><em>The returned data correspond to the <strong>intersection with the shape bbox</strong>. This is highlighted by the “all” figure below</em></li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>apikey <span class="ot">&lt;-</span> <span class="fu">get_apikeys</span>()[<span class="dv">1</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_layers_metadata</span>(<span class="at">apikey =</span> apikey, <span class="at">data_type =</span> <span class="st">&quot;wfs&quot;</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 36 x 4</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    keywords               name                              abstract  defaultcrs</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;                  &lt;chr&gt;                             &lt;chr&gt;     &lt;chr&gt;     </span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:ar~ édition ~ EPSG::4326</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:ar~ édition ~ EPSG::4326</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:ca~ édition ~ EPSG::4326</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:ch~ édition ~ EPSG::4326</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:ch~ édition ~ EPSG::4326</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:ch~ édition ~ EPSG::4326</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:co~ édition ~ EPSG::4326</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:co~ édition ~ EPSG::4326</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:co~ édition ~ EPSG::4326</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:de~ édition ~ EPSG::4326</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 26 more rows</span></span></code></pre></div>
+</div>
+<div id="downloading-the-data" class="section level1">
+<h1>Downloading the data</h1>
+<div id="wfs" class="section level2">
+<h2>WFS</h2>
+<p>For the example we will look at the beautiful town of Penmarch in France and we are going to get these borders.</p>
+<p>The <code>get_wfs()</code> function connects to WFS service of the IGN that contain borders of the communes. It is also necessary to take a point inside penmarch so that the function detects all the shape that intersect this point.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>penmarch_point <span class="ot">&lt;-</span> <span class="fu">st_sfc</span>(<span class="fu">st_point</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">4.370</span>, <span class="fl">47.800</span>)), <span class="at">crs =</span> <span class="dv">4326</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>penmarch_borders <span class="ot">&lt;-</span> <span class="fu">get_wfs</span>(<span class="at">shape =</span> penmarch_point,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">apikey =</span> <span class="st">&quot;administratif&quot;</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">layer_name =</span> <span class="st">&quot;LIMITES_ADMINISTRATIVES_EXPRESS.LATEST:commune&quot;</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Request 1/1 downloading...</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking result</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(penmarch_borders) <span class="sc">+</span> <span class="co"># Borders of penmarch</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>   <span class="fu">tm_polygons</span>(<span class="at">alpha =</span> <span class="dv">0</span>, <span class="at">lwd =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(penmarch_point) <span class="sc">+</span> <span class="co"># Point use to retrieve data</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>   <span class="fu">tm_dots</span>(<span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>   <span class="fu">tm_add_legend</span>(<span class="at">type =</span> <span class="st">&quot;symbol&quot;</span>, <span class="at">label =</span> <span class="st">&quot;lat : -4.370, long : 47.800&quot;</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">col =</span> <span class="st">&quot;red&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>   <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">&quot;Penmarch borders from IGN&quot;</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">main.title.position =</span> <span class="st">&quot;center&quot;</span>,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>),</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>             <span class="at">frame =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
+<p>It’s as simple as that! Now you have to rely on your curiosity to explore the multiple possibilities that IGN offers. For example, who has never wondered how many road junctions there are in Penmarch?</p>
+<p><em>Spoiler : there are 220 of them</em></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dikes <span class="ot">&lt;-</span> <span class="fu">get_wfs</span>(<span class="at">shape =</span> penmarch_borders,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>                 <span class="at">apikey =</span> <span class="fu">get_apikeys</span>()[<span class="dv">6</span>],</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">layer_name =</span> <span class="st">&quot;BDCARTO_BDD_WLD_WGS84G:noeud_routier&quot;</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Request 1/1 downloading...</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking result</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(penmarch_borders) <span class="sc">+</span> <span class="co"># Borders of penmarch</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>   <span class="fu">tm_polygons</span>(<span class="at">alpha =</span> <span class="dv">0</span>, <span class="at">lwd =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(dikes) <span class="sc">+</span> <span class="co"># Point use to retrieve data</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>   <span class="fu">tm_dots</span>(<span class="at">col =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>   <span class="fu">tm_add_legend</span>(<span class="at">type =</span> <span class="st">&quot;symbol&quot;</span>, <span class="at">label =</span> <span class="st">&quot;Road junction&quot;</span>, <span class="at">col =</span> <span class="st">&quot;red&quot;</span>) <span class="sc">+</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>   <span class="fu">tm_layout</span>(<span class="at">main.title =</span> <span class="st">&quot;Road nodes recorded by the IGN in Penmarch&quot;</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">main.title.position =</span> <span class="st">&quot;center&quot;</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">&quot;right&quot;</span>, <span class="st">&quot;bottom&quot;</span>),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">frame =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
+</div>
+<div id="wms-raster" class="section level2">
+<h2>WMS raster</h2>
+<p>For raster, the process is the same but with the function <code>get_wms_raster()</code>. There’s plenty of elevation resources inside <a href="https://geoservices.ign.fr/services-web-experts-altimetrie">“altimetrie” category</a>. The basic one is the Digital Elevation Model (DEM or MNT in French).</p>
+<p><strong><em>Rq :</em></strong></p>
+<ul>
+<li><em>The raster is not loaded into R’s memory. It is an on-the-fly sequential reading of files from network, without downloading the whole file first. In other words, it is quite possible to access the DEM of an entire region. The counterpart is the connection time which is about 30s;</em></li>
+<li><em>Raster from <code>get_wms_raster()</code> are stars object from the <code>stars</code> package. To learn more about conversion between other raster type in R go <a href="https://geocompr.github.io/post/2021/spatial-classes-conversion/">check this out</a>.</em></li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>apikey <span class="ot">&lt;-</span> <span class="fu">get_apikeys</span>()[<span class="dv">4</span>]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>layers_metadata <span class="ot">&lt;-</span> <span class="fu">get_layers_metadata</span>(<span class="st">&quot;altimetrie&quot;</span>, <span class="st">&quot;wms&quot;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>dem_layer_name <span class="ot">&lt;-</span> layers_metadata[<span class="dv">2</span>, <span class="st">&quot;name&quot;</span>]</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>mnt <span class="ot">&lt;-</span> <span class="fu">get_wms_raster</span>(<span class="at">shape =</span> penmarch_borders,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                      <span class="at">apikey =</span> apikey,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>                      <span class="at">layer_name =</span> dem_layer_name,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>                      <span class="at">resolution =</span> <span class="dv">25</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; x cell_size : 24.873 [m]</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; y cell_size : 24.937 [m]</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>mnt[mnt <span class="sc">&lt;</span> <span class="dv">0</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span> <span class="co"># remove negative values in case of singularity</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(mnt) <span class="ot">&lt;-</span> <span class="st">&quot;Elevation [m]&quot;</span> <span class="co"># Rename raster ie the title legend</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(mnt) <span class="sc">+</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>   <span class="fu">tm_raster</span>(<span class="at">colorNA =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>   <span class="fu">tm_layout</span>(<span class="at">title =</span> <span class="st">&quot;DEM of Penmarch&quot;</span>, <span class="at">frame =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
