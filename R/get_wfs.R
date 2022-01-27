@@ -96,10 +96,13 @@ get_wfs <- function(shape,
                                 apikey))
 
   nb_features <- content(resp)$numberMatched
+
   if (nb_features == 0) {
-    stop(paste("Resource does not exist. Eventually, check",
-               "that Shape is in France"))
+     stop("Your search returned zero results. There is no features for ",
+          layer_name,
+          " inside your shape")
   }
+
   nb_request <- nb_features %/% 1000
 
   result <- lapply(
@@ -138,9 +141,9 @@ format_url <- function(apikey = NULL, layer_name = NULL,
   url <- modify_url("https://wxs.ign.fr",
     path = paste0(apikey, "/geoportail/wfs"),
     query = list(
-      SERVICE = "WFS",
-      VERSION = "2.0.0",
-      REQUEST = "GetFeature",
+      service = "WFS",
+      version = "2.0.0",
+      request = "GetFeature",
       outputFormat = "json",
       srsName = "EPSG:4326",
       typeName = layer_name,
