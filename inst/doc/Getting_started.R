@@ -8,9 +8,6 @@ knitr::opts_chunk$set(
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
 
-## ---- include=FALSE-----------------------------------------------------------
-library(happign)
-
 ## ----message = FALSE, warning = FALSE-----------------------------------------
 library(happign)
 library(sf)

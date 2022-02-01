@@ -21,7 +21,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 The goal of happign is to facilitate the use of Application Programming
 Interface from the French National Institute of Geographic and Forestry
-Information to retrieve their free ressources. `happign` allow
+Information to retrieve their free resources. `happign` allow
 downloading of :
 
 -   Shapefile via use of WFS service
@@ -47,6 +47,21 @@ formatted URLs, to access IGN data. In spite of a well supplied
 documentation, the use of APIs remains complex to set up. The `happign`
 package has been created to facilitate this.
 
+### Rights of use for IGN data
+
+Data from [IGN geoservice
+website](https://geoservices.ign.fr/presentation) are free and available
+in open license according to the principle of the [Etalab 2.0
+license](https://www.etalab.gouv.fr/licence-ouverte-open-licence) since
+January 1, 2021. The data on the site are free and available in open
+license according to the principle of the Etalab 2.0 license since
+January 1, 2021. Other data complete the IGN’s open data policy since
+June 1st, 2021. SCAN 25®, SCAN 100® and SCAN OACI data are free to
+download or stream, but any professional or individual wishing to
+develop a commercial paper or digital offer for the general public will
+have to pay a fee according to the [General Conditions of
+Use](https://geoservices.ign.fr/cgu-licences).
+
 ### Installation
 
 You can install the released version of happign from
@@ -67,7 +82,7 @@ devtools::install_github("paul-carteron/happign")
 
 -   Package vignettes :
     [first](https://paul-carteron.github.io/happign/articles/Getting_started.html),
-    [second](https://paul-carteron.github.io/happign/articles/Non_functional_APIs.html)
+    [second](https://paul-carteron.github.io/happign/articles/web_only/Non_functional_APIs.html)
 
 ### Future features
 
