@@ -27,6 +27,10 @@ downloading of :
 -   Shapefile via use of WFS service
 -   Raster via use of WMS raster service
 
+and calculation of :
+
+-   isochrone and isodistance
+
 ### Context
 
 Since January 1, 2021, the French National Institute for Geographic and
@@ -52,9 +56,7 @@ package has been created to facilitate this.
 Data from [IGN geoservice
 website](https://geoservices.ign.fr/presentation) are free and available
 in open license according to the principle of the [Etalab 2.0
-license](https://www.etalab.gouv.fr/licence-ouverte-open-licence) since
-January 1, 2021. The data on the site are free and available in open
-license according to the principle of the Etalab 2.0 license since
+license](https://www.etalab.gouv.fr/licence-ouverte-open-licence/) since
 January 1, 2021. Other data complete the IGN’s open data policy since
 June 1st, 2021. SCAN 25®, SCAN 100® and SCAN OACI data are free to
 download or stream, but any professional or individual wishing to
@@ -80,9 +82,22 @@ devtools::install_github("paul-carteron/happign")
 
 ### Vignettes
 
--   Package vignettes :
-    [first](https://paul-carteron.github.io/happign/articles/Getting_started.html),
-    [second](https://paul-carteron.github.io/happign/articles/web_only/Non_functional_APIs.html)
+Package vignettes :
+
+-   [Getting started with
+    happign](https://paul-carteron.github.io/happign/articles/Getting_started.html)
+    : A brief intro to happign world ;
+-   [Non functionnal
+    API](https://paul-carteron.github.io/happign/articles/web_only/Non_functional_APIs.html)
+    : Every week all API from IGN website are tested to find if any link
+    are working ;
+-   [happign for
+    foresters](https://paul-carteron.github.io/happign/articles/web_only/happign_for_foresters.html)
+    : happign can be used in many ways but here I focus on a forestry
+    use.
+-   [SCAN 25, SCAN 100 et SCAN
+    OACI](https://paul-carteron.github.io/happign/articles/SCAN_25_SCAN_100_SCAN_OACI.html)
+    : How to download the only one Scan 25
 
 ### Future features
 
@@ -90,7 +105,6 @@ IGN offers other services. Their implementation in R is under
 development :
 
 -   Calculation of isochron and isodistance
--   Routing calculation
 -   REST API Carto compatible with the OpenAPI specification (easy and
     quick downloading for WFS)
 

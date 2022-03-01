@@ -1,3 +1,9 @@
+# happign 0.1.3
+
+* adding connection to isochrone and isodistance calculation of IGN with `get_iso()`
+* new vignette [happign for forester](https://paul-carteron.github.io/happign/articles/web_only/happign_for_foresters.html)
+* new vignette [SCAN 25, SCAN 100 et SCAN OACI](https://paul-carteron.github.io/happign/articles/SCAN_25_SCAN_100_SCAN_OACI.html)
+
 # happign 0.1.2
 
 * adding a `filename` argument to `get_wms_raster()` and `get_wfs()` allowing to save data on disk. This new feature also overcomes the problem of connection to some WMS with GDAL [#1](https://github.com/paul-carteron/happign/issues/1)

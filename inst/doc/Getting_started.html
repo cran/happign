@@ -12,7 +12,7 @@
 
 <meta name="author" content="Paul Carteron" />
 
-<meta name="date" content="2022-01-31" />
+<meta name="date" content="2022-02-27" />
 
 <title>Getting started with happign</title>
 
@@ -141,7 +141,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <h1 class="title toc-ignore">Getting started with happign</h1>
 <h4 class="author">Paul Carteron</h4>
-<h4 class="date">2022-01-31</h4>
+<h4 class="date">2022-02-27</h4>
 
 
 
@@ -183,20 +183,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>apikey <span class="ot">&lt;-</span> <span class="fu">get_apikeys</span>()[<span class="dv">1</span>]</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_layers_metadata</span>(<span class="at">apikey =</span> apikey, <span class="at">data_type =</span> <span class="st">&quot;wfs&quot;</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 36 x 4</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    keywords               name                               abstract defaultcrs</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    &lt;chr&gt;                  &lt;chr&gt;                              &lt;chr&gt;    &lt;chr&gt;     </span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:arr~ édition~ EPSG::4326</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:arr~ édition~ EPSG::4326</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:can~ édition~ EPSG::4326</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:chf~ édition~ EPSG::4326</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:chf~ édition~ EPSG::4326</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:chf~ édition~ EPSG::4326</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:col~ édition~ EPSG::4326</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:com~ édition~ EPSG::4326</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:com~ édition~ EPSG::4326</span></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10 Unités administratives ADMINEXPRESS-COG-CARTO.LATEST:dep~ édition~ EPSG::4326</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 26 more rows</span></span></code></pre></div>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # A tibble: 36 x 8</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    itemindex name            title abstract keywords defaultcrs wgs84boundingbox</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;        &lt;int&gt; &lt;chr&gt;           &lt;chr&gt; &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;           </span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  1         1 ADMINEXPRESS-C~ ADMI~ édition~ Unités ~ 4326       -61.80983861776~</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  2         2 ADMINEXPRESS-C~ ADMI~ édition~ Unités ~ 4326       -61.80983861776~</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  3         3 ADMINEXPRESS-C~ ADMI~ édition~ Unités ~ 4326       -61.80983861776~</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  4         4 ADMINEXPRESS-C~ ADMI~ édition~ Unités ~ 4326       -61.80983861776~</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  5         5 ADMINEXPRESS-C~ ADMI~ édition~ Unités ~ 4326       -61.80983861776~</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  6         6 ADMINEXPRESS-C~ ADMI~ édition~ Unités ~ 4326       -61.80983861776~</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  7         7 ADMINEXPRESS-C~ ADMI~ édition~ Unités ~ 4326       -61.80983861776~</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  8         8 ADMINEXPRESS-C~ ADMI~ édition~ Unités ~ 4326       -61.80983861776~</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;  9         9 ADMINEXPRESS-C~ ADMI~ édition~ Unités ~ 4326       -61.80983861776~</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 10        10 ADMINEXPRESS-C~ ADMI~ édition~ Unités ~ 4326       -61.80983861776~</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; # ... with 26 more rows, and 1 more variable: metadataurl &lt;chr&gt;</span></span></code></pre></div>
 </div>
 <div id="downloading-the-data" class="section level1">
 <h1>Downloading the data</h1>

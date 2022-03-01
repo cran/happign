@@ -50,10 +50,9 @@
 #' @export
 #'
 #' @importFrom dplyr mutate select rename_all
-#' @importFrom tidyr pivot_wider unnest
+#' @importFrom tidyr pivot_wider
 #' @importFrom xml2 read_xml xml_child xml_children xml_find_all
 #' xml_name xml_text
-#' @importFrom stringr str_remove
 #'
 get_layers_metadata <- function(apikey, data_type) {
    UseMethod("get_layers_metadata")
@@ -78,13 +77,11 @@ get_layers_metadata.wfs <- function(apikey, data_type) {
       xml_child("d1:FeatureTypeList") %>%
       xml_children()
 
-   abstract <- defaultcrs <- NULL
+   defaultcrs <- NULL
 
    res <- xml_to_df(items) %>%
-      select("Keywords", "Name", "Abstract", "DefaultCRS") %>%
       rename_all(tolower) %>%
-      mutate(abstract = gsub("<.*?>", "", abstract),
-             defaultcrs = str_remove(defaultcrs, "urn:ogc:def:crs:"))
+      mutate(defaultcrs = gsub(".*?([0-9]+).*", "\\1", defaultcrs))
 
    res
 
@@ -108,6 +105,7 @@ get_layers_metadata.wms <- function(apikey, data_type) {
    res <- suppressWarnings(xml_to_df(items, values_fn = list)) %>%
       rename_all(tolower) %>%
       as.data.frame()
+
    res
 
 }
