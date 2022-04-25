@@ -8,12 +8,12 @@ knitr::opts_chunk$set(
 )
 options(rmarkdown.html_vignette.check_title = FALSE)
 
-## ----message = FALSE, warning = FALSE-----------------------------------------
+## ---- message = FALSE, warning = FALSE----------------------------------------
 library(happign)
 library(sf)
 library(tmap)
 
-## ----echo = TRUE--------------------------------------------------------------
+## ---- echo = TRUE-------------------------------------------------------------
 get_apikeys()
 
 ## -----------------------------------------------------------------------------
@@ -21,7 +21,7 @@ apikey <- get_apikeys()[1]
 get_layers_metadata(apikey = apikey, data_type = "wfs")
 
 
-## -----------------------------------------------------------------------------
+## ---- eval=TRUE, include=TRUE-------------------------------------------------
 penmarch_point <- st_sfc(st_point(c(-4.370, 47.800)), crs = 4326)
 penmarch_borders <- get_wfs(shape = penmarch_point,
                             apikey = "administratif",
@@ -39,7 +39,7 @@ tm_shape(penmarch_point) + # Point use to retrieve data
              legend.position = c("right", "bottom"),
              frame = FALSE)
 
-## -----------------------------------------------------------------------------
+## ---- eval=TRUE, include=TRUE-------------------------------------------------
 dikes <- get_wfs(shape = penmarch_borders,
                  apikey = get_apikeys()[6],
                  layer_name = "BDCARTO_BDD_WLD_WGS84G:noeud_routier")
@@ -55,19 +55,21 @@ tm_shape(dikes) + # Point use to retrieve data
              legend.position = c("right", "bottom"),
              frame = FALSE)
 
-## -----------------------------------------------------------------------------
-apikey <- get_apikeys()[4]
-layers_metadata <- get_layers_metadata("altimetrie", "wms")
-dem_layer_name <- layers_metadata[2, "name"]
-
-mnt <- get_wms_raster(shape = penmarch_borders,
-                      apikey = apikey,
-                      layer_name = dem_layer_name,
-                      resolution = 25)
-mnt[mnt < 0] <- NA # remove negative values in case of singularity
-names(mnt) <- "Elevation [m]" # Rename raster ie the title legend
-
-tm_shape(mnt) +
-   tm_raster(colorNA = NULL) +
-   tm_layout(title = "DEM of Penmarch", frame = FALSE)
+## ---- eval = FALSE, echo = TRUE-----------------------------------------------
+#  apikey <- get_apikeys()[4]
+#  layers_metadata <- get_layers_metadata("altimetrie", "wms")
+#  dem_layer_name <- layers_metadata[2, "name"]
+#  
+#  mnt <- get_wms_raster(shape = penmarch_borders,
+#                        apikey = apikey,
+#                        layer_name = dem_layer_name,
+#                        resolution = 25,
+#                        filename = "best_raster_name")
+#  
+#  mnt[mnt < 0] <- NA # remove negative values in case of singularity
+#  names(mnt) <- "Elevation [m]" # Rename raster ie the title legend
+#  
+#  tm_shape(mnt) +
+#     tm_raster(colorNA = NULL) +
+#     tm_layout(title = "DEM of Penmarch", frame = FALSE)
 

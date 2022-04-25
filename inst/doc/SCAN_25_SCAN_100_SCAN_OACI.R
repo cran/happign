@@ -7,7 +7,7 @@ knitr::opts_chunk$set(
 ## ----setup--------------------------------------------------------------------
 library(happign)
 
-## ----eval=FALSE, include=TRUE-------------------------------------------------
+## ---- eval = FALSE, echo = TRUE-----------------------------------------------
 #  # Create or import a shape
 #  shape <- st_polygon(list(matrix(c(-4.373937, 47.79859,
 #                                    -4.375615, 47.79738,
@@ -23,7 +23,7 @@ library(happign)
 #                           apikey = my_key,
 #                           layer_name = scan25_name,
 #                           resolution = NULL,   # To have full resolution
-#                           filename = "SCAN25") # This ressource need to be downloaded on disk
+#                           filename = "SCAN25") # This resource need to be downloaded on disk
 #  
 #  
 
