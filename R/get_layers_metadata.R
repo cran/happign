@@ -8,6 +8,8 @@
 #' from the [IGN website](https://geoservices.ign.fr/services-web-experts)
 #' @param data_type Should be `"wfs"` or `"wms"`. See details for more
 #' information about these two Webservice formats.
+#' @param version The version of the service used. More details at
+#' [IGN documentation](https://geoservices.ign.fr/documentation/services/api-et-services-ogc/images-wms-ogc)
 #'
 #' @details
 #' * WFS is a standard protocol defined by the OGC (Open Geospatial Consortium)
@@ -29,51 +31,51 @@
 #'
 #' @examples
 #' \dontrun{
-#'
 #' apikey <- get_apikeys()[4]
 #' metadata_table <- get_layers_metadata(apikey, "wms")
 #' all_layer_name <- metadata_table$name
-#' abstract_of_MNT <- metadata_table[1,3]
-#' crs_of_MNT <- unlist(metadata_table[1,4])
+#' abstract_of_MNT <- metadata_table[1,"abstract"]
 #'
-#' # list with every wfs metadata
-#' list_metadata = lapply(X = get_apikeys(),
+#' # list with every wfs metadata (warning : it's quite long)
+#' list_metadata <- lapply(X = get_apikeys(),
 #'                        FUN = get_layers_metadata,
 #'                        data_type = "wfs")
 #'
 #' # Convert list to one single data.frame
-#' all_metadata = dplyr::bind_rows(list_metadata)
+#' all_metadata <- dplyr::bind_rows(list_metadata)
 #' }
 #'
 #' @name get_layers_metadata
 #' @return data.frame with name of layer, abstract and crs
 #' @export
 #'
-#' @importFrom dplyr mutate select rename_all
+#' @importFrom dplyr mutate select rename_all across
 #' @importFrom tidyr pivot_wider
-#' @importFrom xml2 read_xml xml_child xml_children xml_find_all
-#' xml_name xml_text
+#' @importFrom httr2 request req_perform resp_body_xml
+#' @importFrom xml2 read_xml xml_child xml_children xml_find_all xml_name xml_text
 #'
-get_layers_metadata <- function(apikey, data_type) {
+get_layers_metadata <- function(apikey, data_type, version) {
    UseMethod("get_layers_metadata")
 }
 
 #' @name get_layers_metadata
 #' @export
-get_layers_metadata.character <- function(apikey, data_type) {
+get_layers_metadata.character <- function(apikey, data_type, version) {
    get_layers_metadata(constructor(apikey, data_type))
    }
 
 #' @name get_layers_metadata
 #' @export
-get_layers_metadata.wfs <- function(apikey, data_type) {
+get_layers_metadata.wfs <- function(apikey, data_type, version = "2.0.0") {
+
    url <- paste0("https://wxs.ign.fr/",
                 apikey,
-                "/geoportail/wfs?SERVICE=WFS&REQUEST=GetCapabilities")
+                "/geoportail/wfs?SERVICE=WFS&VERSION=",version,
+                "&REQUEST=GetCapabilities")
 
-   resp <- GET(url)
-
-   items <- read_xml(resp) %>%
+   items <- request(url) %>%
+      req_perform() %>%
+      resp_body_xml() %>%
       xml_child("d1:FeatureTypeList") %>%
       xml_children()
 
@@ -81,32 +83,31 @@ get_layers_metadata.wfs <- function(apikey, data_type) {
 
    res <- xml_to_df(items) %>%
       rename_all(tolower) %>%
-      mutate(defaultcrs = gsub(".*?([0-9]+).*", "\\1", defaultcrs))
-
-   res
+      mutate(defaultcrs = gsub(".*?([0-9]+).*", "\\1", defaultcrs)) %>%
+      mutate(across(.fns = ~ as.character(.)))
 
 }
 
 #' @name get_layers_metadata
 #' @export
-get_layers_metadata.wms <- function(apikey, data_type) {
+get_layers_metadata.wms <- function(apikey, data_type, version = "1.3.0") {
 
    url <- paste0("https://wxs.ign.fr/",
                 apikey,
-                "/geoportail/r/wms?SERVICE=WMS&REQUEST=GetCapabilities")
+                "/geoportail/r/wms?SERVICE=WMS&VERSION=",version,
+                "&REQUEST=GetCapabilities")
 
-   resp <- GET(url)
-
-   items <- read_xml(resp) %>%
+   items <- request(url) %>%
+      req_perform() %>%
+      resp_body_xml() %>%
       xml_child("d1:Capability") %>%
       xml_child("d1:Layer") %>%
       xml_find_all("d1:Layer")
 
    res <- suppressWarnings(xml_to_df(items, values_fn = list)) %>%
       rename_all(tolower) %>%
-      as.data.frame()
-
-   res
+      as.data.frame() %>%
+      mutate(across(.fns = ~ as.character(.)))
 
 }
 #' Constructor for class data_type

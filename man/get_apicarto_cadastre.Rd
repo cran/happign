@@ -34,26 +34,27 @@
 \arguments{
 \item{x}{It can be a shape or multiple insee code :
 \itemize{
-\item Shape : all the cadastral parcels contained in it are downloaded. It should be an
-object of class \code{sf} or \code{sfc}.
-\item Code insee : filter the response on the INSEE code entered (must be a \code{character} or a vector
-of \code{character})
+\item Shape : all the cadastral parcels contained in it are downloaded. It should
+be an object of class \code{sf} or \code{sfc}.
+\item Code insee : filter the response on the INSEE code entered (must be a
+\code{character} or a vector of \code{character})
 }}
 
-\item{section}{A \code{character} or a vector of \code{character} to filter the response on the
-cadastral section code entered (on 2 characters)}
+\item{section}{A \code{character} or a vector of \code{character} to filter the
+response on the cadastral section code entered (on 2 characters)}
 
-\item{numero}{A \code{character} or a vector of \code{character} to filter the answers on the entered parcel
-number (on 4 characters)}
+\item{numero}{A \code{character} or a vector of \code{character} to filter the answers
+on the entered parcel number (on 4 characters)}
 
-\item{code_abs}{A \code{character} or a vector of \code{character} to filter the answers on the code of
-absorbed commune. This prefix is useful to differentiate between communes that have merged}
+\item{code_abs}{A \code{character} or a vector of \code{character} to filter the
+answers on the code of absorbed commune. This prefix is useful to
+differentiate between communes that have merged}
 
-\item{source_ign}{Can be "BDP" for BD Parcellaire or "PCI" for Parcellaire express.
-The BD Parcellaire is a discontinued product. Its use is no longer
+\item{source_ign}{Can be "BDP" for BD Parcellaire or "PCI" for Parcellaire
+express. The BD Parcellaire is a discontinued product. Its use is no longer
 recommended because it is no longer updated. The use of PCI Express is
-strongly recommended and will become mandatory. More information on the comparison
-of this two products can be found
+strongly recommended and will become mandatory. More information on the
+comparison of this two products can be found
 \href{https://geoservices.ign.fr/sites/default/files/2021-07/Comparatif_PEPCI_BDPARCELLAIRE.pdf}{here}}
 }
 \value{
@@ -76,22 +77,19 @@ source_ign = "PCI")
 library(sf)
 library(tmap)
 
-#' # shape from the best town in France
-shape <- st_polygon(list(matrix(c(-4.373937, 47.79859,
-                                 -4.375615, 47.79738,
-                                 -4.375147, 47.79683,
-                                 -4.373898, 47.79790,
-                                 -4.373937, 47.79859),
-                                 ncol = 2, byrow = TRUE)))
-shape <- st_sfc(shape, crs = st_crs(4326))
+# line from the best town in France
+line <- st_linestring(matrix(c(-4.372215, -4.365177, 47.803943, 47.79772),
+                             ncol = 2))
+line <- st_sfc(line, crs = st_crs(4326))
 
-PCI_shape <- get_apicarto_cadastre(shape, section = c("AX", "BR"))
-BDP_Code <- get_apicarto_cadastre("29158", section = c("AX", "BR"), source_ign = "BDP")
+PCI_shape <- get_apicarto_cadastre(shape, section = c("AX", "AV"))
+BDP_Code <- get_apicarto_cadastre("29158", section = c("AX", "BR"),
+                                  source_ign = "BDP")
 
 tm_shape(PCI_shape)+
    tm_borders()+
-tm_shape(shape)+
-   tm_borders(col = "red")
+tm_shape(line)+
+   tm_lines(col = "red")
 
 tm_shape(BDP_Code)+
    tm_polygons(col = "section", border.col = "black")

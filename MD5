@@ -1,25 +1,26 @@
-7a3f386a9fdd6b619c425a9513b49d53 *DESCRIPTION
-c306495706a5ab26ee2e840c470ceab7 *NAMESPACE
-dcf44ce897ef25527372be7d714bcc42 *NEWS.md
+6126f43fdd802963ad22c996727332e7 *DESCRIPTION
+c8fd665c1efa20f8cb01ae9067ece679 *NAMESPACE
+be8c4586f326cfada2ed703dbd7101d7 *NEWS.md
 dcc02c65a95ddac9184e8e66a56a9fe7 *R/data.R
-223e1b654ea1f9e141657ea7f100563b *R/get_apicarto_cadastre.R
-56d4834aad3cd93382b5663cd41c52a4 *R/get_apicarto_gpu.R
-f1f78cb7ad7fab2985d64b85ed783212 *R/get_apikeys.R
-d4195538917882ef85bf9890a4542c36 *R/get_iso.R
-e926491eac3e1be0b0711bd41aaf68a7 *R/get_layers_metadata.R
-cf2aacc5ede40e2d83b0434f0cc7d840 *R/get_wfs.R
-77fdcce4c03a5a0b2df02c77506da909 *R/get_wms_raster.R
-5b0bf91f7856c23fa0cf3f1b5b6642f9 *R/init.R
-e72997a03d71f4131f7fa3b4126f34b3 *R/utils.R
-48de0e9c400d0692e983132d37c6960b *README.md
-cd1446dec8ad6024704ab5ff42663ee2 *build/vignette.rds
+4e20edf8934d84cecaf797920e6dcf2d *R/get_apicarto_cadastre.R
+a981522db408747897c8f12288d729e1 *R/get_apicarto_plu.R
+c152eeeafcbe67db2356b2545b8a70b7 *R/get_apikeys.R
+664c2273b1ce4af4166b312ab4ff7072 *R/get_layers_metadata.R
+d21a3bcd06269fbf88e59c78212c6ae5 *R/get_wfs.R
+5472b883bb0c4a75b3f133e6fac9fd44 *R/get_wms_info.R
+4586ed18fe8e9ceb3794b75a9c28bd97 *R/get_wms_raster.R
+a48fff93eba4b8e65e58b2cca87a2acf *R/init.R
+c3d3d6ac1fd2ad3d8e09c75c082f3fae *R/utils.R
+06196d0ee1ffb2719ce8ebb3250ba4d9 *README.md
+64b71b21de37ffb18914b7be83ee85be *build/vignette.rds
 0ad0b12837f0ded968f3ea39e2c3a8f2 *data/code_insee.rda
-3d8cbfed99f88e4e1cad0644568de3c5 *inst/doc/Getting_started.R
-2398b270d5511343eedd0776a0ca1884 *inst/doc/Getting_started.Rmd
-a8b045022d4492021d255f794ed7dd97 *inst/doc/Getting_started.html
-e463af567df11574e229040e6b9cb79e *inst/doc/SCAN_25_SCAN_100_SCAN_OACI.R
-c966fdd9b9469cc092ac68fc822cae6a *inst/doc/SCAN_25_SCAN_100_SCAN_OACI.Rmd
-5aba549f1c230fcef8687cc4c135d0cd *inst/doc/SCAN_25_SCAN_100_SCAN_OACI.html
+d734ddb8303b563fb1546fd6ae7ba599 *inst/doc/Getting_started.R
+cae4a190dfc913ea7e857edeea5305f9 *inst/doc/Getting_started.Rmd
+778ec6279046d5ddb655f636fdb1385a *inst/doc/Getting_started.html
+9ecea22b5f0b63e4940cac2629aa47e1 *inst/doc/SCAN_25_SCAN_100_SCAN_OACI.R
+0bf46bf5b48d3a980a258f54a737b534 *inst/doc/SCAN_25_SCAN_100_SCAN_OACI.Rmd
+dba629c0f2677cc7afbd69666be3cc47 *inst/doc/SCAN_25_SCAN_100_SCAN_OACI.html
+b81a42e90c1757810384c4690db3f773 *man/are_queryable.Rd
 21c4035692aeec7488a446f81fa39dc1 *man/code_insee.Rd
 502a5f8dd6ba90060101596366cb7d58 *man/figures/README-pressure-1.png
 cb1e46f469cfbbbde29c8b5113e1d789 *man/figures/lifecycle-archived.svg
@@ -31,29 +32,48 @@ c3978703d8f40f2679795335715e98f4 *man/figures/lifecycle-experimental.svg
 53b3f893324260b737b3c46ed2a0e643 *man/figures/lifecycle-stable.svg
 1c1fe7a759b86dc6dbcbe7797ab8246c *man/figures/lifecycle-superseded.svg
 e08f932540cb5536c4f000d95c5a1b3a *man/figures/logo.png
-ecda3b11692180514300f8f5f830ec21 *man/get_apicarto_cadastre.Rd
-9c4977da1ef8bb4f09a64e0c98591d42 *man/get_apicarto_plu.Rd
+98fe2020e1b9a3644838f76ce2170476 *man/get_apicarto_cadastre.Rd
+2a85ceefc1f344be7e85461d6c1ec0f4 *man/get_apicarto_plu.Rd
 8cb88a5920f78c95eab3ca22d614f1b4 *man/get_apikeys.Rd
-11c74baa5f636c73a68eee9b17a0b531 *man/get_iso.Rd
-a67127d4a54bd2e4b45803d8996b1201 *man/get_layers_metadata.Rd
-7281367090e2923977a414a478ae967c *man/get_wfs.Rd
-76d43aba2a2e52282e1385b7ac59aa8d *man/get_wms_raster.Rd
-dcb9fc9f1a38604897c3688e0989a794 *man/shp_to_geojson.Rd
-036f00083e82c1a8b717c13f7c92c2f7 *tests/fixtures/get_iso.yml
-6cd07e68981c44d969f238d72935511f *tests/fixtures/get_layers_metada_wfs.yml
-64e1f41ce0b896fa661ed65090795615 *tests/fixtures/get_wfs.yml
-83ba084d1eef2d6d07fe490229706c9c *tests/fixtures/testing.yml
+c9307cbf643ee2e2fde90e3fcb344648 *man/get_layers_metadata.Rd
+f5c8081d62910e98ddf707c1fdfa221e *man/get_wfs.Rd
+7e504a01d95b8ddb577a4a5e8309e56a *man/get_wms_info.Rd
+cc67de26ecc074fc981c42d30ab8c981 *man/get_wms_raster.Rd
+6a6244db13be54c448ba9b1505d8c4c8 *man/shp_to_geojson.Rd
 3439d70e55851a6c32f5404b7077fd20 *tests/testthat.R
-1b99cd059e37e45d93744db3e485f2aa *tests/testthat/setup-happign.R
-a66cba177f0cfe12a003e5cb28ccc830 *tests/testthat/test-get_apikeys.R
-8aac6b499ee30467c8ec6b70ed9ad1aa *tests/testthat/test-get_iso.R
-0b575875f290e71e5bf9c6e8743edcc0 *tests/testthat/test-get_layers_metadata.R
-fce139ad446b4020ef0cea264096e45f *tests/testthat/test-get_wfs.R
-3e05ee4a4c4c6afb3b9827ca39a9fa1d *tests/testthat/test-get_wms_raster.R
-9fb9be4ff8e0031ac74baf4809a87ee0 *tests/testthat/test-init.R
-fba6b9740daef3d3ee60aae152495734 *tests/testthat/test-utils.R
-2398b270d5511343eedd0776a0ca1884 *vignettes/Getting_started.Rmd
-c966fdd9b9469cc092ac68fc822cae6a *vignettes/SCAN_25_SCAN_100_SCAN_OACI.Rmd
-d6392d6c58eb1a4352367a5cbe5f425c *vignettes/web_only/Non_functional_APIs.Rmd
-1d5131a5ab39d59158b13738fd6bf33f *vignettes/web_only/happign_for_foresters.Rmd
-f694f652ae337dfe4d30f8da078fdc2d *vignettes/web_only/resolution_for_raster.Rmd
+44ac96cc2c0f33ce5bc359994dd6ab31 *tests/testthat/are_queryable works/wxs.ign.fr/administratif/geoportail/r/wms-21553a.R
+ff67c588249156cc66e07e1f5fcc86b1 *tests/testthat/get_api_cadastre char/apicarto.ign.fr/api/cadastre/parcelle-8c2e01.R
+dcc04884310cebdb15d5326da7f7515a *tests/testthat/get_api_cadastre char/apicarto.ign.fr/api/cadastre/parcelle-915579.R
+55e78b149e5591c0eaf7ab69bab29ff3 *tests/testthat/get_apicarto_cadastre sf/apicarto.ign.fr/api/cadastre/parcelle-0c0796.R
+9e8b37f881e793b908ea3fe8084fb343 *tests/testthat/get_apicarto_cadastre sf/apicarto.ign.fr/api/cadastre/parcelle-c741cd.R
+8c3213e3aec04e30d4835a90cdc3f14b *tests/testthat/get_apicarto_cadastre sfc/apicarto.ign.fr/api/cadastre/parcelle-0c0796.R
+0b56cf408f1b0093773fc942bd85d71e *tests/testthat/get_apicarto_cadastre sfc/apicarto.ign.fr/api/cadastre/parcelle-c741cd.R
+6a4408c76f74bb6b99daae03be76607a *tests/testthat/get_apicarto_gpu geom/apicarto.ign.fr/api/gpu/zone-urba-04fd99.R
+42194016902fb35c8ecdb9d1eda5bef0 *tests/testthat/get_apicarto_gpu partition/apicarto.ign.fr/api/gpu/zone-urba-8f23f7.R
+528bbb5ed93f1d2f2404e9ea01410985 *tests/testthat/get_apicarto_plu geom/apicarto.ign.fr/api/gpu/zone-urba-04fd99.R
+dc27fd49876f27d68b7dd3be8500e7e8 *tests/testthat/get_apicarto_plu partition/apicarto.ign.fr/api/gpu/zone-urba-8f23f7.R
+8340572039b8ca91d9b3c30c9b7f62e4 *tests/testthat/get_layers_metada_wfs/wxs.ign.fr/altimetrie/geoportail/wfs-98a337.xml
+eda48611b58ee74ca26c1a385c254a79 *tests/testthat/get_layers_metada_wms/wxs.ign.fr/ortho/geoportail/r/wms-e4543b.R
+537750594187724d4cf95131add214f6 *tests/testthat/get_wfs simple request/wxs.ign.fr/cartovecto/geoportail/wfs-82489c.R
+e5becd26ce9e22496fac28b9ea6ebbcf *tests/testthat/get_wms_info return error/wxs.ign.fr/ortho/geoportail/r/wms-21553a.R
+661081d400885b5991d8dd0911051f51 *tests/testthat/get_wms_info works/wxs.ign.fr/ortho/geoportail/r/wms-21553a.R
+5449f2d68ccf8fc3373b6fb10c04b0fc *tests/testthat/get_wms_info works/wxs.ign.fr/ortho/geoportail/r/wms-f7cc3b.R
+2eb9f3c92e03e30012cb44316c413352 *tests/testthat/on_attach/geoservices.ign.fr.R
+7a5d28ebf52eedaafc0c1d778a56541b *tests/testthat/on_attach/geoservices.ign.fr/actualites/rss.xml.R
+f28b204388815ce0e580f277e07fa81d *tests/testthat/on_attach_error/geoservices.ign.fr.R
+d62ee2a36b6e897088294514e18b9c13 *tests/testthat/on_attach_error/geoservices.ign.fr/actualites/rss.xml.R
+e884b1fc95f440a1012f2e504ae077f7 *tests/testthat/req_function perform request/wxs.ign.fr/parcellaire/geoportail/wfs-5cbaea.R
+6ae28360a91b6d3425233c19d9507a7d *tests/testthat/setup.R
+9de04f054a704db7a6422aab4037d4db *tests/testthat/test-get_apicarto_cadastre.R
+96d4c20f331e58957f1b1e12bddb9683 *tests/testthat/test-get_apicarto_gpu.R
+06258449f940cf7226473b82c38d9ab8 *tests/testthat/test-get_apikeys.R
+2da3f54b5b7ddb84dfd2faba0b1ac138 *tests/testthat/test-get_layers_metadata.R
+1b4332c5baeee30bf6a33d8fa0081a45 *tests/testthat/test-get_wfs.R
+a07795b701c81f920896801d71f62024 *tests/testthat/test-get_wms_info.R
+2c76ec30ccaa3936a00407c2687173bf *tests/testthat/test-get_wms_raster.R
+ba48b3a694c5a4d2daf31dd36237e97a *tests/testthat/test-init.R
+206eebc0bf3651851259070fcb2b1dc5 *tests/testthat/test-utils.R
+cae4a190dfc913ea7e857edeea5305f9 *vignettes/Getting_started.Rmd
+0bf46bf5b48d3a980a258f54a737b534 *vignettes/SCAN_25_SCAN_100_SCAN_OACI.Rmd
+a9a411bc1287d69a8ef7394659f15fbb *vignettes/web_only/happign_for_foresters.Rmd
+e3172bbcd018ba42cbd5ce270a5bb7d6 *vignettes/web_only/resolution_for_raster.Rmd

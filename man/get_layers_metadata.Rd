@@ -7,13 +7,13 @@
 \alias{get_layers_metadata.wms}
 \title{Metadata for one couple of apikey and data_type}
 \usage{
-get_layers_metadata(apikey, data_type)
+get_layers_metadata(apikey, data_type, version)
 
-\method{get_layers_metadata}{character}(apikey, data_type)
+\method{get_layers_metadata}{character}(apikey, data_type, version)
 
-\method{get_layers_metadata}{wfs}(apikey, data_type)
+\method{get_layers_metadata}{wfs}(apikey, data_type, version = "2.0.0")
 
-\method{get_layers_metadata}{wms}(apikey, data_type)
+\method{get_layers_metadata}{wms}(apikey, data_type, version = "1.3.0")
 }
 \arguments{
 \item{apikey}{API key from \code{get_apikeys()} or directly
@@ -21,6 +21,9 @@ from the \href{https://geoservices.ign.fr/services-web-experts}{IGN website}}
 
 \item{data_type}{Should be \code{"wfs"} or \code{"wms"}. See details for more
 information about these two Webservice formats.}
+
+\item{version}{The version of the service used. More details at
+\href{https://geoservices.ign.fr/documentation/services/api-et-services-ogc/images-wms-ogc}{IGN documentation}}
 }
 \value{
 data.frame with name of layer, abstract and crs
@@ -47,20 +50,18 @@ The reference document is available on the
 }
 \examples{
 \dontrun{
-
 apikey <- get_apikeys()[4]
 metadata_table <- get_layers_metadata(apikey, "wms")
 all_layer_name <- metadata_table$name
-abstract_of_MNT <- metadata_table[1,3]
-crs_of_MNT <- unlist(metadata_table[1,4])
+abstract_of_MNT <- metadata_table[1,"abstract"]
 
-# list with every wfs metadata
-list_metadata = lapply(X = get_apikeys(),
+# list with every wfs metadata (warning : it's quite long)
+list_metadata <- lapply(X = get_apikeys(),
                        FUN = get_layers_metadata,
                        data_type = "wfs")
 
 # Convert list to one single data.frame
-all_metadata = dplyr::bind_rows(list_metadata)
+all_metadata <- dplyr::bind_rows(list_metadata)
 }
 
 }

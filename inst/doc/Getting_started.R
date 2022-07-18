@@ -19,7 +19,7 @@ get_apikeys()
 ## -----------------------------------------------------------------------------
 apikey <- get_apikeys()[1]
 get_layers_metadata(apikey = apikey, data_type = "wfs")
-
+get_layers_metadata(apikey = apikey, data_type = "wms")
 
 ## ---- eval=TRUE, include=TRUE-------------------------------------------------
 penmarch_point <- st_sfc(st_point(c(-4.370, 47.800)), crs = 4326)
@@ -44,9 +44,11 @@ dikes <- get_wfs(shape = penmarch_borders,
                  apikey = get_apikeys()[6],
                  layer_name = "BDCARTO_BDD_WLD_WGS84G:noeud_routier")
 
+dikes <- st_intersection(penmarch_borders, dikes)
+
 # Checking result
 tm_shape(penmarch_borders) + # Borders of penmarch
-   tm_polygons(alpha = 0, lwd = 2) +
+   tm_borders(lwd = 2) +
 tm_shape(dikes) + # Point use to retrieve data
    tm_dots(col = "red") +
    tm_add_legend(type = "symbol", label = "Road junction", col = "red") +
@@ -55,21 +57,28 @@ tm_shape(dikes) + # Point use to retrieve data
              legend.position = c("right", "bottom"),
              frame = FALSE)
 
-## ---- eval = FALSE, echo = TRUE-----------------------------------------------
-#  apikey <- get_apikeys()[4]
-#  layers_metadata <- get_layers_metadata("altimetrie", "wms")
-#  dem_layer_name <- layers_metadata[2, "name"]
-#  
-#  mnt <- get_wms_raster(shape = penmarch_borders,
-#                        apikey = apikey,
-#                        layer_name = dem_layer_name,
-#                        resolution = 25,
-#                        filename = "best_raster_name")
-#  
-#  mnt[mnt < 0] <- NA # remove negative values in case of singularity
-#  names(mnt) <- "Elevation [m]" # Rename raster ie the title legend
-#  
-#  tm_shape(mnt) +
-#     tm_raster(colorNA = NULL) +
-#     tm_layout(title = "DEM of Penmarch", frame = FALSE)
+## ---- eval=TRUE, include=TRUE-------------------------------------------------
+apikey <- get_apikeys()[4]
+layers_metadata <- get_layers_metadata(apikey, "wms")
+dem_layer_name <- layers_metadata[2, "name"]
+
+mnt <- get_wms_raster(shape = penmarch_borders,
+                      apikey = apikey,
+                      layer_name = dem_layer_name,
+                      resolution = 25,
+                      filename = "best_raster_name")
+file.remove("best_raster_name_25m.tif") # raster are download to disk but I don't want to keep it
+
+mnt[mnt < 0] <- NA # remove negative values in case of singularity
+names(mnt) <- "Elevation [m]" # Rename raster ie the title legend
+
+tm_shape(mnt) +
+   tm_raster(colorNA = NULL) +
+tm_shape(penmarch_borders)+
+   tm_borders(lwd = 2)+
+tm_layout(main.title = "DEM of Penmarch",
+          main.title.position = "center",
+          legend.position = c("right", "bottom"),
+          legend.bg.color = "white", legend.bg.alpha = 0.7,
+          frame = FALSE)
 

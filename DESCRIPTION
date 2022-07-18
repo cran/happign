@@ -1,30 +1,31 @@
 Package: happign
 Title: R Interface to 'IGN' Web Services
-Version: 0.1.4
+Version: 0.1.5
 Authors@R: 
     person("Paul", "Carteron", , "carteronpaul@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-6942-6662"))
 Maintainer: Paul Carteron <carteronpaul@gmail.com>
 Description: Interface to easily access the National Institute of
-    Geographic and Forestry Information open-source data for any area of
-    interest in France via WFS (shapefile) and WMS (raster) web services
+    Geographic and Forestry Information open-source data from Geoservice
+    website for any area of interest in France via WFS (shapefile) and WMS
+    (raster) web services
     <https://geoservices.ign.fr/services-web-experts>.
 License: GPL (>= 3)
 URL: https://github.com/paul-carteron,
         https://paul-carteron.github.io/happign/
 BugReports: https://github.com/paul-carteron/happign/issues
-Imports: checkmate, curl, dplyr, httr, httr2, magrittr, sf, stars,
-        tidyr, xml2
-Suggests: covr, DT, knitr, rmarkdown, testthat (>= 3.0.0), tmap, vcr
-        (>= 0.6.0), webmockr
+Depends: R (>= 2.10)
+Imports: checkmate, curl, dplyr, httr2, magrittr, sf (>= 1.0-7), stars
+        (>= 0.5-5), tidyr, xml2
+Suggests: covr, DT, httptest2, knitr, rmarkdown, testthat (>= 3.0.0),
+        tmap
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 NeedsCompilation: no
-RoxygenNote: 7.1.2
-Depends: R (>= 2.10)
-Packaged: 2022-04-25 21:55:37 UTC; PAUL
+RoxygenNote: 7.2.0
+Packaged: 2022-07-18 09:08:22 UTC; PAUL
 Author: Paul Carteron [aut, cre] (<https://orcid.org/0000-0002-6942-6662>)
 Repository: CRAN
-Date/Publication: 2022-04-25 22:10:03 UTC
+Date/Publication: 2022-07-18 11:30:03 UTC

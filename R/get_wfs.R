@@ -19,17 +19,21 @@
 #' @param layer_name Name of the layer from `get_layers_metadata(apikey, "wfs")`
 #' or directly from
 #' [IGN website](https://geoservices.ign.fr/services-web-experts)
-#' @param filename File name to save shape on disk as ".shp".
+#' @param filename Either a character string naming a file or a connection open
+#' for writing. (ex : "test.shp" or "~/test.shp")
 #'
 #' @return
 #' `get_wfs`return an object of class `sf`
 #'
 #' @export
 #'
-#' @importFrom sf st_bbox st_transform st_make_valid st_read st_as_sf st_write
-#' @importFrom httr modify_url GET content status_code stop_for_status
-#' @importFrom dplyr select
+#' @importFrom sf read_sf st_bbox st_make_valid st_transform st_write st_sf st_point
+#' @importFrom httr2 req_perform req_url_path_append req_url_query req_user_agent
+#' request resp_body_json resp_body_string
+#' @importFrom dplyr bind_rows select
 #' @importFrom magrittr `%>%`
+#' @importFrom checkmate assert assert_double assert_character check_character
+#' check_class check_null
 #'
 #' @seealso
 #' [get_apikeys()], [get_layers_metadata()]
@@ -43,7 +47,7 @@
 #'
 #' apikey <- get_apikeys()[1]
 #' metadata_table <- get_layers_metadata(apikey, "wfs")
-#' layer_name <- metadata_table[32,2]
+#' layer_name <- as.character(metadata_table[32,2])
 #'
 #' # One point from the best town in France
 #' shape <- st_point(c(-4.373937, 47.79859))
@@ -59,10 +63,10 @@
 #' # Get forest_area of the best town in France ----------------
 #' forest_area <- get_wfs(shape = borders,
 #'                        apikey = get_apikeys()[9],
-#'                        layer_name = get_layers_metadata(get_apikeys()[9], "wfs")[2,2])
+#'                        layer_name = "LANDCOVER.FORESTINVENTORY.V1:resu_bdv1_shape")
 #'
 #' # Verif
-#' qtm(forest_area, fill = "essence")
+#' qtm(forest_area, fill = "libelle")
 #'
 #' # Get roads of the best town in France ----------------------
 #' roads <- get_wfs(shape = borders,
@@ -71,85 +75,90 @@
 #'
 #' # Verif
 #' qtm(roads)
+#'
 #' }
 get_wfs <- function(shape,
                     apikey = "cartovecto",
                     layer_name = "BDCARTO_BDD_WLD_WGS84G:troncon_route",
-                    filename = NULL) {
-  bbox <- NULL
+                    filename = NULL){
 
-  lapply_function <- function(startindex, nb_request, apikey,
-                              layer_name, shape) {
-    cat("Request ", startindex + 1, "/", nb_request + 1,
-        " downloading...\n", sep = "")
-     resp <- GET(format_url(apikey, layer_name, shape,
-                            startindex = 1000 * startindex))
-     res <- st_read(resp,
-                    quiet = TRUE)
-  }
+   assert(check_class(shape, "sf"),
+          check_class(shape, "sfc"))
+   assert_character(apikey, max.len = 1)
+   assert_character(layer_name, max.len = 1)
+   assert(check_character(filename, max.len = 1),
+          check_null(filename))
 
-  shape <- st_make_valid(shape) %>%
-    st_transform(4326)
+   bbox <- NULL
+   shape <- st_make_valid(shape)
 
-  resp <- GET(format_url(apikey, layer_name, shape, startindex = 0))
+   req <- req_function(apikey, shape, layer_name)
+   features <- read_sf(resp_body_string(req))
+   request_need <- resp_body_json(req)$totalFeatures %/% 1000
+   message("1/",request_need + 1," downloaded")
 
-  stop_for_status(resp,
-                  task = paste0("find resource. Check layer_name ",
-                                "at https://geoservices.ign.fr/",
-                                "services-web-experts-",
-                                apikey))
+   if (request_need != 0) {
+      list_features <- lapply(seq_len(request_need),
+                              \(x) {
+                                 features <- req_function(
+                                              apikey,
+                                              shape,
+                                              layer_name,
+                                              x * 1000) %>%
+                                    resp_body_string() %>%
+                                    read_sf()
+                                 message(x + 1, "/", request_need + 1, " downloaded")
+                                 return(features)
+                              })
+      features <- bind_rows(features, list_features)
+   }
 
-  nb_features <- content(resp)$numberMatched
+   if ("bbox" %in% names(features)){
+      features <- select(features, -"bbox")
+   }
 
-  if (nb_features == 0) {
-     stop("Your search returned zero results. There is no features for ",
-          layer_name,
-          " inside your shape")
-  }
+   if (!is.null(filename)) {
+      path <- normalizePath(filename, mustWork = FALSE)
+      path <- enc2utf8(path)
 
-  nb_request <- nb_features %/% 1000
+      if (sum(nchar(names(features))>10) > 1){
+         st_write(features, sub("\\.[^.]*$", ".gpkg", path))
+         message("Some variables names are more than 10 character so .gpkg format is used.")
+      }else{
+         st_write(features, path, append = FALSE)
 
-  list_features <- lapply(
-    X = 0:nb_request,
-    FUN = lapply_function,
-    nb_request = nb_request,
-    apikey = apikey,
-    layer_name = layer_name,
-    shape = shape
-  )
+      }
+   }
 
-  features <- do.call("rbind", list_features) %>%
-    st_as_sf() %>%
-    st_make_valid() %>%
-    select(-bbox)
-
-  if (!is.null(filename)) {
-     st_write(features, file.path(paste0(filename, ".shp")))
-     message("The shape is saved at : ", file.path(getwd(),
-                                                   paste0(filename, ".shp")))
-  }
+   if (dim(features)[1] == 0){
+      features <- st_sf(st_sfc(st_point()))
+      warning("No features find, an empty point geometry is returned.")
+   }
 
   return(features)
 }
-#'
-#' format url for request
-#' @param apikey API key from IGN web service
-#' @param layer_name Name of the layer from get_layer_metadata
-#' @param shape Zone of interest
-#' @param startindex Control number of feature (1 corresopnd to 0->1000)
+
+#' format url and request it
+#' @param apikey API key from `get_apikeys()`
+#' @param shape Object of class `sf`. Needs to be located in France.
+#' @param layer_name Name of the layer
+#' @param startindex startindex for features returned limit
 #' @noRd
 #'
-format_url <- function(apikey = NULL, layer_name = NULL,
-                       shape = NULL, startindex = NULL) {
+req_function <- function(apikey, shape, layer_name, startindex = 0) {
+
+   assert_character(apikey, max.len = 1)
+   assert(check_class(shape, "sf"),
+          check_class(shape, "sfc"))
+   assert_character(layer_name, max.len = 1)
+   assert_double(startindex)
 
    bbox <- st_bbox(st_transform(shape, 4326))
    formated_bbox <- paste(bbox["xmin"], bbox["ymin"], bbox["xmax"], bbox["ymax"],
                           "epsg:4326",
                           sep = ",")
 
-  url <- modify_url("https://wxs.ign.fr",
-    path = paste0(apikey, "/geoportail/wfs"),
-    query = list(
+   params <- list(
       service = "WFS",
       version = "2.0.0",
       request = "GetFeature",
@@ -157,8 +166,14 @@ format_url <- function(apikey = NULL, layer_name = NULL,
       srsName = "EPSG:4326",
       typeName = layer_name,
       bbox = formated_bbox,
-      startindex = startindex
-    )
-  )
-  url
+      startindex = startindex,
+      count = 1000
+   )
+
+   request <- request("https://wxs.ign.fr") %>%
+      req_url_path_append(apikey) %>%
+      req_url_path_append("geoportail/wfs") %>%
+      req_user_agent("happign (https://paul-carteron.github.io/happign/)") %>%
+      req_url_query(!!!params) %>%
+      req_perform()
 }

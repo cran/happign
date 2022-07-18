@@ -1,3 +1,15 @@
+# happign 0.1.5
+* remove `get_iso()`
+* remove dependency to `httr` by `httr2`
+* add `get_wms_info()` to find metadata of a layer
+* add `get_apicarto_plu()` (Plan Local d'Urbanisme)
+* Rework of `get_wms_raster()`
+* Adding new apikey "ocsge"
+* Better testing
+* Add all insee code as package data `data("code_insee")`
+* `get_apicarto_*` now support MultiPolygon
+* `get_wms_raster` now have 1h for downloading tile instead of 1min (for low connection)
+
 # happign 0.1.4
 
 * Fix resolution for `get_wms_raster()`. Depending on shape and resolution, multiple tile are downloaded and combine to get the right resolution. Also adding vignette [Resolution for raster](https://paul-carteron.github.io/happign/articles/web_only/resolution_for_raster.html) for further explanation

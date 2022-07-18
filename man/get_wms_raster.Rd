@@ -7,7 +7,7 @@
 get_wms_raster(shape,
                apikey = "altimetrie",
                layer_name = "ELEVATION.ELEVATIONGRIDCOVERAGE",
-               resolution = 10,
+               resolution = 25,
                filename = NULL,
                version = "1.3.0",
                format = "image/geotiff",
@@ -30,22 +30,26 @@ or directly from
 depending of the shape and the resolution, correct number and size of tiles
 is calculated. See detail for more information about resolution.}
 
-\item{filename}{Name of raster download to disk. The resolution is automatically added
-to the filename. If raster with same name already exist in the current directory,
-it is directly imported into R}
+\item{filename}{Either a character string naming a file or a connection open
+for writing. (ex : "test" or "~/test"). The resolution is automatically
+added to the filename. If raster with same name is already downloaded it
+is directly imported into R. You don't have to specify the extension because
+it is defined in the argument \code{format}.}
 
-\item{version}{The version of the service used. Set to latest version
-by default. See detail for more information about \code{version}.}
+\item{version}{The version of the service used. See detail for more
+information about \code{version}.}
 
-\item{format}{The output format - type-mime - of the image file. Set
+\item{format}{The output format of the image file. Set
 to geotiff by default. See detail for more information about \code{format}.}
 
 \item{styles}{The rendering style of the layers. Set to "" by default.
 See detail for more information about \code{styles}.}
 
-\item{method}{Method to be used for downloading files. See \code{\link[=download.file]{download.file()}} for more detail.}
+\item{method}{Method to be used for downloading files. See \code{\link[=download.file]{download.file()}}
+for more detail.}
 
-\item{mode}{The mode with which to write the file. See \code{\link[=download.file]{download.file()}} for more detail.}
+\item{mode}{The mode with which to write the file. See \code{\link[=download.file]{download.file()}}
+for more detail.}
 }
 \value{
 \code{get_wms_raster} return an object of class \code{stars}. Depending on the layer,
@@ -78,7 +82,7 @@ library(tmap)
 apikey <- get_apikeys()[4]
 
 metadata_table <- get_layers_metadata(apikey, "wms")
-layer_name <- metadata_table[2,2]
+layer_name <- as.character(metadata_table[2,2])
 
 # shape from the best town in France
 shape <- st_polygon(list(matrix(c(-4.373937, 47.79859,
@@ -90,7 +94,8 @@ shape <- st_polygon(list(matrix(c(-4.373937, 47.79859,
 shape <- st_sfc(shape, crs = st_crs(4326))
 
 # Downloading digital elevation model from IGN
-mnt <- get_wms_raster(shape, apikey, layer_name, resolution = 10, filename = "raster_name")
+mnt <- get_wms_raster(shape, apikey, layer_name, resolution = 25, filename = "raster_name")
+file.remove("raster_name_25m.tif") # Don't want to keep raster on disk
 mnt[mnt < 0] <- NA # remove negative values in case of singularity
 names(mnt) <- "Elevation [m]" # Rename raster ie the title legend
 
