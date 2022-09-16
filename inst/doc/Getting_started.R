@@ -62,23 +62,26 @@ apikey <- get_apikeys()[4]
 layers_metadata <- get_layers_metadata(apikey, "wms")
 dem_layer_name <- layers_metadata[2, "name"]
 
-mnt <- get_wms_raster(shape = penmarch_borders,
-                      apikey = apikey,
-                      layer_name = dem_layer_name,
-                      resolution = 25,
-                      filename = "best_raster_name")
-file.remove("best_raster_name_25m.tif") # raster are download to disk but I don't want to keep it
-
-mnt[mnt < 0] <- NA # remove negative values in case of singularity
-names(mnt) <- "Elevation [m]" # Rename raster ie the title legend
-
-tm_shape(mnt) +
-   tm_raster(colorNA = NULL) +
-tm_shape(penmarch_borders)+
-   tm_borders(lwd = 2)+
-tm_layout(main.title = "DEM of Penmarch",
-          main.title.position = "center",
-          legend.position = c("right", "bottom"),
-          legend.bg.color = "white", legend.bg.alpha = 0.7,
-          frame = FALSE)
+# mnt <- get_wms_raster(shape = penmarch_borders,
+#                       apikey = apikey,
+#                       layer_name = unlist(dem_layer_name),
+#                       resolution = 25,
+#                       filename = "temp",
+#                       crs = 4326)
+# 
+# mnt[mnt < 0] <- NA # remove negative values in case of singularity
+# names(mnt) <- "Elevation [m]" # Rename raster ie the title legend
+# 
+# 
+# tm_shape(mnt) +
+#    tm_raster(colorNA = NULL) +
+# tm_shape(penmarch_borders)+
+#    tm_borders(lwd = 2)+
+# tm_layout(main.title = "DEM of Penmarch",
+#           main.title.position = "center",
+#           legend.position = c("right", "bottom"),
+#           legend.bg.color = "white", legend.bg.alpha = 0.7,
+#           frame = FALSE)
+# 
+# file.remove("temp_25m.tif")
 

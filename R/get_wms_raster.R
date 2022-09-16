@@ -9,14 +9,14 @@
 #' @usage
 #' get_wms_raster(shape,
 #'                apikey = "altimetrie",
-#'                layer_name = "ELEVATION.ELEVATIONGRIDCOVERAGE",
-#'                resolution = 25,
+#'                layer_name = "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES",
+#'                resolution = 5,
 #'                filename = NULL,
+#'                crs = 2154,
+#'                overwrite = FALSE,
 #'                version = "1.3.0",
 #'                format = "image/geotiff",
-#'                styles = "",
-#'                method = "auto",
-#'                mode = "wb")
+#'                styles = "")
 #'
 #' @param shape Object of class `sf`. Needs to be located in
 #' France.
@@ -33,16 +33,15 @@
 #' added to the filename. If raster with same name is already downloaded it
 #' is directly imported into R. You don't have to specify the extension because
 #' it is defined in the argument `format`.
+#' @param crs Numeric, character, or object of class sf or sfc. Is set to EPSG:4326
+#' by default. See [sf::st_crs()] for more detail.
+#' @param overwrite If TRUE, output raster is overwrite
 #' @param version The version of the service used. See detail for more
 #' information about `version`.
 #' @param format The output format of the image file. Set
 #' to geotiff by default. See detail for more information about `format`.
 #' @param styles The rendering style of the layers. Set to "" by default.
 #'  See detail for more information about `styles`.
-#' @param method Method to be used for downloading files. See [download.file()]
-#' for more detail.
-#' @param mode The mode with which to write the file. See [download.file()]
-#' for more detail.
 #'
 #' @return
 #' `get_wms_raster` return an object of class `stars`. Depending on the layer,
@@ -59,10 +58,10 @@
 #'
 #' @export
 #'
-#' @importFrom magrittr `%>%`
-#' @importFrom stars read_stars write_stars st_mosaic st_warp
-#' @importFrom sf st_as_sf st_as_sfc st_bbox st_filter st_length st_linestring
-#' st_make_grid st_make_valid st_set_precision st_sfc st_intersects st_crs
+#' @importFrom terra vrt writeRaster rast
+#' @importFrom sf gdal_utils st_as_sf st_as_sfc st_axis_order st_bbox st_crs
+#' st_filter st_is_longlat st_length st_linestring st_make_grid
+#' st_make_valid st_set_precision st_sfc st_intersects
 #' @importFrom utils download.file
 #' @importFrom checkmate assert check_class assert_character assert_numeric
 #' check_character check_null
@@ -102,14 +101,14 @@
 #'}
 get_wms_raster <- function(shape,
                            apikey = "altimetrie",
-                           layer_name = "ELEVATION.ELEVATIONGRIDCOVERAGE",
-                           resolution = 25,
+                           layer_name = "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES",
+                           resolution = 5,
                            filename = NULL,
+                           crs = 2154,
+                           overwrite = FALSE,
                            version = "1.3.0",
                            format = "image/geotiff",
-                           styles = "",
-                           method = "auto",
-                           mode = "wb") {
+                           styles = "") {
 
    # Check input class
    assert(check_class(shape, "sf"),
@@ -122,31 +121,21 @@ get_wms_raster <- function(shape,
    assert_character(version)
    assert_character(format)
    assert_character(styles)
-   assert_character(method)
-   assert_character(mode)
 
    shape <- st_make_valid(shape) %>%
-      st_transform(4326)
+      st_transform(st_crs(crs))
 
-   grid <- grid(shape, resolution = resolution)
-   all_bbox <- lapply(grid, format_bbox_wms)
-   width_height <- nb_pixel_bbox(grid[[1]], resolution = resolution)
-   urls <- construct_urls(apikey, version, format, layer_name, styles, width_height, all_bbox)
-   filename <- construct_filename(format, layer_name, filename, resolution)
+   grid_for_shp <- grid(shape, resolution = resolution, crs = crs)
+   all_bbox <- lapply(X = grid_for_shp, FUN = format_bbox_wms, crs = crs)
+   width_height <- nb_pixel_bbox(grid_for_shp[[1]], resolution = resolution, crs = crs)
+   urls <- construct_urls(apikey, version, format, layer_name, styles, width_height, all_bbox, crs)
+   filename <- construct_filename(filename, resolution, layer_name, format)
 
-   basename <- basename(filename)
-   dirname <- dirname(filename)
-
-   if (basename %in% list.files(dirname)) {
-      raster_final <- read_stars(filename)
-      message(
-         basename,
-         " already exist at :\n",
-         file.path(dirname),
-         "\nPlease change filename argument if you want to download it again."
-      )
+   if (file.exists(filename) && !overwrite) {
+      raster_final <- rast(filename)
+      message("File exists at ", filename," and overwrite is not TRUE.")
    }else{
-      tiles_list <- download_tiles(filename, urls, method, mode)
+      tiles_list <- download_tiles(urls, crs, format)
       raster_final <- combine_tiles(tiles_list, filename)
    }
    return(raster_final)
@@ -154,23 +143,33 @@ get_wms_raster <- function(shape,
 
 #' format bbox to wms url format
 #' @param shape zone of interest of class sf
+#' @param crs see st_crs()
 #' @noRd
-format_bbox_wms <- function(shape = NULL) {
-   bbox <- st_bbox(shape)
-   paste(bbox["ymin"], bbox["xmin"], bbox["ymax"], bbox["xmax"], sep = ",")
+format_bbox_wms <- function(shape, crs) {
+   # The bounding box coordinate values shall be in the units defined for the Layer CRS.
+   # cf : 06-042_OpenGIS_Web_Map_Service_WMS_Implementation_Specification.pdf
+
+   # EPSG:4326 is lat/lon but WMS take long/lat so you have to use st_axis_order  = T
+   # That only if coord are long/lat, else is not working
+
+      bbox <- st_bbox(shape)
+      format_bbox <- paste(bbox["xmin"], bbox["ymin"], bbox["xmax"], bbox["ymax"], sep = ",")
+
+   return(format_bbox)
 }
 
 #' Calculate number of pixel needed from resolution ad bbox
 #' @param shape zone of interest of class sf
 #' @param resolution cell_size in meter
+#' @param crs see st_crs()
 #' @noRd
-nb_pixel_bbox <- function(shape, resolution){
+nb_pixel_bbox <- function(shape, resolution, crs){
    bbox <- st_bbox(shape)
    height <- st_linestring(rbind(c(bbox[1], bbox[2]),
                                  c(bbox[1], bbox[4])))
    width <- st_linestring(rbind(c(bbox[1], bbox[2]),
                                 c(bbox[3], bbox[2])))
-   width_height <- st_length(st_sfc(list(width, height), crs = 4326))
+   width_height <- st_length(st_sfc(list(width, height), crs = st_crs(crs)))
    nb_pixel <- as.numeric(ceiling(width_height/resolution))
    return(nb_pixel)
 }
@@ -178,16 +177,26 @@ nb_pixel_bbox <- function(shape, resolution){
 #' Create optimize grid according max width and height pixel of 2048 from bbox
 #' @param shape zone of interest of class sf
 #' @param resolution cell_size in meter
+#' @param crs see st_crs()
 #' @noRd
-grid <- function(shape, resolution) {
+grid <- function(shape, resolution, crs) {
    # Fix S2 invalid object
+   on.exit(st_axis_order(F))
+
    shape <- st_make_valid(st_set_precision(shape, 1e6))
 
-   nb_pixel_bbox <- nb_pixel_bbox(shape, resolution)
+   nb_pixel_bbox <- nb_pixel_bbox(shape, resolution, crs)
    n_tiles <- as.numeric(ceiling(nb_pixel_bbox/2048))
    grid <- st_make_grid(shape, n = n_tiles) %>%
       st_as_sf() %>%
-      st_filter(shape, .predicate = st_intersects) %>%
+      st_filter(shape, .predicate = st_intersects)
+
+   if(st_is_longlat(st_crs(crs))){
+      st_axis_order(T)
+      grid <- st_transform(grid, "CRS:84")
+   }
+
+   grid <- grid %>%
       st_as_sfc()
 
    invisible(grid)
@@ -201,8 +210,9 @@ grid <- function(shape, resolution) {
 #' @param styles from mother function
 #' @param width_height from width_height function
 #' @param all_bbox from mother format_bbox_wms
+#' @param crs see st_crs()
 #' @noRd
-construct_urls <- function(apikey, version, format, layer_name, styles, width_height, all_bbox) {
+construct_urls <- function(apikey, version, format, layer_name, styles, width_height, all_bbox, crs) {
   base_url <- paste0("https://wxs.ign.fr/",
                      apikey,
                      "/geoportail/r/wms?",
@@ -213,20 +223,17 @@ construct_urls <- function(apikey, version, format, layer_name, styles, width_he
                      "&styles=", styles,
                      "&width=", width_height[1],
                      "&height=", width_height[2],
-                     "&crs=EPSG:4326",
+                     "&crs=", st_crs(crs)$input,
                      "&bbox=")
 
   # construct url and filename
   urls <- paste0(base_url, all_bbox)
 }
 
-#' Create filename
+#' Get ext
 #' @param format from mother function
-#' @param layer_name from mother function
-#' @param filename from mother function
-#' @param resolution from mother function
 #' @noRd
-construct_filename <- function(format, layer_name, filename, resolution) {
+get_extension <- function(format) {
   ext <- switch(
      format,
      "image/jpeg" = ".jpg",
@@ -236,52 +243,70 @@ construct_filename <- function(format, layer_name, filename, resolution) {
      stop("Bad format, please check ",
           "`?get_wms_raster()`")
   )
+}
 
-  clean_names <- function(text){
-     paste0(gsub("[^[:alnum:]]", '_', text),
-            "_",
-            gsub("[^[:alnum:]]", '_',resolution),
-            "m", ext)
-     }
+#' Construct clean filename
+#' @param format from mother function
+#' @noRd
+construct_filename <- function(filename, resolution, layer_name, format) {
 
-  filename <- ifelse(is.null(filename),
-                     clean_names(layer_name),
-                     file.path(dirname(filename), clean_names(basename(filename))))
+   ext <- get_extension(format)
+
+   clean_names <- function(text){
+      paste0(gsub("[^[:alnum:]]", '_',
+                  paste0(text, "_", resolution,"m")),
+             ext)
+   }
+
+   filename <- ifelse(is.null(filename),
+                      clean_names(layer_name),
+                      file.path(dirname(filename), clean_names(basename(filename))))
+
+   filename <- normalizePath(enc2utf8(filename), mustWork = FALSE)
 }
 
 #' Checks if the raster is already downloaded and downloads it if necessary.
 #' Also allows to download several grids
 #' @param filename name of file or connection
 #' @param urls urls from construct_urls
-#' @param method see download.file()
-#' @param mode see download.file()
+#' @param crs see st_crs()
 #' @noRd
 #'
-# if raster_name already exist is directly load in R, else is download
-download_tiles <- function(filename, urls, method, mode) {
+download_tiles <- function(urls, crs, format) {
+
+   # Avoid pb with working pc
+   old_env <- Sys.getenv("GDAL_HTTP_UNSAFESSL")
+   Sys.setenv("GDAL_HTTP_UNSAFESSL" = "YES")
+   on.exit(Sys.setenv("GDAL_HTTP_UNSAFESSL" = old_env), add = TRUE)
+
    # allow 1h of downloading before error
    default <- options("timeout")
    options("timeout" = 3600)
    on.exit(options(default))
 
-   basename <- basename(filename)
-   dirname <- dirname(filename)
 
-   tiles_list <- list()
+   ext <- get_extension(format)
+
+   tiles_list <- NULL
    for (i in seq_along(urls)) {
-      message(i, "/", length(urls), " downloaded", sep = "")
+      message(i, "/", length(urls), " downloading...", sep = "")
 
-      filename_tile <- paste0("tile", i, "_", basename)
-      path <- normalizePath(file.path(dirname, filename_tile), mustWork = FALSE)
-      path <- enc2utf8(path)
+      # download.file(url = urls[i],
+      #               method = method,
+      #               mode = mode,
+      #               destfile = tmpfile)
 
-      download.file(url = urls[i],
-                    method = method,
-                    mode = mode,
-                    destfile = path)
+      tmp <- tempfile(fileext = ext)
 
-      tiles_list[[i]] <- read_stars(path, quiet = TRUE)
+      gdal_utils(
+         util = "translate",
+         source = urls[i],
+         destination = tmp,
+         options = c("-a_srs", st_crs(crs)$input))
+
+      tiles_list <- c(tiles_list, tmp)
    }
+
    return(tiles_list)
 }
 
@@ -291,23 +316,27 @@ download_tiles <- function(filename, urls, method, mode) {
 #' @noRd
 #'
 combine_tiles <- function(tiles_list, filename) {
-   raster_final <- lapply(X = tiles_list,
-                          FUN = st_warp,
-                          crs =  st_crs(4326))
 
-   raster_final <- do.call("st_mosaic", raster_final)
+   # Another way of acheving the same goal
+   # tmp <- tempfile(fileext = ".vrt")
+   #
+   # gdal_utils(
+   #    util = "buildvrt",
+   #    source = unlist(tiles_list),
+   #    destination = tmp)
+   #
+   # gdal_utils(
+   #    util = "translate",
+   #    source = tmp,
+   #    destination = filename)
 
-   file.remove(
-      enc2utf8(
-         normalizePath(
-            file.path(
-               dirname(filename),
-               paste0("tile", seq_along(tiles_list),
-                      "_", basename(filename)))
-            )
-      )
-   )
+   writeRaster(vrt(tiles_list, overwrite = TRUE), filename, overwrite = TRUE)
+   rast <- rast(filename)
 
-   write_stars(raster_final, filename)
+   message("Raster is saved at :\n",
+           filename)
+
+   return(rast)
+
 }
 

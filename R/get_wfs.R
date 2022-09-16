@@ -30,8 +30,6 @@
 #' @importFrom sf read_sf st_bbox st_make_valid st_transform st_write st_sf st_point
 #' @importFrom httr2 req_perform req_url_path_append req_url_query req_user_agent
 #' request resp_body_json resp_body_string
-#' @importFrom dplyr bind_rows select
-#' @importFrom magrittr `%>%`
 #' @importFrom checkmate assert assert_double assert_character check_character
 #' check_class check_null
 #'
@@ -99,7 +97,7 @@ get_wfs <- function(shape,
 
    if (request_need != 0) {
       list_features <- lapply(seq_len(request_need),
-                              \(x) {
+                              function(x) {
                                  features <- req_function(
                                               apikey,
                                               shape,
@@ -110,11 +108,12 @@ get_wfs <- function(shape,
                                  message(x + 1, "/", request_need + 1, " downloaded")
                                  return(features)
                               })
-      features <- bind_rows(features, list_features)
+      list_features <-  do.call("rbind", list_features)
+      features <- rbind(features, list_features)
    }
 
    if ("bbox" %in% names(features)){
-      features <- select(features, -"bbox")
+      features <- features[ , - which(names(features) %in% "bbox")]
    }
 
    if (!is.null(filename)) {

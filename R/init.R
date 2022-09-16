@@ -1,8 +1,7 @@
 #' @importFrom curl has_internet
 #' @importFrom httr2 request req_perform resp_body_xml resp_is_error req_options
-#' @importFrom dplyr bind_rows
-#' @importFrom magrittr `%>%`
 #' @importFrom xml2 read_xml as_list xml_find_all
+#' @importFrom magrittr `%>%`
 #'
 #' @export
 #'
@@ -26,17 +25,16 @@
                                    "<https://geoservices.ign.fr/actualites>."))
    }else{
       req <- req %>%
-         resp_body_xml() %>%
+         resp_body_xml(check_type = FALSE) %>%
          xml_find_all("//item") %>%
-         as_list() %>%
-         bind_rows()
+         as_list()
 
       last_actu <- paste0("Last news from IGN website : ",
                           "\"",
-                          unlist(req[1,1]),
+                          req[[1]][["title"]][[1]],
                           "\"",
-                          " on ", substring(unlist(req[1, 2]), 39, 48),
-                          " (", unlist(req[1, 2]), ")\n")
+                          " on ", substring(req[[1]][["pubDate"]][[1]], 39, 48),
+                          " (", req[[1]][["link"]][[1]], ")\n")
    }
 
    resp <- request("http://geoservices.ign.fr/") %>%

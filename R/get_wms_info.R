@@ -23,7 +23,6 @@
 #' @importFrom httr2 request req_perform resp_body_xml req_url_path_append
 #' req_user_agent req_url_query
 #' @importFrom sf st_bbox
-#' @importFrom dplyr bind_rows
 #' @importFrom xml2 xml_child xml_find_all xml_has_attr as_list
 #' @importFrom checkmate assert check_class assert_character
 #'
@@ -92,7 +91,7 @@ get_wms_info <- function(shape,
 
    res <- request[!grepl("geom", names(request))] %>%
       unlist() %>%
-      bind_rows()
+      rbind()
 
 }
 #' Check if a wms layer is queryable with GetFeatureInfo
