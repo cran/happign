@@ -1,12 +1,16 @@
 #' Retrieve additional information for wms layer
 #'
+#' For some wms layer more information can be found with GetFeatureInfo request.
+#' This function first check if info are available. If not, available layers
+#' are returned.
+#'
 #' #' @usage
 #' get_wms_info(shape,
 #'              apikey = "ortho",
 #'              layer_name = "ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO",
 #'              version = "1.3.0"
 #'
-#' @param shape Object of class `sf`. Needs to be located in
+#' @param shape Object of class `sf` or `sfc`. Needs to be located in
 #' France.
 #' @param apikey API key from `get_apikeys()` or directly
 #' from [IGN website](https://geoservices.ign.fr/services-web-experts)
@@ -16,15 +20,19 @@
 #' @param version The version of the service used. More details at
 #' [IGN documentation](https://geoservices.ign.fr/documentation/services/api-et-services-ogc/images-wms-ogc)
 #'
-#' @return data.frame containing additional information from the layer
+#' @return character containing additional information from the layer
 #'
 #' @export
 #'
 #' @importFrom httr2 request req_perform resp_body_xml req_url_path_append
 #' req_user_agent req_url_query
-#' @importFrom sf st_bbox
+#' @importFrom sf st_bbox st_centroid st_buffer
 #' @importFrom xml2 xml_child xml_find_all xml_has_attr as_list
 #' @importFrom checkmate assert check_class assert_character
+#'
+#' @details
+#' The function use the centroid of the shape to return info because sometime
+#' there's multiple tile.
 #'
 #' @examples
 #' \dontrun{
@@ -40,7 +48,7 @@
 #'
 #' wms_info <- get_wms_info(shape, "ortho", "ORTHOIMAGERY.ORTHOPHOTOS")
 #'
-#' date_vol <- wms_info$date_vol
+#' wms_info
 #'
 #' }
 get_wms_info <- function(shape,
@@ -62,6 +70,14 @@ get_wms_info <- function(shape,
            " layers.")
    }
 
+   # Another version needed to have point to be working good, for the moment
+   # shape seems okay
+   # shape <- suppressWarnings(st_centroid(shape)) %>%
+   #    st_transform(4326) %>%
+   #    st_transform(2154) %>%
+   #    st_buffer(10) %>%
+   #    st_transform(4326)
+
    bbox <- st_bbox(shape)
    bbox <- paste(bbox["ymin"], bbox["xmin"], bbox["ymax"], bbox["xmax"], sep = ",")
 
@@ -76,8 +92,8 @@ get_wms_info <- function(shape,
                     query_layers = layer_name,
                     layers = layer_name,
                     styles = "",
-                    width = 1,
-                    height = 1,
+                    width = 10,
+                    height = 10,
                     crs = "EPSG:4326",
                     bbox = bbox,
                     I = 1,
@@ -134,5 +150,4 @@ are_queryable <- function(apikey){
    queryable_layers_names <- queryable_layers[grep("Name", names(queryable_layers))] %>%
       unlist()
 }
-
 

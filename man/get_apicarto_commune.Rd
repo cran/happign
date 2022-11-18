@@ -5,7 +5,7 @@
 \title{Apicarto Commune}
 \usage{
 get_apicarto_commune(x,
-                     source_ign = "PCI")
+                     source = "PCI")
 }
 \arguments{
 \item{x}{It can be a shape, insee code or departement code.
@@ -15,7 +15,7 @@ get_apicarto_commune(x,
 from France can be retrieved by running \code{data(cog_2022)}
 }}
 
-\item{source_ign}{Can be "BDP" for BD Parcellaire or "PCI" for Parcellaire
+\item{source}{Can be "BDP" for BD Parcellaire or "PCI" for Parcellaire
 express. The BD Parcellaire is a discontinued product. Its use is no longer
 recommended because it is no longer updated. The use of PCI Express is
 strongly recommended and will become mandatory. More information on the
@@ -27,14 +27,14 @@ comparison of this two products can be found
 }
 \description{
 Implementation of the cadastre module of the
-\href{https://apicarto.ign.fr/api/doc/cadastre}{IGN's apicarto}
+\href{https://apicarto.ign.fr/api/doc/cadastre}{IGN's apicarto} for commune borders
 }
 \examples{
 \dontrun{
 library(sf)
 library(tmap)
 
-# line from the best town in France
+# Using shape
 line <- st_linestring(matrix(c(-4.372215, -4.365177, 47.803943, 47.79772),
                              ncol = 2))
 line <- st_sfc(line, crs = st_crs(4326))
@@ -46,12 +46,22 @@ tm_shape(commune)+
 tm_shape(line)+
    tm_lines(col = "red", lwd = 2)
 
-# code_insee of the best town in France
+# Using code_insee
 commune <- get_apicarto_commune("29158")
 
 tm_shape(commune)+
    tm_borders()+
    tm_text("nom_com")
 
+# Get multiple communes borders
+
+input <- list(line, "29171")
+borders <- lapply(input, get_apicarto_commune, source = "PCI")
+borders <- do.call(rbind, borders)
+
+tm_shape(borders)+
+   tm_borders()+
+   tm_text("nom_com")
 }
+
 }

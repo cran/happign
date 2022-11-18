@@ -1,29 +1,29 @@
-53ac07102407ac20f138a6064f5baef2 *DESCRIPTION
-87c0b716095d5c55fd59649c41a26508 *NAMESPACE
-b0ef2dcb53c2f0ae357a581c03de7b33 *NEWS.md
-f818680a4ba64b2b9dc1c65a6c1af4a8 *R/data.R
-8975174e4c72cdaf8c7eee704855b2ba *R/get_apicarto_cadastre.R
-2bb309c846987ed42609dd9ce55e337f *R/get_apicarto_commune.R
-a981522db408747897c8f12288d729e1 *R/get_apicarto_plu.R
+b102d1d38773e4693ec78dbbf9631df5 *DESCRIPTION
+4d782d1a3f9be5dbef8709194ea298ec *NAMESPACE
+6112e0738120806de40988fc4634d71f *NEWS.md
+51e162712a456daa6aa814417b1c210f *R/check_input.R
+71b119a72423b70c1387b7bd913bee05 *R/data.R
+d17d2a58c72d855b1c0ab6ebbb99933c *R/get_apicarto_cadastre.R
+b669d8891199ec2fcc53090d187b2f5d *R/get_apicarto_commune.R
+1522ed8cb4b1b2bb580537fdf298978f *R/get_apicarto_gpu.R
 c152eeeafcbe67db2356b2545b8a70b7 *R/get_apikeys.R
-37aa696cac49a5bf0071075ab2e2faf2 *R/get_layers_metadata.R
-c5c44415a71daf8c68debb119b764845 *R/get_raw_lidar.R
-c2f711bdfdd2edd7255db446af3c4964 *R/get_wfs.R
-3bebcf4677e566439a1e3ce035c99226 *R/get_wms_info.R
-c973ab01ef6a3fcad3508370ace80cf6 *R/get_wms_raster.R
-aa520a2f8ca9befa443ca764ddebf39f *R/init.R
-c3d3d6ac1fd2ad3d8e09c75c082f3fae *R/utils.R
-06196d0ee1ffb2719ce8ebb3250ba4d9 *README.md
-64b71b21de37ffb18914b7be83ee85be *build/vignette.rds
+3b996fd5bc4c8c86d4fcca1bb4bbe8ce *R/get_last_news.R
+2753b29b188c1cf71cb62d97f614abe1 *R/get_layers_metadata.R
+bc438ee935f995d2cd9828cf242982b3 *R/get_raw_lidar.R
+3a202509f5b81fee4ef6300f040466fd *R/get_wfs.R
+0b6ed58d653e9d5443956436d1795e4f *R/get_wms_info.R
+35a82042dee8d8ed5c6d31e7a995b009 *R/get_wms_raster.R
+074c930d9fa822953a0e8b6399aa06f9 *R/init.R
+7de9fe3e5f5635dcfadbd7c7b8dc3c76 *README.md
+7e540be8c010e85310f061ba55e88b46 *build/vignette.rds
 a329021b9565df6d36a8f070b4630ed4 *data/cog_2022.rda
-f630f054dea060f8da23cffb7bfb1d62 *inst/doc/Getting_started.R
-2603b23449563ba839b186d7317f0512 *inst/doc/Getting_started.Rmd
-8c388afca926b00c4a6bd82ef21cfce5 *inst/doc/Getting_started.html
+ce7e50dbadb63318f28c4b868bf1ef09 *inst/doc/Getting_started.Rmd
+ea3be3d1963806498fcd739d9f665552 *inst/doc/Getting_started.html
 9ecea22b5f0b63e4940cac2629aa47e1 *inst/doc/SCAN_25_SCAN_100_SCAN_OACI.R
-0bf46bf5b48d3a980a258f54a737b534 *inst/doc/SCAN_25_SCAN_100_SCAN_OACI.Rmd
-dba629c0f2677cc7afbd69666be3cc47 *inst/doc/SCAN_25_SCAN_100_SCAN_OACI.html
+a6505b2d225490c5cf6db6d6dccbbd3d *inst/doc/SCAN_25_SCAN_100_SCAN_OACI.Rmd
+7f731121e8846bdadd0dcfa8c491583c *inst/doc/SCAN_25_SCAN_100_SCAN_OACI.html
 b81a42e90c1757810384c4690db3f773 *man/are_queryable.Rd
-427194fd82036136bb880fd6482d6265 *man/cog_2022.Rd
+a5ab40be8b5114e4f9efed7c59a98c6b *man/cog_2022.Rd
 502a5f8dd6ba90060101596366cb7d58 *man/figures/README-pressure-1.png
 cb1e46f469cfbbbde29c8b5113e1d789 *man/figures/lifecycle-archived.svg
 c0d2e5a54f1fa4ff02bf9533079dd1f7 *man/figures/lifecycle-defunct.svg
@@ -35,49 +35,54 @@ c3978703d8f40f2679795335715e98f4 *man/figures/lifecycle-experimental.svg
 1c1fe7a759b86dc6dbcbe7797ab8246c *man/figures/lifecycle-superseded.svg
 e08f932540cb5536c4f000d95c5a1b3a *man/figures/logo.png
 98fe2020e1b9a3644838f76ce2170476 *man/get_apicarto_cadastre.Rd
-e12014da8505819e43eadcf840e51c24 *man/get_apicarto_commune.Rd
-2a85ceefc1f344be7e85461d6c1ec0f4 *man/get_apicarto_plu.Rd
+88dcd69cec8165e838c68e6016a8b8eb *man/get_apicarto_commune.Rd
+bcf093fff15860540ceaaaab8bc1e857 *man/get_apicarto_gpu.Rd
 8cb88a5920f78c95eab3ca22d614f1b4 *man/get_apikeys.Rd
-f460238ea4552b44a0e027d520515901 *man/get_layers_metadata.Rd
-db4e92df1c213f29830cba8467b0af6a *man/get_raw_lidar.Rd
-f5c8081d62910e98ddf707c1fdfa221e *man/get_wfs.Rd
-7e504a01d95b8ddb577a4a5e8309e56a *man/get_wms_info.Rd
-4b12c841a02e1c16a4173091078386e1 *man/get_wms_raster.Rd
-6a6244db13be54c448ba9b1505d8c4c8 *man/shp_to_geojson.Rd
+b71c97be609e3a0022548bb6e4a03283 *man/get_last_news.Rd
+48961b0537df13099a15959d0800f675 *man/get_layers_metadata.Rd
+0eebf0e752cfb46fcf97e3e0f27a1ba6 *man/get_raw_lidar.Rd
+91ac35accbf4ed62f3dceb7e34ebcc21 *man/get_wfs.Rd
+16e831d105e274548e65d3ab51182575 *man/get_wms_info.Rd
+60730ad0d3c56f53d236b6f89657a835 *man/get_wms_raster.Rd
 3439d70e55851a6c32f5404b7077fd20 *tests/testthat.R
-44ac96cc2c0f33ce5bc359994dd6ab31 *tests/testthat/are_queryable works/wxs.ign.fr/administratif/geoportail/r/wms-21553a.R
-ff67c588249156cc66e07e1f5fcc86b1 *tests/testthat/get_api_cadastre char/apicarto.ign.fr/api/cadastre/parcelle-8c2e01.R
-dcc04884310cebdb15d5326da7f7515a *tests/testthat/get_api_cadastre char/apicarto.ign.fr/api/cadastre/parcelle-915579.R
-55e78b149e5591c0eaf7ab69bab29ff3 *tests/testthat/get_apicarto_cadastre sf/apicarto.ign.fr/api/cadastre/parcelle-0c0796.R
-9e8b37f881e793b908ea3fe8084fb343 *tests/testthat/get_apicarto_cadastre sf/apicarto.ign.fr/api/cadastre/parcelle-c741cd.R
-8c3213e3aec04e30d4835a90cdc3f14b *tests/testthat/get_apicarto_cadastre sfc/apicarto.ign.fr/api/cadastre/parcelle-0c0796.R
-0b56cf408f1b0093773fc942bd85d71e *tests/testthat/get_apicarto_cadastre sfc/apicarto.ign.fr/api/cadastre/parcelle-c741cd.R
-6a4408c76f74bb6b99daae03be76607a *tests/testthat/get_apicarto_gpu geom/apicarto.ign.fr/api/gpu/zone-urba-04fd99.R
-42194016902fb35c8ecdb9d1eda5bef0 *tests/testthat/get_apicarto_gpu partition/apicarto.ign.fr/api/gpu/zone-urba-8f23f7.R
-528bbb5ed93f1d2f2404e9ea01410985 *tests/testthat/get_apicarto_plu geom/apicarto.ign.fr/api/gpu/zone-urba-04fd99.R
-dc27fd49876f27d68b7dd3be8500e7e8 *tests/testthat/get_apicarto_plu partition/apicarto.ign.fr/api/gpu/zone-urba-8f23f7.R
-8340572039b8ca91d9b3c30c9b7f62e4 *tests/testthat/get_layers_metada_wfs/wxs.ign.fr/altimetrie/geoportail/wfs-98a337.xml
-eda48611b58ee74ca26c1a385c254a79 *tests/testthat/get_layers_metada_wms/wxs.ign.fr/ortho/geoportail/r/wms-e4543b.R
-537750594187724d4cf95131add214f6 *tests/testthat/get_wfs simple request/wxs.ign.fr/cartovecto/geoportail/wfs-82489c.R
-e5becd26ce9e22496fac28b9ea6ebbcf *tests/testthat/get_wms_info return error/wxs.ign.fr/ortho/geoportail/r/wms-21553a.R
-661081d400885b5991d8dd0911051f51 *tests/testthat/get_wms_info works/wxs.ign.fr/ortho/geoportail/r/wms-21553a.R
-5449f2d68ccf8fc3373b6fb10c04b0fc *tests/testthat/get_wms_info works/wxs.ign.fr/ortho/geoportail/r/wms-f7cc3b.R
-2eb9f3c92e03e30012cb44316c413352 *tests/testthat/on_attach/geoservices.ign.fr.R
-7a5d28ebf52eedaafc0c1d778a56541b *tests/testthat/on_attach/geoservices.ign.fr/actualites/rss.xml.R
-f28b204388815ce0e580f277e07fa81d *tests/testthat/on_attach_error/geoservices.ign.fr.R
-d62ee2a36b6e897088294514e18b9c13 *tests/testthat/on_attach_error/geoservices.ign.fr/actualites/rss.xml.R
-e884b1fc95f440a1012f2e504ae077f7 *tests/testthat/req_function perform request/wxs.ign.fr/parcellaire/geoportail/wfs-5cbaea.R
+9a5c4037463c7bc540b7c08b699cb44c *tests/testthat/are_queryable works/wxs.ign.fr/administratif/geoportail/r/wms-21553a.R
+8d5b89490ebf9d85a616efccbdad19a0 *tests/testthat/get_api_cadastre char/apicarto.ign.fr/api/cadastre/parcelle-8c2e01.R
+ff7014a94a0a0cb5085cb9df4c974815 *tests/testthat/get_api_cadastre char/apicarto.ign.fr/api/cadastre/parcelle-915579.R
+846623c839c35b1523f85bb9281c1681 *tests/testthat/get_apicarto_cadastre sf/apicarto.ign.fr/api/cadastre/parcelle-0c0796.R
+910366e192b9e7625a3b38cda0e53bde *tests/testthat/get_apicarto_cadastre sf/apicarto.ign.fr/api/cadastre/parcelle-c741cd.R
+e8a947779c773232b664fa4f45178d4c *tests/testthat/get_apicarto_cadastre sfc/apicarto.ign.fr/api/cadastre/parcelle-0c0796.R
+e75a02431be3ef576e07d347dde60978 *tests/testthat/get_apicarto_cadastre sfc/apicarto.ign.fr/api/cadastre/parcelle-c741cd.R
+a85f6ec5505f54000fcb49359a6871fd *tests/testthat/get_apicarto_commune_1/apicarto.ign.fr/api/cadastre/commune-b02705.R
+5f02cb0ce134ce39f612249c7b1142dc *tests/testthat/get_apicarto_commune_2/apicarto.ign.fr/api/cadastre/commune-5072af.R
+9fb5fabde88c40e45624cba069e27168 *tests/testthat/get_apicarto_commune_4/apicarto.ign.fr/api/cadastre/commune-49e080.R
+991ab55fd06768096e10940d7e6c4bff *tests/testthat/get_apicarto_gpu geom/apicarto.ign.fr/api/gpu/zone-urba-41ed1c.R
+eb845c61347dcb46b3784791db006726 *tests/testthat/get_apicarto_gpu partition/apicarto.ign.fr/api/gpu/zone-urba-8f23f7.R
+4f23724993c0a72e89666bd8ac3eea21 *tests/testthat/get_last_news/geoservices.ign.fr/actualites/rss.xml.R
+70f317732beada2eac47f623d1aa6871 *tests/testthat/get_layers_metada_wfs/wxs.ign.fr/altimetrie/geoportail/wfs-ae6f0d.xml
+f01597bbc2e956f8ae62ff96049c1f58 *tests/testthat/get_layers_metada_wms/wxs.ign.fr/ortho/geoportail/r/wms-d98bfb.R
+e09c78f4f647911d2e3c5f52b4b30a3d *tests/testthat/get_wfs simple request/wxs.ign.fr/cartovecto/geoportail/wfs-82489c.R
+df6bd3d9ecb8c93f19591dc3026794a8 *tests/testthat/get_wms_info return error/wxs.ign.fr/ortho/geoportail/r/wms-21553a.R
+2fd459a43a52491d44102715f9198dea *tests/testthat/get_wms_info works/wxs.ign.fr/ortho/geoportail/r/wms-21553a.R
+e4546c870ec2ca6941e7438579b1d8e2 *tests/testthat/get_wms_info works/wxs.ign.fr/ortho/geoportail/r/wms-a11dce.R
+d0e8a0c734effeb13c414f72f0160300 *tests/testthat/hit_api_wfs perform request/wxs.ign.fr/parcellaire/geoportail/wfs-5cbaea.R
 cc0f5247f26cfbfaf23c865c5281ee05 *tests/testthat/setup.R
-9de04f054a704db7a6422aab4037d4db *tests/testthat/test-get_apicarto_cadastre.R
-96d4c20f331e58957f1b1e12bddb9683 *tests/testthat/test-get_apicarto_gpu.R
+7ca62d70f4a1487f5a879c8a6988fec4 *tests/testthat/test-check_input.R
+86b9ac622078646be16eac3b61979c30 *tests/testthat/test-get_apicarto_cadastre.R
+b8e5f78beae11a22bf239bd6ca4b5b17 *tests/testthat/test-get_apicarto_commune.R
+15cf0a6fb78dd6df1f7ee1d3df9566f9 *tests/testthat/test-get_apicarto_gpu.R
 06258449f940cf7226473b82c38d9ab8 *tests/testthat/test-get_apikeys.R
-fb1e0edf44a858cc1182c6308bad2904 *tests/testthat/test-get_layers_metadata.R
-32da0fc19df51b30c1dbda8284d8a93f *tests/testthat/test-get_wfs.R
-e0d12570f7ba63ddd3e9472a2db7a0fe *tests/testthat/test-get_wms_info.R
-7c5a1928cebaf35240558f00e57eb40d *tests/testthat/test-get_wms_raster.R
-ba48b3a694c5a4d2daf31dd36237e97a *tests/testthat/test-init.R
-206eebc0bf3651851259070fcb2b1dc5 *tests/testthat/test-utils.R
-2603b23449563ba839b186d7317f0512 *vignettes/Getting_started.Rmd
-0bf46bf5b48d3a980a258f54a737b534 *vignettes/SCAN_25_SCAN_100_SCAN_OACI.Rmd
-bdb6b64a377770c6b2c90ef19fe274cd *vignettes/web_only/happign_for_foresters.Rmd
-e3172bbcd018ba42cbd5ce270a5bb7d6 *vignettes/web_only/resolution_for_raster.Rmd
+1226bab1d8fec38644698f4b025af496 *tests/testthat/test-get_last_news.R
+2090ac94e9bceb3203817a2bc8dd2db2 *tests/testthat/test-get_layers_metadata.R
+de259331d10cb4fa3eb0422e8c7fd3d1 *tests/testthat/test-get_wfs.R
+f5d69353721a5982a6bbef0f23b41a55 *tests/testthat/test-get_wms_info.R
+6ea4281f479c4abe5139c14ab28d1cac *tests/testthat/test-get_wms_raster.R
+359291a1523b5f2407bbbc797f1d7b25 *tests/testthat/test-init.R
+0d173bd41a70f796170a09836ec361ab *vignettes/Getting_started-unnamed-chunk-5-1.png
+9b9b8c0a275d4cc28ee1e255b6689ffc *vignettes/Getting_started-unnamed-chunk-6-1.png
+c73d7eefdfaff5f9b19ad4f7a3b64c60 *vignettes/Getting_started-unnamed-chunk-7-1.png
+ce7e50dbadb63318f28c4b868bf1ef09 *vignettes/Getting_started.Rmd
+ac5a5da30e8ce348d7fa98f857510e85 *vignettes/Getting_started.Rmd.orig
+a6505b2d225490c5cf6db6d6dccbbd3d *vignettes/SCAN_25_SCAN_100_SCAN_OACI.Rmd
+35ce996a58c61c9a1e90bb0827173146 *vignettes/precompile.R
+f4e45f76c44523cc7877bdc626bb1e8f *vignettes/web_only/happign_for_foresters.Rmd
+14d6dc60359f55a131f4b3db8a0af852 *vignettes/web_only/resolution_for_raster.Rmd

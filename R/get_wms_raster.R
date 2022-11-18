@@ -1,84 +1,76 @@
 #' Download WMS raster layer
 #'
-#' Directly download a raster layer from the French National Institute
-#' of Geographic and Forestry. To do that, it need a location giving by
-#' a shapefile, an apikey and the name of layer. You can find those
-#' information from
+#' Download a raster layer from IGN Web Mapping Services (WMS).
+#' To do that, it need a location giving by a shape, an apikey
+#' and the name of layer. You can find those information from
 #' [IGN website](https://geoservices.ign.fr/services-web-experts)
+#' or with `get_apikeys()` and `get_layers_metadata()`.
 #'
 #' @usage
 #' get_wms_raster(shape,
 #'                apikey = "altimetrie",
 #'                layer_name = "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES",
 #'                resolution = 5,
-#'                filename = NULL,
+#'                filename = tempfile(fileext = ".tif"),
 #'                crs = 2154,
 #'                overwrite = FALSE,
 #'                version = "1.3.0",
-#'                format = "image/geotiff",
-#'                styles = "")
+#'                styles = "",
+#'                interactive = FALSE)
 #'
 #' @param shape Object of class `sf`. Needs to be located in
 #' France.
 #' @param apikey API key from `get_apikeys()` or directly
-#' from [IGN website](https://geoservices.ign.fr/services-web-experts)
+#' from [IGN website](https://geoservices.ign.fr/services-web-experts).
 #' @param layer_name Name of the layer from `get_layers_metadata(apikey, "wms")`
 #' or directly from
-#' [IGN website](https://geoservices.ign.fr/services-web-experts)
-#' @param resolution Cell size in meter. WMS are limited to 2048x2048 pixels so
-#' depending of the shape and the resolution, correct number and size of tiles
-#' is calculated. See detail for more information about resolution.
-#' @param filename Either a character string naming a file or a connection open
-#' for writing. (ex : "test" or "~/test"). The resolution is automatically
-#' added to the filename. If raster with same name is already downloaded it
-#' is directly imported into R. You don't have to specify the extension because
-#' it is defined in the argument `format`.
-#' @param crs Numeric, character, or object of class sf or sfc. Is set to EPSG:4326
+#' [IGN website](https://geoservices.ign.fr/services-web-experts).
+#' @param resolution Cell size in meter. See detail for more information about resolution.
+#' @param crs Numeric, character, or object of class sf or sfc. It is set to EPSG:2154
 #' by default. See [sf::st_crs()] for more detail.
-#' @param overwrite If TRUE, output raster is overwrite
+#' @param filename Either a character string naming a file or a connection open
+#' for writing. (ex : "test.tif" or "~/test.tif"). If `NULL`, layer_name is used.
+#' Default drivers is ".tif" but all gdal drivers are supported, see details
+#' for more info. To avoid re-downloads, `get_wms raster` checks that there is
+#' not already a raster with that name. If it does, it is imported into R without
+#' further downloading if `overwrite` is set to FALSE.
+#' @param overwrite If TRUE, output raster is overwrite.
 #' @param version The version of the service used. See detail for more
 #' information about `version`.
-#' @param format The output format of the image file. Set
-#' to geotiff by default. See detail for more information about `format`.
 #' @param styles The rendering style of the layers. Set to "" by default.
 #'  See detail for more information about `styles`.
+#' @param interactive If set to TRUE, no need to specify `apikey` and `layer_name`,
+#' you'll be ask.
 #'
 #' @return
-#' `get_wms_raster` return an object of class `stars`. Depending on the layer,
-#' this can be a simple raster (2 dimensions and 1 attribute) or an RGB
-#' raster (3 dimensions and 1 attribute).
+#' `get_wms_raster` return an object of class `SpatRaster` from `terra` package.
 #'
 #' @details
-#' * Setting the `resolution` parameter higher than the base resolution
+#' * Raster tile are limited to 2048x2048 pixels so depending of the shape
+#' and the resolution, correct number of tiles to download is calculated.
+#' This mean that setting the `resolution` argument higher than the base resolution
 #' of the layer multiplies the number of pixels without increasing
 #' the precision. For example, the download of the BD Alti layer from
 #' IGN will be optimal for a resolution of 25m.
-#' * `version`, `format` and `styles` parameters are detailed on
+#' * `version` and `styles` arguments are detailed on
 #' [IGN documentation](https://geoservices.ign.fr/documentation/services/api-et-services-ogc/images-wms-ogc)
-#'
+#' * Using the `crs` argument avoids post-reprojection which can be time consuming
+#' * All GDAL supported drivers can be found [here](https://gdal.org/drivers/raster/index.html)
 #' @export
 #'
-#' @importFrom terra vrt writeRaster rast
+#' @importFrom terra rast vrt writeRaster
 #' @importFrom sf gdal_utils st_as_sf st_as_sfc st_axis_order st_bbox st_crs
 #' st_filter st_is_longlat st_length st_linestring st_make_grid
-#' st_make_valid st_set_precision st_sfc st_intersects
-#' @importFrom utils download.file
-#' @importFrom checkmate assert check_class assert_character assert_numeric
-#' check_character check_null
+#' st_make_valid st_set_precision st_sfc st_intersects st_transform
+#' @importFrom utils menu
 #'
 #' @seealso
-#' [get_apikeys()], [get_layers_metadata()], [download.file()]
+#' [get_apikeys()], [get_layers_metadata()]
 #'
 #' @examples
 #' \dontrun{
 #' library(sf)
-#' library(stars)
 #' library(tmap)
-#'
-#' apikey <- get_apikeys()[4]
-#'
-#' metadata_table <- get_layers_metadata(apikey, "wms")
-#' layer_name <- as.character(metadata_table[2,2])
 #'
 #' # shape from the best town in France
 #' shape <- st_polygon(list(matrix(c(-4.373937, 47.79859,
@@ -89,13 +81,21 @@
 #'                                  ncol = 2, byrow = TRUE)))
 #' shape <- st_sfc(shape, crs = st_crs(4326))
 #'
+#' # For quick testing, use interactive = TRUE
+#' raster <- get_wms_raster(shape = shape, interactive = TRUE, filename = tempfile())
+#'
+#' # For specific use, choose apikey with get_apikey() and layer_name with get_layers_metadata()
+#' apikey <- get_apikeys()[4]  # altimetrie
+#' metadata_table <- get_layers_metadata(apikey, "wms") # all layers for altimetrie wms
+#' layer_name <- as.character(metadata_table[2,1]) # ELEVATION.ELEVATIONGRIDCOVERAGE
+#'
 #' # Downloading digital elevation model from IGN
-#' mnt <- get_wms_raster(shape, apikey, layer_name, resolution = 25, filename = "raster_name")
-#' file.remove("raster_name_25m.tif") # Don't want to keep raster on disk
+#' mnt <- get_wms_raster(shape, apikey, layer_name, resolution = 25, filename = tempfile())
+#'
+#' # Preparing raster for plotting
 #' mnt[mnt < 0] <- NA # remove negative values in case of singularity
 #' names(mnt) <- "Elevation [m]" # Rename raster ie the title legend
 #'
-#' # Verif
 #' qtm(mnt)+
 #' qtm(shape, fill = NULL, borders.lwd = 3)
 #'}
@@ -103,68 +103,69 @@ get_wms_raster <- function(shape,
                            apikey = "altimetrie",
                            layer_name = "ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES",
                            resolution = 5,
-                           filename = NULL,
+                           filename = tempfile(fileext = ".tif"),
                            crs = 2154,
                            overwrite = FALSE,
                            version = "1.3.0",
-                           format = "image/geotiff",
-                           styles = "") {
+                           styles = "",
+                           interactive = FALSE) {
 
-   # Check input class
-   assert(check_class(shape, "sf"),
-          check_class(shape, "sfc"))
-   assert_character(apikey)
-   assert_character(layer_name)
-   assert_numeric(resolution)
-   assert(check_character(filename),
-          check_null(filename))
-   assert_character(version)
-   assert_character(format)
-   assert_character(styles)
+   # if TRUE rewrite apikey and layer_name with interactive session
+   if (interactive){
+      apikeys <- get_apikeys()
+      apikey <- apikeys[menu(apikeys)]
 
+      layers <- get_layers_metadata(apikey, data_type = "wms")$Name
+      layer_name <- layers[menu(layers)]
+   }
+
+   # check input in another function for readability
+   check_get_wms_raster_input(shape, apikey, layer_name, resolution, filename, crs,
+                              overwrite, version, styles, interactive)
+
+   # ensure consistency between the shape's coordinates and those requested
    shape <- st_make_valid(shape) %>%
       st_transform(st_crs(crs))
 
-   grid_for_shp <- grid(shape, resolution = resolution, crs = crs)
-   all_bbox <- lapply(X = grid_for_shp, FUN = format_bbox_wms, crs = crs)
-   width_height <- nb_pixel_bbox(grid_for_shp[[1]], resolution = resolution, crs = crs)
-   urls <- construct_urls(apikey, version, format, layer_name, styles, width_height, all_bbox, crs)
-   filename <- construct_filename(filename, resolution, layer_name, format)
+   # create needed grid because of 2048 pixel restriction
+   grid_for_shp <- grid(shape,
+                        resolution,
+                        crs)
 
+   # create urls
+   urls <- construct_urls(grid_for_shp,
+                         apikey,
+                         version,
+                         layer_name,
+                         styles,
+                         crs,
+                         resolution)
+
+   # if no filename is provide, layername is used by replacing non alphanum character
+   if (is.null(filename)){
+      filename <- gsub("[^[:alnum:]]", "_", layer_name)
+      filename <- paste0(filename, ".tif") # Save as geotiff by default
+   }
+
+   # if filename exist and overwrite is set to FALSE, raster is imported
    if (file.exists(filename) && !overwrite) {
       raster_final <- rast(filename)
-      message("File exists at ", filename," and overwrite is not TRUE.")
+      message("File exists at ", filename," and overwrite is set to FALSE.")
+   # if it's not the case download is done
    }else{
-      tiles_list <- download_tiles(urls, crs, format)
-      raster_final <- combine_tiles(tiles_list, filename)
+      tiles_list <- download_tiles(urls, crs)
+      raster_final <- combine_tiles(tiles_list, filename, apikey)
    }
    return(raster_final)
 }
 
-#' format bbox to wms url format
-#' @param shape zone of interest of class sf
-#' @param crs see st_crs()
-#' @noRd
-format_bbox_wms <- function(shape, crs) {
-   # The bounding box coordinate values shall be in the units defined for the Layer CRS.
-   # cf : 06-042_OpenGIS_Web_Map_Service_WMS_Implementation_Specification.pdf
-
-   # EPSG:4326 is lat/lon but WMS take long/lat so you have to use st_axis_order  = T
-   # That only if coord are long/lat, else is not working
-
-      bbox <- st_bbox(shape)
-      format_bbox <- paste(bbox["xmin"], bbox["ymin"], bbox["xmax"], bbox["ymax"], sep = ",")
-
-   return(format_bbox)
-}
-
-#' Calculate number of pixel needed from resolution ad bbox
-#' @param shape zone of interest of class sf
+#' Calculate number of pixel from bbox considering length and resolution
+#' @param bbox bbox of interest of class sf
 #' @param resolution cell_size in meter
 #' @param crs see st_crs()
 #' @noRd
-nb_pixel_bbox <- function(shape, resolution, crs){
-   bbox <- st_bbox(shape)
+nb_pixel_bbox <- function(bbox, resolution, crs){
+   bbox <- st_bbox(bbox)
    height <- st_linestring(rbind(c(bbox[1], bbox[2]),
                                  c(bbox[1], bbox[4])))
    width <- st_linestring(rbind(c(bbox[1], bbox[2]),
@@ -180,12 +181,12 @@ nb_pixel_bbox <- function(shape, resolution, crs){
 #' @param crs see st_crs()
 #' @noRd
 grid <- function(shape, resolution, crs) {
-   # Fix S2 invalid object
+   # Avoid S2 invalid object
    on.exit(st_axis_order(F))
 
    shape <- st_make_valid(st_set_precision(shape, 1e6))
 
-   nb_pixel_bbox <- nb_pixel_bbox(shape, resolution, crs)
+   nb_pixel_bbox <- nb_pixel_bbox(st_bbox(shape), resolution, crs)
    n_tiles <- as.numeric(ceiling(nb_pixel_bbox/2048))
    grid <- st_make_grid(shape, n = n_tiles) %>%
       st_as_sf() %>%
@@ -199,26 +200,31 @@ grid <- function(shape, resolution, crs) {
    grid <- grid %>%
       st_as_sfc()
 
-   invisible(grid)
 }
 
 #' Create urls for download
+#' @param grid shape of interest
 #' @param apikey zone of interest of class sf
 #' @param version cell_size in meter
-#' @param format from mother function
 #' @param layer_name from mother function
 #' @param styles from mother function
 #' @param width_height from width_height function
 #' @param all_bbox from mother format_bbox_wms
 #' @param crs see st_crs()
+#' @param resolution from mother resolution
 #' @noRd
-construct_urls <- function(apikey, version, format, layer_name, styles, width_height, all_bbox, crs) {
-  base_url <- paste0("https://wxs.ign.fr/",
+construct_urls <- function(grid, apikey, version, layer_name, styles, crs, resolution) {
+
+   #  calculate nb of pixel by bbox
+   width_height <- nb_pixel_bbox(st_bbox(grid[[1]]), resolution, crs)
+
+
+   base_url <- paste0("https://wxs.ign.fr/",
                      apikey,
                      "/geoportail/r/wms?",
                      "version=", version,
                      "&request=GetMap",
-                     "&format=", format,
+                     "&format=", "image/geotiff",
                      "&layers=", layer_name,
                      "&styles=", styles,
                      "&width=", width_height[1],
@@ -226,43 +232,19 @@ construct_urls <- function(apikey, version, format, layer_name, styles, width_he
                      "&crs=", st_crs(crs)$input,
                      "&bbox=")
 
+  format_bbox_wms <- function(shape) {
+     # The bounding box coordinate values shall be in the units defined for the Layer CRS.
+     # cf : 06-042_OpenGIS_Web_Map_Service_WMS_Implementation_Specification.pdf
+
+     bbox <- st_bbox(shape)
+     format_bbox <- paste(bbox["xmin"], bbox["ymin"], bbox["xmax"], bbox["ymax"], sep = ",")
+
+     return(format_bbox)
+  }
+
   # construct url and filename
+  all_bbox <- lapply(X = grid, FUN = format_bbox_wms)
   urls <- paste0(base_url, all_bbox)
-}
-
-#' Get ext
-#' @param format from mother function
-#' @noRd
-get_extension <- function(format) {
-  ext <- switch(
-     format,
-     "image/jpeg" = ".jpg",
-     "image/png" = ".png",
-     "image/tiff" = ".tif",
-     "image/geotiff" = ".tif",
-     stop("Bad format, please check ",
-          "`?get_wms_raster()`")
-  )
-}
-
-#' Construct clean filename
-#' @param format from mother function
-#' @noRd
-construct_filename <- function(filename, resolution, layer_name, format) {
-
-   ext <- get_extension(format)
-
-   clean_names <- function(text){
-      paste0(gsub("[^[:alnum:]]", '_',
-                  paste0(text, "_", resolution,"m")),
-             ext)
-   }
-
-   filename <- ifelse(is.null(filename),
-                      clean_names(layer_name),
-                      file.path(dirname(filename), clean_names(basename(filename))))
-
-   filename <- normalizePath(enc2utf8(filename), mustWork = FALSE)
 }
 
 #' Checks if the raster is already downloaded and downloads it if necessary.
@@ -272,37 +254,41 @@ construct_filename <- function(filename, resolution, layer_name, format) {
 #' @param crs see st_crs()
 #' @noRd
 #'
-download_tiles <- function(urls, crs, format) {
-
-   # Avoid pb with working pc
-   old_env <- Sys.getenv("GDAL_HTTP_UNSAFESSL")
-   Sys.setenv("GDAL_HTTP_UNSAFESSL" = "YES")
-   on.exit(Sys.setenv("GDAL_HTTP_UNSAFESSL" = old_env), add = TRUE)
+download_tiles <- function(urls, crs) {
 
    # allow 1h of downloading before error
    default <- options("timeout")
    options("timeout" = 3600)
    on.exit(options(default))
 
-
-   ext <- get_extension(format)
+   # GDAL_HTTP_UNSAFESSL is used to avoid safe SSL host / certificate verification
+   # which can be problematic when using professional computer
+   # GDAL_SKIP is needed for GDAL < 3.5,
+   # See https://github.com/rspatial/terra/issues/828 for more
+   default_gdal_skip <- Sys.getenv("GDAL_SKIP")
+   default_gdal_http_unsafessl <- Sys.getenv("GDAL_HTTP_UNSAFESSL")
+   Sys.setenv(GDAL_SKIP = "DODS")
+   Sys.setenv(GDAL_HTTP_UNSAFESSL = "YES")
+   on.exit(Sys.setenv(GDAL_SKIP = default_gdal_skip))
+   on.exit(Sys.setenv(GDAL_HTTP_UNSAFESSL = default_gdal_http_unsafessl))
 
    tiles_list <- NULL
    for (i in seq_along(urls)) {
       message(i, "/", length(urls), " downloading...", sep = "")
 
+      # Old way of downlading raster data
       # download.file(url = urls[i],
       #               method = method,
       #               mode = mode,
       #               destfile = tmpfile)
 
-      tmp <- tempfile(fileext = ext)
+      tmp <- tempfile(fileext = ".tif")
 
-      gdal_utils(
-         util = "translate",
-         source = urls[i],
-         destination = tmp,
-         options = c("-a_srs", st_crs(crs)$input))
+      # New way which allow to set crs and it also faster
+      gdal_utils(util = "translate",
+                 source = urls[i],
+                 destination = tmp,
+                 options = c("-a_srs", st_crs(crs)$input))
 
       tiles_list <- c(tiles_list, tmp)
    }
@@ -313,9 +299,10 @@ download_tiles <- function(urls, crs, format) {
 #' Combine tiles
 #' @param tiles_list list of tiles from download_tiles
 #' @param filename name of file or connection
+#' @param apikey apikey from get_apikeys() for error message
 #' @noRd
 #'
-combine_tiles <- function(tiles_list, filename) {
+combine_tiles <- function(tiles_list, filename, apikey) {
 
    # Another way of acheving the same goal
    # tmp <- tempfile(fileext = ".vrt")
@@ -330,11 +317,27 @@ combine_tiles <- function(tiles_list, filename) {
    #    source = tmp,
    #    destination = filename)
 
-   writeRaster(vrt(tiles_list, overwrite = TRUE), filename, overwrite = TRUE)
-   rast <- rast(filename)
+   # Another way inspire from ropensci/terrainr package
+   # https://github.com/ropensci/terrainr/blob/main/R/merge_rasters.R
+   # gdal_utils(
+   #    util = "warp",
+   #    source = normalizePath(tiles_list),
+   #    destination = filename)
 
+
+   tryCatch({
+      tiles_list <- normalizePath(tiles_list)
+      writeRaster(vrt(tiles_list, overwrite = TRUE), filename)
+   },error = function(cnd){
+      stop("Please check that :\n",
+           "- layer_name is valid by running `get_layers_metadata(\"", apikey, "\", \"wms\")[,1]`\n",
+           "- styles is valid (check function description for more info)\n",
+           "- version is valid (check function description for more info)\n ", call. = FALSE)
+   })
+
+   rast <- rast(filename)
    message("Raster is saved at :\n",
-           filename)
+           normalizePath(filename))
 
    return(rast)
 
