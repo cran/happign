@@ -30,24 +30,15 @@
 #' @importFrom xml2 xml_child xml_find_all xml_has_attr as_list
 #' @importFrom checkmate assert check_class assert_character
 #'
-#' @details
-#' The function use the centroid of the shape to return info because sometime
-#' there's multiple tile.
-#'
 #' @examples
 #' \dontrun{
 #' library(sf)
 #'
-#' shape <- st_polygon(list(matrix(c(-4.373937, 47.79859,
-#'                                  -4.375615, 47.79738,
-#'                                  -4.375147, 47.79683,
-#'                                  -4.373898, 47.79790,
-#'                                  -4.373937, 47.79859),
-#'                                  ncol = 2, byrow = TRUE)))
-#' shape <- st_sfc(shape, crs = st_crs(4326))
+#' penmarch <- system.file("extdata/penmarch.shp", package = "happign")
 #'
-#' wms_info <- get_wms_info(shape, "ortho", "ORTHOIMAGERY.ORTHOPHOTOS")
+#' wms_info <- get_wms_info(penmarch, "ortho", "ORTHOIMAGERY.ORTHOPHOTOS")
 #'
+#' # orthophoto is from summer 2021
 #' wms_info
 #'
 #' }
@@ -72,19 +63,19 @@ get_wms_info <- function(shape,
 
    # Another version needed to have point to be working good, for the moment
    # shape seems okay
-   # shape <- suppressWarnings(st_centroid(shape)) %>%
-   #    st_transform(4326) %>%
-   #    st_transform(2154) %>%
-   #    st_buffer(10) %>%
+   # shape <- suppressWarnings(st_centroid(shape)) |>
+   #    st_transform(4326) |>
+   #    st_transform(2154) |>
+   #    st_buffer(10) |>
    #    st_transform(4326)
 
    bbox <- st_bbox(shape)
    bbox <- paste(bbox["ymin"], bbox["xmin"], bbox["ymax"], bbox["xmax"], sep = ",")
 
-   request <- request("https://wxs.ign.fr") %>%
-      req_url_path_append(apikey) %>%
-      req_url_path_append("geoportail/r/wms") %>%
-      req_user_agent("happign (https://paul-carteron.github.io/happign/)") %>%
+   request <- request("https://wxs.ign.fr") |>
+      req_url_path_append(apikey) |>
+      req_url_path_append("geoportail/r/wms") |>
+      req_user_agent("happign (https://paul-carteron.github.io/happign/)") |>
       req_url_query(service = "WMS",
                     version = version,
                     request = "GetFeatureInfo",
@@ -98,15 +89,15 @@ get_wms_info <- function(shape,
                     bbox = bbox,
                     I = 1,
                     J = 1,
-                    info_format = "text/xml") %>%
-      req_perform() %>%
-      resp_body_xml() %>%
-      xml_child(2) %>%
-      xml_child(1) %>%
+                    info_format = "text/xml") |>
+      req_perform() |>
+      resp_body_xml() |>
+      xml_child(2) |>
+      xml_child(1) |>
       as_list()
 
-   res <- request[!grepl("geom", names(request))] %>%
-      unlist() %>%
+   res <- request[!grepl("geom", names(request))] |>
+      unlist() |>
       rbind()
 
 }
@@ -131,23 +122,23 @@ are_queryable <- function(apikey){
 
    assert_choice(apikey, get_apikeys())
 
-   request <- request("https://wxs.ign.fr") %>%
-      req_url_path_append(apikey) %>%
-      req_url_path_append("geoportail/r/wms") %>%
-      req_user_agent("happign (https://paul-carteron.github.io/happign/)") %>%
+   request <- request("https://wxs.ign.fr") |>
+      req_url_path_append(apikey) |>
+      req_url_path_append("geoportail/r/wms") |>
+      req_user_agent("happign (https://paul-carteron.github.io/happign/)") |>
       req_url_query(service = "wms",
-                    request = "GetCapabilities") %>%
-      req_perform() %>%
-      resp_body_xml() %>%
-      xml_child("d1:Capability") %>%
-      xml_child("d1:Layer") %>%
+                    request = "GetCapabilities") |>
+      req_perform() |>
+      resp_body_xml() |>
+      xml_child("d1:Capability") |>
+      xml_child("d1:Layer") |>
       xml_find_all("d1:Layer")
 
-   queryable_layers <- request[xml_has_attr(request, "queryable")==1] %>%
-      as_list() %>%
+   queryable_layers <- request[xml_has_attr(request, "queryable") == 1] |>
+      as_list() |>
       unlist(recursive = FALSE)
 
-   queryable_layers_names <- queryable_layers[grep("Name", names(queryable_layers))] %>%
+   queryable_layers_names <- queryable_layers[grep("Name", names(queryable_layers))] |>
       unlist()
 }
 

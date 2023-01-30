@@ -1,3 +1,16 @@
+# happign 0.1.8
+* Correction of get_raw_lidar()
+* New vignette "completion_of_ign_data_road_example"
+* Precomputation of cran vignette
+* Apply DRY principle to option("timeout") handling
+* Add "penmarch.shp" as internal data for test and example
+* Better handling of filename saving for `get_wfs()`
+* Adding support for spatial and ecql filter to `get_wfs()`
+* Remove dependecy to magritrr pipe `%>%` by `|>`
+* Add internal shape for testing `point`, `multipoint`, `line`, `multiline`, `poly`, `multipoly`
+* add `get_wfs_attributes()` function
+* `NULL` is returned when no data found
+
 # happign 0.1.7
 * Correct bug preventing `get_apicarto_commune` to work with dep and insee code
 * Adding 1 hour of downloading to `get_wfs()` for big shape
@@ -9,8 +22,8 @@ to retrieve last news.
 * Handling errors with tryCatch
 * `get_apicarto_plu()` is now `get_apicarto_gpu()` : it can handle complex shape 
 and access all ressources from [APIcarto GPU](https://apicarto.ign.fr/api/doc/gpu)
-* For more consistency, it is now necessary to add drivers to filename in `get_wms_raster()`
-function just like in get_wfs. The automatic addition of resolution has been removed
+* For consistency, it is now necessary to add drivers to filename in `get_wms_raster()`
+ like `get_wfs()`. The automatic addition of resolution to `filename` has been removed
 for simplicity.
 
 # happign 0.1.6

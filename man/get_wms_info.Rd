@@ -39,24 +39,16 @@ get_wms_info(shape,
 apikey = "ortho",
 layer_name = "ORTHOIMAGERY.ORTHOPHOTOS.BDORTHO",
 version = "1.3.0"
-
-The function use the centroid of the shape to return info because sometime
-there's multiple tile.
 }
 \examples{
 \dontrun{
 library(sf)
 
-shape <- st_polygon(list(matrix(c(-4.373937, 47.79859,
-                                 -4.375615, 47.79738,
-                                 -4.375147, 47.79683,
-                                 -4.373898, 47.79790,
-                                 -4.373937, 47.79859),
-                                 ncol = 2, byrow = TRUE)))
-shape <- st_sfc(shape, crs = st_crs(4326))
+penmarch <- system.file("extdata/penmarch.shp", package = "happign")
 
-wms_info <- get_wms_info(shape, "ortho", "ORTHOIMAGERY.ORTHOPHOTOS")
+wms_info <- get_wms_info(penmarch, "ortho", "ORTHOIMAGERY.ORTHOPHOTOS")
 
+# orthophoto is from summer 2021
 wms_info
 
 }

@@ -58,7 +58,7 @@
 #' * All GDAL supported drivers can be found [here](https://gdal.org/drivers/raster/index.html)
 #' @export
 #'
-#' @importFrom terra rast vrt writeRaster
+#' @importFrom terra rast
 #' @importFrom sf gdal_utils st_as_sf st_as_sfc st_axis_order st_bbox st_crs
 #' st_filter st_is_longlat st_length st_linestring st_make_grid
 #' st_make_valid st_set_precision st_sfc st_intersects st_transform
@@ -73,16 +73,10 @@
 #' library(tmap)
 #'
 #' # shape from the best town in France
-#' shape <- st_polygon(list(matrix(c(-4.373937, 47.79859,
-#'                                  -4.375615, 47.79738,
-#'                                  -4.375147, 47.79683,
-#'                                  -4.373898, 47.79790,
-#'                                  -4.373937, 47.79859),
-#'                                  ncol = 2, byrow = TRUE)))
-#' shape <- st_sfc(shape, crs = st_crs(4326))
+#' penmarch <- read_sf(system.file("extdata/penmarch.shp", package = "happign"))
 #'
 #' # For quick testing, use interactive = TRUE
-#' raster <- get_wms_raster(shape = shape, interactive = TRUE, filename = tempfile())
+#' raster <- get_wms_raster(shape = penmarch, interactive = TRUE)
 #'
 #' # For specific use, choose apikey with get_apikey() and layer_name with get_layers_metadata()
 #' apikey <- get_apikeys()[4]  # altimetrie
@@ -90,14 +84,17 @@
 #' layer_name <- as.character(metadata_table[2,1]) # ELEVATION.ELEVATIONGRIDCOVERAGE
 #'
 #' # Downloading digital elevation model from IGN
-#' mnt <- get_wms_raster(shape, apikey, layer_name, resolution = 25, filename = tempfile())
+#' mnt <- get_wms_raster(penmarch, apikey, layer_name, resolution = 25)
 #'
 #' # Preparing raster for plotting
 #' mnt[mnt < 0] <- NA # remove negative values in case of singularity
 #' names(mnt) <- "Elevation [m]" # Rename raster ie the title legend
 #'
-#' qtm(mnt)+
-#' qtm(shape, fill = NULL, borders.lwd = 3)
+#' # Plotting result
+#' tm_shape(mnt)+
+#'    tm_raster(legend.show = FALSE)+
+#' tm_shape(penmarch)+
+#'    tm_borders(col = "blue", lwd  = 3)
 #'}
 get_wms_raster <- function(shape,
                            apikey = "altimetrie",
@@ -124,7 +121,7 @@ get_wms_raster <- function(shape,
                               overwrite, version, styles, interactive)
 
    # ensure consistency between the shape's coordinates and those requested
-   shape <- st_make_valid(shape) %>%
+   shape <- st_make_valid(shape) |>
       st_transform(st_crs(crs))
 
    # create needed grid because of 2048 pixel restriction
@@ -150,11 +147,12 @@ get_wms_raster <- function(shape,
    # if filename exist and overwrite is set to FALSE, raster is imported
    if (file.exists(filename) && !overwrite) {
       raster_final <- rast(filename)
-      message("File exists at ", filename," and overwrite is set to FALSE.")
+      message("File already exists at ", filename," therefore is loaded.\n",
+              "Set overwrite to TRUE to download it again.")
    # if it's not the case download is done
    }else{
       tiles_list <- download_tiles(urls, crs)
-      raster_final <- combine_tiles(tiles_list, filename, apikey)
+      raster_final <- combine_tiles(tiles_list, filename, apikey, crs)
    }
    return(raster_final)
 }
@@ -188,8 +186,8 @@ grid <- function(shape, resolution, crs) {
 
    nb_pixel_bbox <- nb_pixel_bbox(st_bbox(shape), resolution, crs)
    n_tiles <- as.numeric(ceiling(nb_pixel_bbox/2048))
-   grid <- st_make_grid(shape, n = n_tiles) %>%
-      st_as_sf() %>%
+   grid <- st_make_grid(shape, n = n_tiles) |>
+      st_as_sf() |>
       st_filter(shape, .predicate = st_intersects)
 
    if(st_is_longlat(st_crs(crs))){
@@ -197,7 +195,7 @@ grid <- function(shape, resolution, crs) {
       grid <- st_transform(grid, "CRS:84")
    }
 
-   grid <- grid %>%
+   grid <- grid |>
       st_as_sfc()
 
 }
@@ -256,11 +254,6 @@ construct_urls <- function(grid, apikey, version, layer_name, styles, crs, resol
 #'
 download_tiles <- function(urls, crs) {
 
-   # allow 1h of downloading before error
-   default <- options("timeout")
-   options("timeout" = 3600)
-   on.exit(options(default))
-
    # GDAL_HTTP_UNSAFESSL is used to avoid safe SSL host / certificate verification
    # which can be problematic when using professional computer
    # GDAL_SKIP is needed for GDAL < 3.5,
@@ -300,34 +293,17 @@ download_tiles <- function(urls, crs) {
 #' @param tiles_list list of tiles from download_tiles
 #' @param filename name of file or connection
 #' @param apikey apikey from get_apikeys() for error message
+#' @param crs crs from mother function
 #' @noRd
 #'
-combine_tiles <- function(tiles_list, filename, apikey) {
-
-   # Another way of acheving the same goal
-   # tmp <- tempfile(fileext = ".vrt")
-   #
-   # gdal_utils(
-   #    util = "buildvrt",
-   #    source = unlist(tiles_list),
-   #    destination = tmp)
-   #
-   # gdal_utils(
-   #    util = "translate",
-   #    source = tmp,
-   #    destination = filename)
-
-   # Another way inspire from ropensci/terrainr package
-   # https://github.com/ropensci/terrainr/blob/main/R/merge_rasters.R
-   # gdal_utils(
-   #    util = "warp",
-   #    source = normalizePath(tiles_list),
-   #    destination = filename)
-
+combine_tiles <- function(tiles_list, filename, apikey, crs) {
 
    tryCatch({
-      tiles_list <- normalizePath(tiles_list)
-      writeRaster(vrt(tiles_list, overwrite = TRUE), filename)
+      gdal_utils(util = "warp",
+                 source = normalizePath(tiles_list),
+                 destination = filename,
+                 options = c("-t_srs", st_crs(crs)$input))
+
    },error = function(cnd){
       stop("Please check that :\n",
            "- layer_name is valid by running `get_layers_metadata(\"", apikey, "\", \"wms\")[,1]`\n",
@@ -342,4 +318,3 @@ combine_tiles <- function(tiles_list, filename, apikey) {
    return(rast)
 
 }
-
