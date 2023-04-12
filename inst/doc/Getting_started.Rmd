@@ -1,7 +1,7 @@
 ---
 title: "Getting started with happign"
 author: "Paul Carteron"
-date: "2023-01-18"
+date: "2023-04-01"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Getting started with happign}
@@ -29,7 +29,7 @@ library(tmap)
 *  WMS raster : data in raster format (.jpg, .png, .tif)
 *  WFS : data in shape format (.shp).
 
-More detailed information are available [here](https://www.ogc.org/standards/wms) for WMS and [here](https://www.ogc.org/standards/wfs) for WFS.
+More detailed information are available [here](https://www.ogc.org/standard/wms/) for WMS and [here](https://www.ogc.org/standard/wfs/) for WFS.
 
 To download data from web services at least three elements are needed :
 
@@ -140,7 +140,7 @@ mnt <- get_wms_raster(shape = penmarch_borders,
                       crs = 4326)
 #> 1/1 downloading...
 #> Raster is saved at :
-#> D:\TMP\RtmpE3Kxya\file43083d052c3b.tif
+#> D:\TMP\RtmpC8sCbg\file325c11774ffb.tif
 
 mnt[mnt < 0] <- NA # remove negative values in case of singularity
 

@@ -16,7 +16,7 @@
 #'         interactive = FALSE)
 #'
 #' @param shape Object of class `sf`. Needs to be located in
-#' France. Bbox of shape is used to intersect features.
+#' France.
 #' @param apikey API key from `get_apikeys()` or directly
 #' from [IGN website](https://geoservices.ign.fr/services-web-experts)
 #' @param layer_name Name of the layer from `get_layers_metadata(apikey, "wfs")`
@@ -39,8 +39,6 @@
 #' @importFrom sf read_sf st_make_valid st_write
 #' @importFrom httr2 req_perform req_url_path_append req_url_query req_user_agent request
 #' resp_body_string req_body_form
-#' @importFrom checkmate assert assert_character check_character
-#' check_class check_null
 #' @importFrom utils menu
 #'
 #' @details
@@ -300,4 +298,49 @@ check_get_wfs_input <- function(shape, spatial_filter){
               paste0(spatial_predicate, collapse =", "), call. = FALSE)
       }
    }
+}
+
+#' @description construct ecql spatial filter string
+#' @param shape object of class sf or sfc
+#' @param spatial_filter list containing spatial operation and other argument
+#' @param crs epsg character from `get_wfs_default_crs`
+#' @param apikey character from `get_apikeys()`
+#' @importFrom sf st_bbox
+#' @return ecql string
+#' @noRd
+#'
+construct_spatial_filter <- function(shape = NULL,
+                                     spatial_filter = NULL,
+                                     crs = NULL,
+                                     apikey = NULL){
+
+   # Test for units
+   units <- c("feet", "meters", "statute miles", "nautical miles", "kilometers")
+   units_exist <- !is.na(spatial_filter[3])
+   is_good_units <- spatial_filter[3] %in% units
+   if (units_exist & !is_good_units){
+      stop("When using \"", spatial_filter[1],
+           "\" units should be one of \"", paste0(units, collapse = "\", \""),
+           "\".",call. = F)
+   }
+
+   # particular case for bbox
+   is_bbox <- (spatial_filter[1] == "bbox")
+   if (is_bbox){
+      bbox <- st_bbox(shape)
+      spatial_filter <- c(spatial_filter,
+                          bbox["xmin"], bbox["ymin"], bbox["xmax"], bbox["ymax"],
+                          sprintf("'EPSG:%s'", st_crs(shape)$epsg))
+   }
+
+   # if is "bbox", geom is null
+   geom <- switch(is_bbox + 1, st_as_text_happign(shape, crs), NULL)
+
+   # Build final spatial filter
+   spatial_filter <- sprintf("%s(%s, %s)",
+                             toupper(spatial_filter[1]),
+                             ifelse(apikey == "topographie", "geometrie", "the_geom"),
+                             paste(c(geom, spatial_filter[-1]), collapse = ", "))
+
+   return(spatial_filter)
 }

@@ -7,7 +7,7 @@
 #' @return ecql string
 #' @noRd
 #'
-get_wfs_default_crs = function(apikey, layer_name){
+get_wfs_default_crs <- function(apikey, layer_name){
    match.arg(apikey, get_apikeys())
 
    param <- list(service = "wfs",
@@ -59,51 +59,6 @@ st_as_text_happign <- function(shape, crs){
    return(geom)
 }
 
-#' @description construct ecql spatial filter string
-#' @param shape object of class sf or sfc
-#' @param spatial_filter list containing spatial operation and other argument
-#' @param crs epsg character from `get_wfs_default_crs`
-#' @param apikey character from `get_apikeys()`
-#' @importFrom sf st_bbox
-#' @return ecql string
-#' @noRd
-#'
-construct_spatial_filter <- function(shape = NULL,
-                                     spatial_filter = NULL,
-                                     crs = NULL,
-                                     apikey = NULL){
-
-   # Test for units
-   units <- c("feet", "meters", "statute miles", "nautical miles", "kilometers")
-   units_exist <- !is.na(spatial_filter[3])
-   is_good_units <- spatial_filter[3] %in% units
-   if (units_exist & !is_good_units){
-      stop("When using \"", spatial_filter[1],
-           "\" units should be one of \"", paste0(units, collapse = "\", \""),
-           "\".",call. = F)
-   }
-
-   # particular case for bbox
-   is_bbox <- (spatial_filter[1] == "bbox")
-   if (is_bbox){
-      bbox <- st_bbox(shape)
-      spatial_filter <- c(spatial_filter,
-                          bbox["xmin"], bbox["ymin"], bbox["xmax"], bbox["ymax"],
-                          sprintf("'EPSG:%s'", st_crs(shape)$epsg))
-   }
-
-   # if is "bbox", geom is null
-   geom <- switch(is_bbox + 1, st_as_text_happign(shape, crs), NULL)
-
-   # Build final spatial filter
-   spatial_filter <- sprintf("%s(%s, %s)",
-                             toupper(spatial_filter[1]),
-                             ifelse(apikey == "topographie", "geometrie", "the_geom"),
-                             paste(c(geom, spatial_filter[-1]), collapse = ", "))
-
-   return(spatial_filter)
-}
-
 #' @description check if an object is empty ie when no data is found from API
 #' @param x sf, sfc or list
 #' @return TRUE if there is no data
@@ -113,3 +68,57 @@ is_empty <- function(x){
    # length(x) is used for checking empty xml response from `get_layers_metadata`
    identical(nrow(x), 0L) | identical(length(x), 0L)
 }
+
+#' @description throw error if class is wrong
+#' @param x object to test for class
+#' @return error if FALSE, nothing if TRUE
+#' @noRd
+#'
+class_check <- function(x, class){
+
+   if (!inherits(x, class)) {
+      stop(sprintf("Must inherit from class '%s', but has class '%s'",
+                     class, class(x)))
+   }
+}
+
+#' @description convert sf or sfc object to geojson
+#' @param x object of class `sf` or `sfc`
+#' @param crs target coordinate reference system: object of class 'crs',
+#' or input string for st_crs
+#' @param dTolerance numeric; tolerance parameter. The value of `dTolerance`
+#' must be specified in meters.
+#' @importFrom geojsonsf sf_geojson sfc_geojson
+#' @importFrom sf st_make_valid st_transform st_geometry st_simplify sf_use_s2
+#' @return geojson object
+#' @noRd
+#'
+shp_to_geojson <- function(x, crs = 4326, dTolerance = 0){
+
+   default_s2 <- suppressMessages(sf_use_s2())
+   suppressMessages(sf_use_s2(TRUE))
+   on.exit(suppressMessages(sf_use_s2(default_s2)))
+
+   x <- x |>
+      st_make_valid() |>
+      st_transform(crs) |>
+      st_simplify(dTolerance = dTolerance) |>
+      st_geometry()
+
+   # deal with sf object
+   if(inherits(x, "sf")){
+      x <- sf_geojson(x)
+      return(x)
+   }
+
+   # deal with sfc object
+   if(inherits(x, "sfc")){
+      x <- sfc_geojson(x)
+      return(x)
+   }
+
+
+}
+
+
+

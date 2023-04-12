@@ -2,97 +2,101 @@
 % Please edit documentation in R/get_apicarto_cadastre.R
 \name{get_apicarto_cadastre}
 \alias{get_apicarto_cadastre}
-\alias{get_apicarto_cadastre.sf}
-\alias{get_apicarto_cadastre.sfc}
-\alias{get_apicarto_cadastre.character}
 \title{Apicarto Cadastre}
 \usage{
-\method{get_apicarto_cadastre}{sf}(
-  x,
-  section = NULL,
-  numero = NULL,
-  code_abs = NULL,
-  source_ign = "PCI"
-)
-
-\method{get_apicarto_cadastre}{sfc}(
-  x,
-  section = NULL,
-  numero = NULL,
-  code_abs = NULL,
-  source_ign = "PCI"
-)
-
-\method{get_apicarto_cadastre}{character}(
-  x,
-  section = NULL,
-  numero = NULL,
-  code_abs = NULL,
-  source_ign = "PCI"
-)
+get_apicarto_cadastre(x,
+                      type = "parcelle",
+                      source = "PCI",
+                      section = list(NULL),
+                      numero = list(NULL),
+                      code_arr = list(NULL),
+                      code_abs = list(NULL),
+                      code_com = list(NULL))
 }
 \arguments{
-\item{x}{It can be a shape or multiple insee code :
+\item{x}{It can be a shape, insee codes or departement codes :
 \itemize{
-\item Shape : all the cadastral parcels contained in it are downloaded. It should
-be an object of class \code{sf} or \code{sfc}.
-\item Code insee : filter the response on the INSEE code entered (must be a
-\code{character} or a vector of \code{character})
+\item Shape : must be an object of class \code{sf} or \code{sfc}.
+\item Code insee : must be a \code{character} of length 5
+\item Code departement : must be a \code{character} of length  2 or 3 (DOM-TOM)
 }}
 
-\item{section}{A \code{character} or a vector of \code{character} to filter the
-response on the cadastral section code entered (on 2 characters)}
+\item{type}{A \code{character} from \code{"parcelle"}, \code{"commune"}, \code{"feuille"},
+\code{"division"}, \code{"localisant"}}
 
-\item{numero}{A \code{character} or a vector of \code{character} to filter the answers
-on the entered parcel number (on 4 characters)}
+\item{source}{Can be "BDP" for BD Parcellaire or "PCI" for Parcellaire express.
+See detail for more info.}
 
-\item{code_abs}{A \code{character} or a vector of \code{character} to filter the
-answers on the code of absorbed commune. This prefix is useful to
-differentiate between communes that have merged}
+\item{section}{A \code{character} of length 2}
 
-\item{source_ign}{Can be "BDP" for BD Parcellaire or "PCI" for Parcellaire
-express. The BD Parcellaire is a discontinued product. Its use is no longer
-recommended because it is no longer updated. The use of PCI Express is
-strongly recommended and will become mandatory. More information on the
-comparison of this two products can be found
-\href{https://geoservices.ign.fr/sites/default/files/2021-07/Comparatif_PEPCI_BDPARCELLAIRE.pdf}{here}}
+\item{numero}{A \code{character} of length 4}
+
+\item{code_arr}{A \code{character} corresponding to district code for Paris,
+Lyon, Marseille}
+
+\item{code_abs}{A \code{character} corresponding to the code of absorbed commune.
+This prefix is useful to differentiate between communes that have merged}
+
+\item{code_com}{A \code{character} of length 5 corresponding to the commune code. Only use with
+\code{type = "division"} or \code{type = "feuille"}}
 }
 \value{
-\code{get_apicarto_cadastre}return an object of class \code{sf}
+Object of class \code{sf}
 }
 \description{
-Implementation of the cadastre module of the
+Implementation of the cadastre module from the
 \href{https://apicarto.ign.fr/api/doc/cadastre}{IGN's apicarto}
 }
 \details{
-#' @usage
-get_apicarto_cadastre(x,
-section = NULL,
-numero = NULL,
-code_abs = NULL,
-source_ign = "PCI")
+\code{x}, \code{section}, \code{numero}, \code{code_arr}, \code{code_abs}, \code{code_com} can take vector of character.
+In this case vector recycling is done. See the example section below.
+
+\code{source}: BD Parcellaire is a discontinued product. Its use is no longer
+recommended because it is no longer updated. The use of PCI Express is
+strongly recommended and will become mandatory. More information on the
+comparison of this two products can be found
+\href{https://geoservices.ign.fr/sites/default/files/2021-07/Comparatif_PEPCI_BDPARCELLAIRE.pdf}{here}
 }
 \examples{
 \dontrun{
 library(sf)
-library(tmap)
 
-# line from the best town in France
-line <- st_linestring(matrix(c(-4.372215, -4.365177, 47.803943, 47.79772),
-                             ncol = 2))
-line <- st_sfc(line, crs = st_crs(4326))
+# shape from the town of penmarch
+penmarch <- read_sf(system.file("extdata/penmarch.shp", package = "happign"))
 
-PCI_shape <- get_apicarto_cadastre(shape, section = c("AX", "AV"))
-BDP_Code <- get_apicarto_cadastre("29158", section = c("AX", "BR"),
-                                  source_ign = "BDP")
+# get commune borders
+## from shape
+penmarch_borders <- get_apicarto_cadastre(penmarch, type = "commune")
 
-tm_shape(PCI_shape)+
-   tm_borders()+
-tm_shape(line)+
-   tm_lines(col = "red")
+## from insee_code
+border <- get_apicarto_cadastre("29158", type = "commune")
+borders <- get_apicarto_cadastre(c("29158", "29165"), type = "commune")
 
-tm_shape(BDP_Code)+
-   tm_polygons(col = "section", border.col = "black")
+# get cadastral parcels
+## from shape
+parcels <- get_apicarto_cadastre(penmarch, section = "AX")
+
+## from insee code
+parcels <- get_apicarto_cadastre("29158")
+
+# Use parameter recycling
+## get sections "AX" parcels from multiple insee_code
+parcels <- get_apicarto_cadastre(c("29158", "29165"), section = "AX")
+
+## get parcels numbered "0001", "0010" of section "AX" and "BR"
+section <- c("AX", "BR")
+numero <- rep(c("0001", "0010"), each = 2)
+parcels <- get_apicarto_cadastre("29158", section = section, numero = numero)
+
+## generalization with expand.grid
+params <- expand.grid(code_insee = c("29158", "29165"),
+                      section = c("AX", "BR"),
+                      numero = c("0001", "0010"),
+                      stringsAsFactors = FALSE)
+parcels <- get_apicarto_cadastre(params$code_insee,
+                                 section = params$section,
+                                 numero = params$numero)
 
 }
+
 }

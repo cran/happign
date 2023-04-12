@@ -39,7 +39,7 @@ library(tmap)
 *  WMS raster : data in raster format (.jpg, .png, .tif)
 *  WFS : data in shape format (.shp).
 
-More detailed information are available [here](https://www.ogc.org/standards/wms) for WMS and [here](https://www.ogc.org/standards/wfs) for WFS.
+More detailed information are available [here](https://www.ogc.org/standard/wms/) for WMS and [here](https://www.ogc.org/standard/wfs/) for WFS.
 
 To download data from web services at least three elements are needed :
 
