@@ -24,7 +24,7 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 
 # Before starting
 
-We can load the `happign` package, and some additional packages we will need.
+We can load the `happign` package, and some additional packages we will need (`sf` to manipulate spatial data and `tmap` to create maps)
 
 ```{r, message = FALSE, warning = FALSE}
 library(happign)
@@ -36,20 +36,20 @@ library(tmap)
 
 `happign` use two web service from IGN :
 
-*  WMS raster : data in raster format (.jpg, .png, .tif)
-*  WFS : data in shape format (.shp).
+*  WMS raster : data in raster format (.jpg, .png, .tif, ...)
+*  WFS : data in vector format (.shp, ...).
 
 More detailed information are available [here](https://www.ogc.org/standard/wms/) for WMS and [here](https://www.ogc.org/standard/wfs/) for WFS.
 
-To download data from web services at least three elements are needed :
+To download data from IGN web services at least three elements are needed :
 
 * An API key;
 * A layer name ;
-* A shape read by [`sf`]( https://CRAN.R-project.org/package=sf) package
+* An input shape read by [`sf`]( https://CRAN.R-project.org/package=sf) package.
 
 ## API key
 
-API keys can be directly retrieved on the [IGN website in the expert web services](https://geoservices.ign.fr/services-web-experts) (I recommend you at this point to go and have a look) or with `get_apikeys()` function.
+API keys can be directly retrieved on the [IGN website from the expert web services](https://geoservices.ign.fr/services-web-experts) (I recommend you at this point to go and have a look) or with `get_apikeys()` function.
 
 
 ```{r, echo = TRUE}
@@ -65,6 +65,8 @@ Again, all layer's name can be accessed from R with the `get_layers_metadata()` 
 ```{r}
 administratif_wfs <- get_layers_metadata(apikey = "administratif", data_type = "wfs")
 administratif_wms <- get_layers_metadata(apikey = "administratif", data_type = "wms")
+
+head(administratif_wfs)
 ```
 
 ## Downloading the data
@@ -81,28 +83,34 @@ penmarch <- read_sf(system.file("extdata/penmarch.shp", package = "happign"))
 
 ```{r, eval=TRUE, include=TRUE}
 
-penmarch_borders <- get_wfs(shape = penmarch,
+penmarch_borders <- get_wfs(x = penmarch,
                             apikey = "administratif",
-                            layer_name = "LIMITES_ADMINISTRATIVES_EXPRESS.LATEST:commune")
+                            layer = "LIMITES_ADMINISTRATIVES_EXPRESS.LATEST:commune")
 
 # Checking result
 tm_shape(penmarch_borders)+
    tm_polygons(alpha = 0, lwd = 2)+
 tm_shape(penmarch)+
    tm_polygons(col = "red")+
-   tm_layout(main.title = "Penmarch borders from IGN",
-             main.title.position = "center")
+tm_add_legend(type = "fill", border.col = "black", border.lwd =2, 
+              col = NA, labels = "border from get_wfs")+
+tm_add_legend(type = "fill", col = "red", labels = "penmarch shape from happign package")+
+tm_layout(main.title = "Penmarch borders from IGN",
+          main.title.position = "center",
+          legend.position = c(0.7, -0.1),
+          outer.margins = c(0.1, 0,0,0),
+          frame = FALSE)
 ```
 
 It's as simple as that!
 Now you have to rely on your curiosity to explore the multiple possibilities that IGN offers. For example, who has never wondered how many road junctions there are in Penmarch?
 
-*Spoiler : there are 192 of them*
+*Spoiler : there are 192 of them !*
 
 ```{r, eval=TRUE, include=TRUE}
-dikes <- get_wfs(shape = penmarch_borders,
-                 apikey = get_apikeys()[6],
-                 layer_name = "BDCARTO_BDD_WLD_WGS84G:noeud_routier",
+dikes <- get_wfs(x = penmarch_borders,
+                 apikey = get_apikeys()[6], #cartovecto
+                 layer = "BDCARTO_BDD_WLD_WGS84G:noeud_routier",
                  spatial_filter = "intersects")
 
 # Checking result
@@ -119,18 +127,18 @@ tm_shape(dikes) + # Point use to retrieve data
 
 ### WMS raster
 
-For raster, the process is the same but with the function `get_wms_raster()`. There's plenty of elevation resources inside ["altimetrie" category](https://geoservices.ign.fr/services-web-experts-altimetrie). A basic one is the Digital Elevation Model (DEM or MNT in French). Borders of Penmarch are used as shape for downloading the DEM.
+For raster, the process is the same, but with the function `get_wms_raster()`, but you need to specify the resolution (note that it must be in the same coordinate system as the crs parameter). There's plenty of elevation resources inside ["altimetrie" category](https://geoservices.ign.fr/services-web-experts-altimetrie). A basic one is the Digital Elevation Model (DEM or MNT in French). Borders of Penmarch are used to download the DEM.
 
 
 ```{r, eval=TRUE, include=TRUE}
 layers_metadata <- get_layers_metadata("altimetrie", "wms")
-dem_layer_name <- layers_metadata[2, 1] #LEVATION.ELEVATIONGRIDCOVERAGE
+dem_layer <- layers_metadata[2, 1] #LEVATION.ELEVATIONGRIDCOVERAGE
 
-mnt <- get_wms_raster(shape = penmarch_borders,
+mnt <- get_wms_raster(x = penmarch_borders,
                       apikey = "altimetrie",
-                      layer_name = dem_layer_name,
-                      resolution = 25,
-                      crs = 4326)
+                      layer = dem_layer,
+                      res = 25,
+                      crs = 2154)
 
 mnt[mnt < 0] <- NA # remove negative values in case of singularity
 

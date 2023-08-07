@@ -11,7 +11,8 @@
 #'                       numero = list(NULL),
 #'                       code_arr = list(NULL),
 #'                       code_abs = list(NULL),
-#'                       code_com = list(NULL))
+#'                       code_com = list(NULL),
+#'                       dTolerance = 0)
 #'
 #' @param x It can be a shape, insee codes or departement codes :
 #' * Shape : must be an object of class `sf` or `sfc`.
@@ -29,7 +30,9 @@
 #' This prefix is useful to differentiate between communes that have merged
 #' @param code_com A `character` of length 5 corresponding to the commune code. Only use with
 #' `type = "division"` or `type = "feuille"`
-
+#' @param dTolerance numeric; Complex shape cannot be handle by API; using `dTolerance`
+#' allow to simplify them. See `?sf::st_simplify`
+#'
 #' @details
 #' `x`, `section`, `numero`, `code_arr`, `code_abs`, `code_com` can take vector of character.
 #' In this case vector recycling is done. See the example section below.
@@ -44,7 +47,6 @@
 #' @export
 #'
 #' @importFrom sf st_as_sfc st_make_valid st_transform
-#' @importFrom geojsonsf sfc_geojson
 #'
 #' @examples
 #' \dontrun{
@@ -98,9 +100,10 @@ get_apicarto_cadastre <- function(x,
                                   numero = list(NULL),
                                   code_arr = list(NULL),
                                   code_abs = list(NULL),
-                                  code_com = list(NULL)){
+                                  code_com = list(NULL),
+                                  dTolerance = 0){
 
-   # initialisation
+   # initialisation, list(NULL) is used instead of NULL for Map loop below
    geom <- code_insee <- code_dep <- list(NULL)
 
    # check x input
@@ -114,7 +117,7 @@ get_apicarto_cadastre <- function(x,
 
    # deal with spatial object
    if(inherits(x, c("sf", "sfc"))){
-      geom <- shp_to_geojson(x)
+      geom <- shp_to_geojson(x, crs = 4326, dTolerance)
    }
 
    # deal with character
@@ -126,11 +129,12 @@ get_apicarto_cadastre <- function(x,
              stop("x must be length 5; not ", nchar(x)))
    }
 
-   # hit api and loop if there more than 1000 features
+   # hit api and loop if there more than 500 features
    resp <- Map(
       loop_api,
       path = paste0("api/cadastre/", type),
-      limit = 1000,
+      limit = 500,
+      "_limit" = 500,
       "code_insee" = code_insee,
       "code_dep" = code_dep,
       "section" = section,
@@ -146,7 +150,7 @@ get_apicarto_cadastre <- function(x,
               "- shape outside of France\n",
               "- non-existent insee or department code\n",
               "- existing code but not recognized by apicarto.\n",
-              "Running data(cog_2022) can help find all insee code.", .call = FALSE)
+              "Running data(cog_2023) can help find all insee code.", .call = FALSE)
       return(NULL)
    }
 

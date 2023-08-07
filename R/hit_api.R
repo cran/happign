@@ -1,19 +1,40 @@
-#' @description build request from path and parameter
-#' @param path path of the api
+#' @title build_req
+#' @description Build request from path and parameter.
+#'
+#' @param path `character`; path of the api
 #' @param ... request parameters
-#' @return httr2_request object
+#'
+#' @importFrom httr2 request req_url_path req_url_query
+#'
+#' @return `httr2_request` object
 #' @noRd
 #'
 build_req <- function(path, ...) {
+
+   # check input ----
+   # check parameter : path
+   if (!inherits(path, "character")) {
+      stop("`x` must be of class character.")
+   }
+
+   # build request ---
    params <- list(...)
+
    req <- request("https://apicarto.ign.fr") |>
+      req_options(ssl_verifypeer = 0) |>
       req_url_path(path) |>
       req_url_query(!!!params)
 }
+
+#' @title hit_api
+#' @description Hit api from an httr2 request and read result as `sf` object.
 #'
-#' @description hit api from and httr2 request
-#' @param req an httr2_request object
-#' @return sf object
+#' @param req `httr2_request` object
+#'
+#' @importFrom httr2 req_perform resp_body_string
+#' @importFrom sf read_sf
+#'
+#' @return `sf` object
 #' @noRd
 #'
 hit_api <- function(req){
@@ -24,23 +45,38 @@ hit_api <- function(req){
    },
    error = function(cnd){
 
-      error1 <- "Send failure: Connection was reset"
-      error2 <- "Failure when receiving data from the peer"
-      if (grepl(error1, cnd) | grepl(error2, cnd)){
-         stop("\n",
-              "May be due to an overly complex shape : try increase `dTolerance` parameter.",
-              call. = F)
-      }
+      # test if cnd correspond to one error for complex shape
+      too_complex_shape <- any(
+         sapply(c("Send failure: Connection was reset",
+                  "Failure when receiving data from the peer",
+                  "OpenSSL SSL_read", #ubuntu
+                  "HTTP 431", #macos
+                  "Empty reply from server" #macos
+                  ),
+                function(x, cnd){grepl(x, cnd)},
+                cnd = cnd))
 
+      error6 <- "HTTP 404 Not Found"
+      error7 <- "HTTP 400 Bad Request"
+
+      if (too_complex_shape){
+         stop("May be due to an overly complex shape : try increase `dTolerance` parameter.",
+              call. = F)
+      }else if (any(grepl(error6, cnd), grepl(error7, cnd))){
+         stop(cnd, "Probably due to bad parameters.", call. = F)
+      }
       stop(cnd)
 
    })
 }
 
+#' @title build_req_hit_api
+#' @description Combine `build_req` and `hit_api` function.
 #'
-#' @description combine build_req and hit_api
-#' @inheritParams build_req
-#' @return sf object
+#' @param path `character`; path of the api
+#' @param ... request parameters
+#'
+#' @return `sf` object
 #' @noRd
 #'
 build_req_hit_api <- function(path, ...){
@@ -49,12 +85,15 @@ build_req_hit_api <- function(path, ...){
 
    return(resp)
 }
+
+#' @title loop_api
+#' @description Loop over api when limit exist.
 #'
-#' @description loop over api when limit exist
-#' @param path path of the api
-#' @param limit max number of feature api can returned
+#' @param path `character`; path of the api
+#' @param limit `integer`; max number of feature api can returned
 #' @param ... request parameters
-#' @return sf object
+#'
+#' @return `sf` object
 #' @noRd
 #'
 loop_api <- function(path, limit, ...){

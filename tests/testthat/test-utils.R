@@ -20,14 +20,14 @@ test_that("spatial_filter", {
                 "When using \"dwithin\" units should be one of")
 
    # point
-   expect_match(construct_spatial_filter(shape = point,
+   expect_match(construct_spatial_filter(x = point,
                                          spatial_filter = c("dwithin", 50, "meters"),
                                          crs = 4326,
                                          apikey = "altimetrie"),
                 "DWITHIN(the_geom, POINT (47.813 -4.344), 50, meters)", fixed = T)
 
    # polygon
-   expect_match(construct_spatial_filter(shape = poly,
+   expect_match(construct_spatial_filter(x = poly,
                                          spatial_filter = c("dwithin", 50, "meters"),
                                          crs = 4326,
                                          apikey = "altimetrie"),
@@ -35,40 +35,66 @@ test_that("spatial_filter", {
 
 
    # bbox
-   expect_match(construct_spatial_filter(shape = poly,
+   expect_match(construct_spatial_filter(x = poly,
                                          spatial_filter = "bbox",
                                          crs = 4326,
                                          apikey = "altimetrie"),
                 "BBOX(the_geom, -4.347, 47.811, -4.344, 47.815, 'EPSG:4326')", fixed = T)
 
 })
-test_that("sfc_to_geojson", {
-   expect_s3_class(shp_to_geojson(point), "geojson")
-   expect_s3_class(shp_to_geojson(multipoint), "geojson")
-   expect_s3_class(shp_to_geojson(line), "geojson")
-   expect_s3_class(shp_to_geojson(multiline), "geojson")
-   expect_s3_class(shp_to_geojson(poly), "geojson")
-   expect_s3_class(shp_to_geojson(multipoly), "geojson")
+test_that("shp_to_geojson", {
+   expect_s3_class(shp_to_geojson(point), "json")
+   expect_equal(as.character(shp_to_geojson(point)),
+                '{"type":"Point","coordinates":[-4.344,47.813]}')
+
+   expect_s3_class(shp_to_geojson(multipoint), "json")
+   expect_equal(as.character(shp_to_geojson(multipoint)),
+                '{"type":"MultiPoint","coordinates":[[-4.347,47.815],[-4.344,47.813],[-4.346,47.811]]}')
+
+   expect_s3_class(shp_to_geojson(line), "json")
+   expect_equal(as.character(shp_to_geojson(line)),
+                '{"type":"LineString","coordinates":[[-4.344,47.813],[-4.346,47.811],[-4.347,47.815]]}')
+
+
+   expect_s3_class(shp_to_geojson(multiline), "json")
+   expect_match(as.character(shp_to_geojson(multiline)),
+                '{"type":"MultiLineString","coordinates":[[[-4.344,47.813],[-4.346,47.811]', fixed = T)
+
+   expect_s3_class(shp_to_geojson(poly), "json")
+   expect_match(as.character(shp_to_geojson(poly)),
+                '{"type":"Polygon","coordinates":[[[-4.347,47.815],[-4.346,47.811]', fixed = T)
+
+   expect_s3_class(shp_to_geojson(multipoly), "json")
+   expect_match(as.character(shp_to_geojson(multipoly)),
+                '{"type":"MultiPolygon","coordinates":[[[[-4.347,47.815],[-4.346,47.811]', fixed = T)
+
+
+
 })
-test_that("sf_to_geojson", {
-   expect_s3_class(shp_to_geojson(st_as_sf(point)), "geojson")
-   expect_s3_class(shp_to_geojson(st_as_sf(multipoint)), "geojson")
-   expect_s3_class(shp_to_geojson(st_as_sf(line)), "geojson")
-   expect_s3_class(shp_to_geojson(st_as_sf(multiline)), "geojson")
-   expect_s3_class(shp_to_geojson(st_as_sf(poly)), "geojson")
-   expect_s3_class(shp_to_geojson(st_as_sf(multipoly)), "geojson")
+test_that("shp_to_geojson crs", {
+
+   expect_s3_class(shp_to_geojson(point, 2154), "json")
+   expect_equal(as.character(shp_to_geojson(point, 2154)),
+                '{"type":"Point","coordinates":[151147.032,6771386.8213]}')
+
 })
 test_that("shp_to_geojson dTolerance", {
-   # sfc
+
    x <- st_buffer(poly, 1)
    geojson <- shp_to_geojson(x)
    simplified_geojson <- shp_to_geojson(x, 4326, 10)
    expect_true(nchar(geojson) > nchar(simplified_geojson))
-
-   # sf
-   x <- st_buffer(poly, 1) |> st_as_sf()
-   geojson <- shp_to_geojson(x)
-   simplified_geojson <- shp_to_geojson(x, 4326, 10)
-   expect_true(nchar(geojson) > nchar(simplified_geojson))
 })
+with_mock_dir("get_wfs_default_crs", {
+   test_that("get_wfs_default_crs", {
+      skip_on_cran()
+      skip_if_offline()
 
+      expect_error(get_wfs_default_crs("administratif", "badname"),
+                   "No crs found")
+
+      crs <- get_wfs_default_crs("altimetrie", "ELEVATION.CONTOUR.LINE:courbe")
+      expect_equal(crs, 4326)
+
+   })
+}, simplify = FALSE)

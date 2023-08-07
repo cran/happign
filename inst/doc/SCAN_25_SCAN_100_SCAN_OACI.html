@@ -340,12 +340,12 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(happign)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Please make sure you have an internet connection.</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Use happign::get_last_news() to display latest geoservice news.</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Warning: le package &#39;sf&#39; a été compilé avec la version R 4.2.3</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; Linking to GEOS 3.9.3, GDAL 3.5.2, PROJ 8.2.1; sf_use_s2() is TRUE</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(happign)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="co">#&gt; Please make sure you have an internet connection.</span></span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="co">#&gt; Use happign::get_last_news() to display latest geoservice news.</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co">#&gt; Warning: le package &#39;sf&#39; a été compilé avec la version R 4.3.1</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co">#&gt; Linking to GEOS 3.11.2, GDAL 3.6.2, PROJ 9.2.0; sf_use_s2() is TRUE</span></span></code></pre></div>
 <div id="brief-presentation" class="section level2">
 <h2>Brief presentation</h2>
 <p>Even if almost all IGN data are available to the general public, some
@@ -380,22 +380,17 @@ a key in the “My keys” section of your account. It should look like this
 : “abc12efghi34j5k678lmnopq” (obviously, this is a fake key).</p>
 <p>Then you choose the layer you want at the <a href="https://geoservices.ign.fr/services-web-issus-des-scans-ign">Web
 services from IGN SCANs</a> and it’s done !</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create or import a shape</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>shape <span class="ot">&lt;-</span> <span class="fu">st_polygon</span>(<span class="fu">list</span>(<span class="fu">matrix</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="fl">4.373937</span>, <span class="fl">47.79859</span>,</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                                  <span class="sc">-</span><span class="fl">4.375615</span>, <span class="fl">47.79738</span>,</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                                  <span class="sc">-</span><span class="fl">4.375147</span>, <span class="fl">47.79683</span>,</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>                                  <span class="sc">-</span><span class="fl">4.373937</span>, <span class="fl">47.79859</span>),</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                                <span class="at">ncol =</span> <span class="dv">2</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)))</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>shape <span class="ot">&lt;-</span> <span class="fu">st_sfc</span>(shape, <span class="at">crs =</span> <span class="fu">st_crs</span>(<span class="dv">4326</span>))</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>my_key <span class="ot">&lt;-</span> <span class="st">&quot;abc12efghi34j5k678lmnopq&quot;</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>scan25_name <span class="ot">&lt;-</span> <span class="st">&quot;SCAN25TOUR_PYR-JPEG_WLD_WM&quot;</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>scan25 <span class="ot">&lt;-</span> <span class="fu">get_wms_raster</span>(shape,</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                         <span class="at">apikey =</span> my_key,</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>                         <span class="at">layer_name =</span> scan25_name,</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>                         <span class="at">resolution =</span> <span class="dv">1</span>,   <span class="co"># To have full resolution</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>                         <span class="at">filename =</span> <span class="st">&quot;SCAN25&quot;</span>) <span class="co"># This resource need to be downloaded on disk</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Create or import a shape</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>penmarch <span class="ot">&lt;-</span> <span class="fu">get_apicarto_cadastre</span>(<span class="st">&quot;29158&quot;</span>, <span class="st">&quot;commune&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>my_key <span class="ot">&lt;-</span> <span class="st">&quot;abc12efghi34j5k678lmnopq&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>scan25_name <span class="ot">&lt;-</span> <span class="st">&quot;SCAN25TOUR_PYR-JPEG_WLD_WM&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>scan25 <span class="ot">&lt;-</span> <span class="fu">get_wms_raster</span>(penmarch,</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>                         <span class="at">apikey =</span> my_key,</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>                         <span class="at">layer =</span> scan25_name,</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>                         <span class="at">res =</span> <span class="dv">1</span>,   <span class="co"># To have full resolution</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>                         <span class="at">filename =</span> <span class="st">&quot;SCAN25.tif&quot;</span>) <span class="co"># This resource need to be downloaded on disk</span></span></code></pre></div>
 </div>
 
 

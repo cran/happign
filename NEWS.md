@@ -1,3 +1,16 @@
+# happign 0.2.0
+* `get_wms_raster` is made faster by using gdalwarp from `sf::gdal_utils`. 
+There is no longer need to download several tiles.
+* update `cog_2022` dataset to `cog_2023`
+* remove `get_apicarto_commune()` now supported by `get_apicarto_cadastre()`
+* `jsonlite` is used instead of `geojsonsf` package
+* some `get_wms_raster` and `get_wfs` parameter names have been changed :
+   - shape -> x
+   - layer_name -> layer
+   - resolution -> res
+* remove `get_wms_info` for `get_location_info`
+* apikey `"enr"` is added
+
 # happign 0.1.9
 * add `get_apicarto_viticole()`
 * add `get_apicarto_codes_postaux()`
