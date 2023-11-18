@@ -63,7 +63,7 @@
 
 get_apicarto_rpg <- function(x, annee, code_cultu = list(NULL), dTolerance = 0){
 
-F   # check parameter : x
+   # check parameter : x
    if (!inherits(x, c("sf", "sfc"))) { # x can have 3 class
       stop("x must be of class sf or sfc.")
    }
@@ -79,7 +79,7 @@ F   # check parameter : x
    # hit api and loop if there more than 1000 features
    resp <- Map(
       loop_api,
-      path = paste0("api/rpg/", version),
+      path = paste0("/api/rpg/", version),
       limit = 1000,
       "annee" = annee,
       "geom" = shp_to_geojson(x, crs = 4326, dTolerance = dTolerance),

@@ -1,4 +1,4 @@
-## ---- include = FALSE---------------------------------------------------------
+## ----include = FALSE----------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -8,7 +8,7 @@ knitr::opts_chunk$set(
 library(happign)
 library(sf)
 
-## ---- eval = FALSE, echo = TRUE-----------------------------------------------
+## ----eval = FALSE, echo = TRUE------------------------------------------------
 #  # Create or import a shape
 #  penmarch <- get_apicarto_cadastre("29158", "commune")
 #  

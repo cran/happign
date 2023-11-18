@@ -104,21 +104,21 @@ is_empty <- function(x){
 #' must be specified in meters.
 #'
 #' @importFrom jsonlite toJSON
-#' @importFrom sf st_make_valid st_transform st_geometry st_simplify
+#' @importFrom sf st_make_valid st_transform st_geometry st_simplify sf_use_s2
 #'
 #' @return A json string of class `character`
 #' @noRd
 #'
 shp_to_geojson <- function(x, crs = 4326, dTolerance = 0){
 
-   # default_s2 <- suppressMessages(sf_use_s2())
-   # suppressMessages(sf_use_s2(TRUE))
-   # on.exit(suppressMessages(sf_use_s2(default_s2)))
+   default_s2 <- suppressMessages(sf_use_s2())
+   suppressMessages(sf_use_s2(TRUE))
+   on.exit(suppressMessages(sf_use_s2(default_s2)))
 
    x <- x |>
       st_make_valid() |>
-      st_transform(crs) |>
       st_simplify(dTolerance = dTolerance) |>
+      st_transform(crs) |>
       st_geometry() |>
       toJSON()
 
@@ -126,33 +126,5 @@ shp_to_geojson <- function(x, crs = 4326, dTolerance = 0){
    x <- gsub('^.|.$', '', x)
 
    return(x)
-
-}
-
-#' @title rm_equal_layers
-#' @description Remove numerically equal layers.
-#'
-#' @param rast `SpatRaster` object.
-#'
-#' @importFrom terra minmax
-#' @return SpatRaster
-#' @noRd
-#'
-rm_equal_layers <- function(rast){
-
-   unique_layer <- dim(rast)[3] == 1
-   if (unique_layer){
-      return(rast)
-   }
-
-   diff_rast <- rast[[1]] - rast[[2]]
-   # minmax is used to reduce number of comparison to two, see ?all.equal example
-   duplicate_layers <- all(abs(minmax(diff_rast) < 1e-7))
-
-   if (duplicate_layers){
-      return(rast[[1]])
-   }
-
-   return(rast)
 
 }

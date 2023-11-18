@@ -1,7 +1,7 @@
 ---
 title: "Getting started with happign"
 author: "Paul Carteron"
-date: "`r Sys.Date()`"
+date: "2023-11-13"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Getting started with happign}
@@ -9,28 +9,26 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.align = "center",
-  fig.height = 4,
-  fig.width = 6,
-  dpi = 150,
-  fig.path = "Getting_started-"
-)
-options(rmarkdown.html_vignette.check_title = FALSE)
-```
+
 
 # Before starting
 
 We can load the `happign` package, and some additional packages we will need (`sf` to manipulate spatial data and `tmap` to create maps)
 
-```{r, message = FALSE, warning = FALSE}
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
 library(happign)
 library(sf)
-library(tmap)
+library(tmap);tmap_mode("plot")
 ```
+
 
 # WFS and WMS service
 
@@ -51,8 +49,7 @@ To download data from IGN web services at least three elements are needed :
 
 API keys can be directly retrieved on the [IGN website from the expert web services](https://geoservices.ign.fr/services-web-experts) (I recommend you at this point to go and have a look) or with `get_apikeys()` function.
 
-
-```{r, echo = TRUE}
+```{r}
 get_apikeys()
 ```
 
@@ -61,6 +58,7 @@ get_apikeys()
 As for API key, it is possible to find the names of available layers from the expert web services of the IGN. For example, the first layer name in **WFS format** for ["Administratif" category](https://geoservices.ign.fr/services-web-experts-administratif) is *"ADMINEXPRESS-COG-CARTO.LATEST:arrondissement"*
 
 Again, all layer's name can be accessed from R with the `get_layers_metadata()` function. This one connects directly to the IGN site which allows to have the last updated resources. It can be used for WMS and WFS :
+
 
 ```{r}
 administratif_wfs <- get_layers_metadata(apikey = "administratif", data_type = "wfs")
@@ -81,18 +79,17 @@ penmarch <- read_sf(system.file("extdata/penmarch.shp", package = "happign"))
 
 `get_wfs` can be used to download borders :
 
-```{r, eval=TRUE, include=TRUE}
+```{r}
 
 penmarch_borders <- get_wfs(x = penmarch,
                             apikey = "administratif",
                             layer = "LIMITES_ADMINISTRATIVES_EXPRESS.LATEST:commune")
-
 # Checking result
 tm_shape(penmarch_borders)+
    tm_polygons(alpha = 0, lwd = 2)+
 tm_shape(penmarch)+
    tm_polygons(col = "red")+
-tm_add_legend(type = "fill", border.col = "black", border.lwd =2, 
+tm_add_legend(type = "fill", border.col = "black", border.lwd =2,
               col = NA, labels = "border from get_wfs")+
 tm_add_legend(type = "fill", col = "red", labels = "penmarch shape from happign package")+
 tm_layout(main.title = "Penmarch borders from IGN",
@@ -107,7 +104,8 @@ Now you have to rely on your curiosity to explore the multiple possibilities tha
 
 *Spoiler : there are 192 of them !*
 
-```{r, eval=TRUE, include=TRUE}
+
+```{r}
 dikes <- get_wfs(x = penmarch_borders,
                  apikey = get_apikeys()[6], #cartovecto
                  layer = "BDCARTO_BDD_WLD_WGS84G:noeud_routier",
@@ -130,7 +128,8 @@ tm_shape(dikes) + # Point use to retrieve data
 For raster, the process is the same, but with the function `get_wms_raster()`, but you need to specify the resolution (note that it must be in the same coordinate system as the crs parameter). There's plenty of elevation resources inside ["altimetrie" category](https://geoservices.ign.fr/services-web-experts-altimetrie). A basic one is the Digital Elevation Model (DEM or MNT in French). Borders of Penmarch are used to download the DEM.
 
 
-```{r, eval=TRUE, include=TRUE}
+
+```{r}
 layers_metadata <- get_layers_metadata("altimetrie", "wms")
 dem_layer <- layers_metadata[2, 1] #LEVATION.ELEVATIONGRIDCOVERAGE
 
@@ -150,7 +149,6 @@ tm_layout(main.title = "DEM of Penmarch",
           main.title.position = "center",
           legend.position = c("right", "bottom"),
           legend.bg.color = "white", legend.bg.alpha = 0.7)
-
 ```
 
 __*Rq :*__

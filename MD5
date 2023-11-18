@@ -1,33 +1,34 @@
-c3d1cf0376ac31d4133a0e9b127e9e41 *DESCRIPTION
-12a5bd65e9aa6ac7009d431e913917c6 *NAMESPACE
-56181aba4229e3e9dcca2292597dcd10 *NEWS.md
+a615fce0057bf7bbfe19c1d5ced71cff *DESCRIPTION
+7cd3eb2b575f54f129d8021e2b24e80f *NAMESPACE
+e4921d54550a335588b62efdefb13843 *NEWS.md
 142ca7af2439135cf0fdb9087d91bba2 *R/check_input.R
 31aa4db134a1e89e3a9c13d2876ff835 *R/data.R
 4138723fd63cce16832ef412eafcf22f *R/get_apicarto_cadastre.R
 db9670dd0ae0b5e82a42837ffdc53ccb *R/get_apicarto_codes_postaux.R
-b8aeba4f2572d3093fd7d0280fce6d0a *R/get_apicarto_gpu.R
-269b43af9476c633e76336972643376e *R/get_apicarto_rpg.R
+105627c19a73523b771fd0284fb387f3 *R/get_apicarto_gpu.R
+06f95dc79b9190b43c6802e021f0132e *R/get_apicarto_rpg.R
 7cc334e04c203338e31b6b52930adad6 *R/get_apicarto_viticole.R
 1f732d2899a551695528fad64a459479 *R/get_apikeys.R
 912dbe2ba19499757011bc436a9de32f *R/get_last_news.R
-d6cd565bb6c1383cbf774d53b43bc04f *R/get_layers_metadata.R
+faa8a5c63b2b2549bec3b603ffc222e3 *R/get_layers_metadata.R
 8a8d8c4bc3a4c1988dcf1695639a4375 *R/get_location_info.R
 6abc5c73cd6daa874b9d9c9262154b73 *R/get_raw_lidar.R
 9f9dd30d7d962c35750a6d5817d37b7e *R/get_wfs.R
 a488ee560ec6a3fb26b6318c558d0a40 *R/get_wfs_attributes.R
-0c70629a411711105b597059b786293e *R/get_wms_raster.R
+c168a5e8d7b96131073e017ae9559891 *R/get_wms_raster.R
+d995142f4a5d6a4eab41eea0cd42971f *R/get_wmts.R
 fcee237e1ed909920c81f1984d7359de *R/hit_api.R
 2f48a0d39f334ef9fb9099d9fc03b11f *R/sysdata.rda
-9c7ed0e53cf3082e73c5d5085df676b1 *R/utils.R
+fcef48c8b6731913bf26454cc946ee4e *R/utils.R
 c357137c537f7952e08f7278ef817ae5 *R/zzz.R
 ce177c5efe9b36e113b82a9e195c9f1b *README.md
-09ca507d8abdab9517bf31fe9548d2b6 *build/vignette.rds
+775731ea4a0bf8eaaba5562aaf4def4d *build/vignette.rds
 ea1d70c773f6109c903bd2fab867bf66 *data/cog_2023.rda
 0a6fef37848086aeb419372377754fcc *inst/doc/Getting_started.Rmd
 149c49ee322b80eceb37e1565025e54c *inst/doc/Getting_started.html
-a055d6988abc8202faf1be1042647df8 *inst/doc/SCAN_25_SCAN_100_SCAN_OACI.R
+98581933a52429ec50ca29ae23353c5d *inst/doc/SCAN_25_SCAN_100_SCAN_OACI.R
 043e0fcab4b9e51f8ba18e9f5dfecd58 *inst/doc/SCAN_25_SCAN_100_SCAN_OACI.Rmd
-38d76c63a552f8bdc2f7d60c7f910725 *inst/doc/SCAN_25_SCAN_100_SCAN_OACI.html
+2103376394235b5017f290c2c8fab0ac *inst/doc/SCAN_25_SCAN_100_SCAN_OACI.html
 fdb57115039de70634338b9f12575d6d *inst/extdata/penmarch.dbf
 c742bee3d4edfc2948a2ad08de1790a5 *inst/extdata/penmarch.prj
 cda75c50d302803da3fc850bdb953f8f *inst/extdata/penmarch.shp
@@ -46,47 +47,49 @@ c3978703d8f40f2679795335715e98f4 *man/figures/lifecycle-experimental.svg
 e08f932540cb5536c4f000d95c5a1b3a *man/figures/logo.png
 da7315552b51338dc3c64c0c6fadb9b9 *man/get_apicarto_cadastre.Rd
 06ece911c5e29dc0e1016b6ef742b71f *man/get_apicarto_codes_postaux.Rd
-f691fb8e6e06deafea1f14dbb861e3e5 *man/get_apicarto_gpu.Rd
+59cbd863f8b5fd398e90ad0f56e951e8 *man/get_apicarto_gpu.Rd
 27f78ff67f64b7f1c0e9d60d2b2889b7 *man/get_apicarto_rpg.Rd
 10035c5e643d2fc6a142a3edc858b2bd *man/get_apicarto_viticole.Rd
 e7ada1d6fe9f99e27ce8cb3cdcc0e8a0 *man/get_apikeys.Rd
 f79034ed303af710ea8369b01344ea05 *man/get_last_news.Rd
 31a279974ceafa6c4149dcdebcb86476 *man/get_layers_metadata.Rd
-c6c53c1fed57212650f0bf0a22ac7f69 *man/get_location_info.Rd
+74acb4fa74085c73bb8f7ba1c69121dc *man/get_location_info.Rd
 5f6f4a829d6756e3df9ca9083e83dfaa *man/get_raw_lidar.Rd
 8a0e9ff740d079a871f1075bca430b5b *man/get_wfs.Rd
 4f3d117f074b1faf740b7559d7fabeb3 *man/get_wfs_attributes.Rd
-c196d3526661cac05ae2f144a92ddaf9 *man/get_wms_raster.Rd
+9803875a2690f436b928ac7a477d556b *man/get_wms_raster.Rd
+e59f4cc2a0d0976cb118114faa1c12e3 *man/get_wmts.Rd
 3439d70e55851a6c32f5404b7077fd20 *tests/testthat.R
-bdd6998e09bccb0f33dea7b79309cd8e *tests/testthat/api_gpu_x_input/apicarto.ign.fr/api/gpu/document-07eb73.R
-5d6c2f7fba2e7243b2d39aea2da8c41d *tests/testthat/api_gpu_x_input/apicarto.ign.fr/api/gpu/document-1b1365.R
-5774cb70850bd5a4fff9cd90edfd628a *tests/testthat/api_gpu_x_input/apicarto.ign.fr/api/gpu/document-b95b4f.R
-dfe7a30fe3151d38784a018271ec7bcd *tests/testthat/api_gpu_x_input/apicarto.ign.fr/api/gpu/municipality-0b161d.R
-c4faaaf6e91e3ec9a556deb5b4e98e78 *tests/testthat/api_gpu_x_input/apicarto.ign.fr/api/gpu/municipality-5738ea.R
-bc2dea1caa8a38ba02fc58122641cba4 *tests/testthat/are_queryable works/wxs.ign.fr/administratif/geoportail/r/wms-21553a.R
-5cb8ec828bb6504430ffff07017e3943 *tests/testthat/get_api_codes_postaux/apicarto.ign.fr/api/codes-postaux/communes/29160.R
-ff19869e7c2533d7f375863c3db6dfe6 *tests/testthat/get_api_codes_postaux/apicarto.ign.fr/api/codes-postaux/communes/29760.R
-2b71b39100fd9ef8c592228cbd0bfc76 *tests/testthat/get_apicarto_rpg/apicarto.ign.fr/api/rpg/v1-b814e7.R
-f93f3af005ac275736232bf8a9d8f2ff *tests/testthat/get_apicarto_rpg/apicarto.ign.fr/api/rpg/v2-0b352a.R
-ac0e79d0a4aed8a273028f631a1710f0 *tests/testthat/get_apicarto_rpg/apicarto.ign.fr/api/rpg/v2-2a3af1.R
-f3650787adb0542b65969ccb3f31de94 *tests/testthat/get_apicarto_rpg/apicarto.ign.fr/api/rpg/v2-4f2bf7.R
-09420da2a20753db27b3ea31cf3bb11e *tests/testthat/get_apicarto_rpg/apicarto.ign.fr/api/rpg/v2-9a095b.R
-1bd61cc4239538a538f369e26211f000 *tests/testthat/get_apicarto_rpg/apicarto.ign.fr/api/rpg/v2-e397b2.R
-d97a6420f140cee7cdafc07e7da102cf *tests/testthat/get_last_news/geoservices.ign.fr/actualites/rss.xml.R
-6f21a2915658ceb0f56cc3b255518edb *tests/testthat/get_layers_metada_null/wxs.ign.fr/adresse/geoportail/r/wms-3fee96.R
-e790a768468299d80dfd56d8ff61e96b *tests/testthat/get_layers_metada_wfs/wxs.ign.fr/altimetrie/geoportail/wfs-866ab9.xml
-6759ad21c4b25eb0d0475c163b5e3971 *tests/testthat/get_layers_metada_wms/wxs.ign.fr/ortho/geoportail/r/wms-3fee96.R
-b330893d56bbfff6583e1c70d96d0ce8 *tests/testthat/get_loc_info error/wxs.ign.fr/ortho/geoportail/r/wms-21553a.R
-a520ddb3792b49ac9c6605839f818359 *tests/testthat/get_loc_info no data/wxs.ign.fr/environnement/geoportail/r/wms-21553a.R
-19cc03a22f7a02476b6c225f5fc1bdc7 *tests/testthat/get_loc_info no data/wxs.ign.fr/environnement/geoportail/r/wms-783e92.R
-fc737582b48505a433c72cf80c976664 *tests/testthat/get_loc_info no layer/wxs.ign.fr/adresse/geoportail/r/wms-21553a.R
-52491278870c3a0b6ef24285601c09e5 *tests/testthat/get_loc_info sf/wxs.ign.fr/agriculture/geoportail/r/wms-21553a.R
-c1b2c35ba5fe8b2a754f33dbf31c59c7 *tests/testthat/get_loc_info sf/wxs.ign.fr/agriculture/geoportail/r/wms-670772.R
-80f4e883c364814c96c0b80d9bc4625f *tests/testthat/get_loc_info/wxs.ign.fr/agriculture/geoportail/r/wms-21553a.R
-639e4f534fc0dfcc31f5e20927f1346f *tests/testthat/get_loc_info/wxs.ign.fr/agriculture/geoportail/r/wms-670772.R
-222208bc050c26dd8c8bd03f2f62f7e5 *tests/testthat/get_wfs_default_crs/wxs.ign.fr/administratif/geoportail/wfs-866ab9.R
-4eec35263d998a94a4c641d9d99576c4 *tests/testthat/get_wfs_default_crs/wxs.ign.fr/altimetrie/geoportail/wfs-866ab9.R
-c3163350140697f783b8a8164dd7beea *tests/testthat/hit_api_error/apicarto.ign.fr/api/rpg/v1-ad2b96.R
+ff4bc54fc5ed5e7fd99132e736fc6192 *tests/testthat/api_gpu_x_input/apicarto.ign.fr/api/gpu/document-07eb73.R
+993f69eed37e9c3249529ea04e0d4a38 *tests/testthat/api_gpu_x_input/apicarto.ign.fr/api/gpu/document-1b1365.R
+65bba400b0e2249c88217888c8eee62f *tests/testthat/api_gpu_x_input/apicarto.ign.fr/api/gpu/document-b95b4f.R
+52fd77e5b8329520246c089a1cb59ed0 *tests/testthat/api_gpu_x_input/apicarto.ign.fr/api/gpu/municipality-0b161d.R
+eaa0cf6a3b404afe0ec76903bd1fb175 *tests/testthat/api_gpu_x_input/apicarto.ign.fr/api/gpu/municipality-5738ea.R
+2eb70ba6d4ec6b8e681e98066b58893b *tests/testthat/are_queryable works/wxs.ign.fr/administratif/geoportail/r/wms-21553a.R
+499a3c3ac27a26d9ea52f7e545b6bd24 *tests/testthat/get_api_codes_postaux/apicarto.ign.fr/api/codes-postaux/communes/29160.R
+06a46376a30cc5012d803aff2e3a3837 *tests/testthat/get_api_codes_postaux/apicarto.ign.fr/api/codes-postaux/communes/29760.R
+5797fc616a18a710cfa93186dd46fc9e *tests/testthat/get_apicarto_rpg/apicarto.ign.fr/api/rpg/v1-b814e7.R
+509c2cd1564868df5e3f6c0148a559b5 *tests/testthat/get_apicarto_rpg/apicarto.ign.fr/api/rpg/v2-0b352a.R
+8216f539ddfbf5d20b0bc71dd64831cc *tests/testthat/get_apicarto_rpg/apicarto.ign.fr/api/rpg/v2-2a3af1.R
+14cd12f5f91d128ada9efff0499ab8d9 *tests/testthat/get_apicarto_rpg/apicarto.ign.fr/api/rpg/v2-4f2bf7.R
+1e1b96999d6c730a6d6467d3f39fa03a *tests/testthat/get_apicarto_rpg/apicarto.ign.fr/api/rpg/v2-9a095b.R
+e9f12a830af8f5cfb572508c7bb090d4 *tests/testthat/get_apicarto_rpg/apicarto.ign.fr/api/rpg/v2-e397b2.R
+ea719c2af583051c43efc086e0d3f263 *tests/testthat/get_last_news/geoservices.ign.fr/actualites/rss.xml.R
+dad3b579bb57beca4efe8e80929af429 *tests/testthat/get_layers_metada_null/wxs.ign.fr/adresse/geoportail/r/wms-3fee96.R
+781a24226d035c7d6b7d755675a46f9e *tests/testthat/get_layers_metada_wfs/wxs.ign.fr/altimetrie/geoportail/wfs-866ab9.xml
+334e4ee00d14f54c80d69e3a7268dc0a *tests/testthat/get_layers_metada_wms/wxs.ign.fr/ortho/geoportail/r/wms-3fee96.R
+4b38d25917ad82baaf1ca177f7cd9deb *tests/testthat/get_layers_metada_wmts/wxs.ign.fr/administratif/geoportail/wmts-36368b.xml
+ffa81706942141a2a2cadd680200e106 *tests/testthat/get_loc_info error/wxs.ign.fr/ortho/geoportail/r/wms-21553a.R
+398838fd4829b54e759ea06ca2b90aa3 *tests/testthat/get_loc_info no data/wxs.ign.fr/environnement/geoportail/r/wms-21553a.R
+46b940fc124a6353c7d2d93a424b75c0 *tests/testthat/get_loc_info no data/wxs.ign.fr/environnement/geoportail/r/wms-783e92.R
+ecc8018b919557d4250b613fa2292ed3 *tests/testthat/get_loc_info no layer/wxs.ign.fr/adresse/geoportail/r/wms-21553a.R
+8f1666a09f83540ffc985c2509348a54 *tests/testthat/get_loc_info sf/wxs.ign.fr/agriculture/geoportail/r/wms-21553a.R
+813488a8087b9f4e5ff1b1e6f766c4ca *tests/testthat/get_loc_info sf/wxs.ign.fr/agriculture/geoportail/r/wms-670772.R
+0f7817a27afb5d3fbfc067db8105cda6 *tests/testthat/get_loc_info/wxs.ign.fr/agriculture/geoportail/r/wms-21553a.R
+ee9790d4a9b9e17a802d2af7aa4b932c *tests/testthat/get_loc_info/wxs.ign.fr/agriculture/geoportail/r/wms-670772.R
+50af07484e3b8d08649eb205fac5cc00 *tests/testthat/get_wfs_default_crs/wxs.ign.fr/administratif/geoportail/wfs-866ab9.R
+f6f7d600541151c9a4705e2f3f51c1ff *tests/testthat/get_wfs_default_crs/wxs.ign.fr/altimetrie/geoportail/wfs-866ab9.R
+44d838df8bc4bf53c63c465ae5f0699a *tests/testthat/hit_api_error/apicarto.ign.fr/api/rpg/v1-ad2b96.R
 a4adbc7b96535272cbf24a1e5b489c65 *tests/testthat/setup.R
 95d755991bbee563a700a288f43703f4 *tests/testthat/test-check_input.R
 de04850253dbaaae53ce3aa779af38b4 *tests/testthat/test-get_apicarto_codes_postaux.R
@@ -94,30 +97,32 @@ db4ae9b1e12924b48c2b2e76aa508edc *tests/testthat/test-get_apicarto_gpu.R
 b08ec7fc75ec183d8f9955fe7189f734 *tests/testthat/test-get_apicarto_rpg.R
 26de029a0ba1e2a1a90b568361c6636f *tests/testthat/test-get_apikeys.R
 71558868b4d3730a3406bf080443d7be *tests/testthat/test-get_last_news.R
-8c13f6f77f0ffcae50b20b1b57934667 *tests/testthat/test-get_layers_metadata.R
+caff20ca07fc8631f72b34053d945ec0 *tests/testthat/test-get_layers_metadata.R
 3a65346a86776a68136790138c97a362 *tests/testthat/test-get_location_info.R
-231f5bdf5b226cc046b2ced08ea365fa *tests/testthat/test-get_wfs.R
-6c91032c10d869efe751263e1805df3e *tests/testthat/test-get_wms_raster.R
-a270ea41a973486e8aa424861ce95fe5 *tests/testthat/test-hit_api.R
+3e0cb85370105d26577043c5f4f0f5be *tests/testthat/test-get_wfs.R
+137630b552853eef2223ec016f3ccc2e *tests/testthat/test-get_wms_raster.R
+77e1ce588ba993e4b21c908cd5f4ea9a *tests/testthat/test-get_wms_raster_utils.R
+a40aae26b8439da11188a84814e75dbc *tests/testthat/test-get_wmts.R
+751a06eb503391d651ca31d6ac6f9e25 *tests/testthat/test-hit_api.R
 bdd852dd41a39d5d49dea03315018584 *tests/testthat/test-utils.R
 1fc27794d80f0d24b474034215d42da9 *tests/testthat/test-zzz.R
-071cab407d7a4ddf0b987613991a2dd1 *tests/testthat/wfs_ecql_filter/wxs.ign.fr/administratif/geoportail/wfs-866ab9.R
-8fbfc978550b169dd59195bb16f78892 *tests/testthat/wfs_ecql_filter/wxs.ign.fr/administratif/geoportail/wfs-8dfae6-e3ab15-POST.R
-98651a10d111a1e3fcf752c8d3a68b9d *tests/testthat/wfs_empty/wxs.ign.fr/administratif/geoportail/wfs-8dfae6-b509dc-POST.R
-5954f99f7572ade1fdececdde32f80c5 *tests/testthat/wfs_intersect/wxs.ign.fr/administratif/geoportail/wfs-866ab9.R
-ca57e03b5e32cd8f14ed0f3341fb596d *tests/testthat/wfs_intersect/wxs.ign.fr/administratif/geoportail/wfs-8dfae6-228390-POST.R
-be4d63345010a2e803df594e3e56f02c *tests/testthat/wfs_intersect/wxs.ign.fr/administratif/geoportail/wfs-8dfae6-2763fd-POST.R
-e9b131d5878e0281bb17485d92fac0e7 *tests/testthat/wfs_intersect/wxs.ign.fr/administratif/geoportail/wfs-8dfae6-7d0655-POST.R
-2e122d7ab6713ff82300521959478a0d *tests/testthat/wfs_intersect/wxs.ign.fr/administratif/geoportail/wfs-8dfae6-7f4ecc-POST.R
-0bfa7c6bb321eff5d7df56685b626599 *tests/testthat/wfs_intersect/wxs.ign.fr/administratif/geoportail/wfs-8dfae6-b217b6-POST.R
-c5071f83922c4cc150198fdf693396ab *tests/testthat/wfs_intersect/wxs.ign.fr/administratif/geoportail/wfs-8dfae6-f3c7f9-POST.R
+b502b5cae70b11f7b02656b530b0b1c0 *tests/testthat/wfs_ecql_filter/wxs.ign.fr/administratif/geoportail/wfs-866ab9.R
+ed6da9c90ed61a57dde172aaf2076637 *tests/testthat/wfs_ecql_filter/wxs.ign.fr/administratif/geoportail/wfs-8dfae6-e3ab15-POST.R
+f1193a4fbaba5c9b2379b2a4bd541c50 *tests/testthat/wfs_empty/wxs.ign.fr/administratif/geoportail/wfs-8dfae6-b509dc-POST.R
+6bdf0561f4827a1afe08224c715ff089 *tests/testthat/wfs_intersect/wxs.ign.fr/administratif/geoportail/wfs-866ab9.R
+799a693da2c345b152514681316cc44a *tests/testthat/wfs_intersect/wxs.ign.fr/administratif/geoportail/wfs-8dfae6-228390-POST.R
+f09e8bf707b61671280c7ce1c26a39c6 *tests/testthat/wfs_intersect/wxs.ign.fr/administratif/geoportail/wfs-8dfae6-2763fd-POST.R
+ae54f829027f638fa6b43c4ef007b2d2 *tests/testthat/wfs_intersect/wxs.ign.fr/administratif/geoportail/wfs-8dfae6-7d0655-POST.R
+12de14067a90249187a7ecf7486063d7 *tests/testthat/wfs_intersect/wxs.ign.fr/administratif/geoportail/wfs-8dfae6-7f4ecc-POST.R
+4532f94d9e6bc1a002d4910cdd79c45f *tests/testthat/wfs_intersect/wxs.ign.fr/administratif/geoportail/wfs-8dfae6-b217b6-POST.R
+2ffeeb5fae2f16b020c59dbaa0a644bd *tests/testthat/wfs_intersect/wxs.ign.fr/administratif/geoportail/wfs-8dfae6-f3c7f9-POST.R
 d7bdb969f9585b83ac41865f08f2ad4d *vignettes/Getting_started-unnamed-chunk-6-1.png
 31c92b49132af425977107dd463d0c1e *vignettes/Getting_started-unnamed-chunk-7-1.png
 7fe99ecdb8b0fb80d67575bfdd0b377e *vignettes/Getting_started-unnamed-chunk-8-1.png
 0a6fef37848086aeb419372377754fcc *vignettes/Getting_started.Rmd
-d02f8ba3b83015da4dc0d5dec22842bd *vignettes/Getting_started.Rmd.orig
+e953fe4b86771c42c6c106dca24d5cc1 *vignettes/Getting_started.Rmd.orig
 71cb77239a7a864611469254f9a3a277 *vignettes/SCAN25.tif
 043e0fcab4b9e51f8ba18e9f5dfecd58 *vignettes/SCAN_25_SCAN_100_SCAN_OACI.Rmd
 35ce996a58c61c9a1e90bb0827173146 *vignettes/precompile.R
-386460632a02ad245037e00a4b88d8fc *vignettes/web_only/api_carto.Rmd
+b71e3080beb9ef501210aa89c24f7725 *vignettes/web_only/api_carto.Rmd
 19277276b183c859133fd95738aa8790 *vignettes/web_only/happign_for_foresters.Rmd

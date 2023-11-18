@@ -13,7 +13,7 @@
 #' "secteur-cc", "prescription-surf", "prescription-lin", "prescription-pct",
 #' "info-surf", "info-lin", "info-pct". See detail for more info.
 #' @param categorie public utility easement according to the
-#' [national nomenclature](http://www.geoinformations.developpement-durable.gouv.fr/nomenclature-nationale-des-sup-r1082.html)
+#' [national nomenclature](https://www.geoinformations.developpement-durable.gouv.fr/nomenclature-nationale-des-sup-r1082.html)
 #' @param dTolerance numeric; Complex shape cannot be handle by API; using `dTolerance` allow to simplify them. See `?sf::st_simplify`
 #'
 #' @details
@@ -150,12 +150,21 @@ get_apicarto_gpu <- function(x,
 
    # hit api ----
    message("Features downloaded : ", appendLF = F)
-   resp <- Map(build_req_hit_api,
-       path = paste0("/api/gpu/", ressource),
-       "geom" = geom,
-       "partition" = partition,
-       "insee" = insee,
-       "categorie" = categorie)
+
+   tryCatch({
+      resp <- Map(build_req_hit_api,
+                  path = paste0("/api/gpu/", ressource),
+                  "geom" = geom,
+                  "partition" = partition,
+                  "insee" = insee,
+                  "categorie" = categorie)
+   }, error = function(cnd){
+      if (grepl(cnd, "HTTP 500")) {
+         stop(cnd,
+              "Apicarto gpu is currently unavailable, please try again later.", call. = F)
+      }
+   })
+
 
    # processing result ----
    if (all(is_empty(unlist(resp)))){
