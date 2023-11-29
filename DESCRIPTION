@@ -1,6 +1,6 @@
 Package: happign
 Title: R Interface to 'IGN' Web Services
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: 
     person("Paul", "Carteron", , "carteronpaul@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-6942-6662"))
@@ -28,7 +28,7 @@ Encoding: UTF-8
 RoxygenNote: 7.2.3
 SystemRequirements: C++11, GDAL (>= 2.0.1), GEOS (>= 3.4.0), PROJ (>=
         4.8.0), sqlite3
-Packaged: 2023-11-18 15:56:42 UTC; PaulCarteron
+Packaged: 2023-11-29 08:17:42 UTC; PaulCarteron
 Author: Paul Carteron [aut, cre] (<https://orcid.org/0000-0002-6942-6662>)
 Repository: CRAN
-Date/Publication: 2023-11-18 16:20:02 UTC
+Date/Publication: 2023-11-29 09:40:02 UTC

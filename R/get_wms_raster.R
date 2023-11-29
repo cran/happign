@@ -59,7 +59,7 @@
 #' unless `overwrite` is set to `TRUE`.
 #'
 #' @importFrom terra rast
-#' @importFrom sf st_crs st_make_valid st_transform
+#' @importFrom sf st_crs st_make_valid st_transform st_is_longlat
 #' @importFrom utils menu
 #'
 #' @seealso
@@ -106,13 +106,12 @@ get_wms_raster <- function(x,
                            styles = "",
                            interactive = FALSE) {
 
+   # interactive mode ----
    # if TRUE menu ask for apikey and layer name
    if (interactive){
-      apikeys <- get_apikeys()
-      apikey <- apikeys[menu(apikeys)]
-
-      layers <- get_layers_metadata(apikey, data_type = "wms")$Name
-      layer <- layers[menu(layers)]
+      choice <- interactive_mode()
+      apikey <- choice$apikey
+      layer <- choice$layer
    }
 
    # if no filename provided, layer is used by removing non alphanum character
@@ -169,7 +168,7 @@ bbox_dim <- function(x){
 
    width_height <- st_length(st_sfc(list(width, height), crs = st_crs(x))) |>
       setNames(c("width", "height")) |>
-      units::drop_units()
+      units::drop_units() #replace by as numeric to avoid dependency ?
 
    return(width_height)
 }
@@ -220,9 +219,15 @@ create_urls <- function(x, base_url, res){
       stop("`res` must be of class numeric.", call. = F)
    }
 
+   is_longlat <- st_is_longlat(x)
    dims <- bbox_dim(st_geometry(x)[1])/res
+
    bboxs <- lapply(st_as_sfc(x), st_bbox) |>
-      lapply(\(x) paste(x$ymin, x$xmin, x$ymax, x$xmax, sep=","))
+      # If longlat is TRUE bbox order is different, I don't understand...
+      lapply(\(x) ifelse(is_longlat,
+                         paste(x$ymin, x$xmin, x$ymax, x$xmax, sep=","),
+                         paste(x$xmin, x$ymin, x$xmax, x$ymax, sep=",")))
+
    urls <- paste0(base_url,
                   "&bbox=", bboxs,
                   "&width=", dims["width"],
@@ -260,7 +265,7 @@ download_wms <- function(urls, crs, filename, overwrite) {
    tryCatch({
       tmp_vrt <- tempfile(fileext = ".vrt")
       gdal_utils("buildvrt",
-                 source = urls,
+                 source = paste0(urls),
                  destination = tmp_vrt,
                  quiet = FALSE,
                  options = c(if (overwrite) "-overwrite" else ""))
