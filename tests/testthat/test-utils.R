@@ -23,14 +23,14 @@ test_that("spatial_filter", {
    expect_match(construct_spatial_filter(x = point,
                                          spatial_filter = c("dwithin", 50, "meters"),
                                          crs = 4326,
-                                         apikey = "altimetrie"),
-                "DWITHIN(the_geom, POINT (47.813 -4.344), 50, meters)", fixed = T)
+                                         layer = "layer"),
+                "DWITHIN(geom, POINT (47.813 -4.344), 50, meters)", fixed = T)
 
    # polygon
    expect_match(construct_spatial_filter(x = poly,
                                          spatial_filter = c("dwithin", 50, "meters"),
                                          crs = 4326,
-                                         apikey = "altimetrie"),
+                                         layer = "layer"),
                 "47.815 -4.347, 47.813 -4.344)), 50, meters)", fixed = T)
 
 
@@ -38,8 +38,8 @@ test_that("spatial_filter", {
    expect_match(construct_spatial_filter(x = poly,
                                          spatial_filter = "bbox",
                                          crs = 4326,
-                                         apikey = "altimetrie"),
-                "BBOX(the_geom, -4.347, 47.811, -4.344, 47.815, 'EPSG:4326')", fixed = T)
+                                         layer = "layer"),
+                "BBOX(geom, -4.347, 47.811, -4.344, 47.815, 'EPSG:4326')", fixed = T)
 
 })
 test_that("shp_to_geojson", {
@@ -80,7 +80,7 @@ test_that("shp_to_geojson crs", {
 })
 test_that("shp_to_geojson dTolerance", {
 
-   x <- st_buffer(poly, 1)
+   x <- st_buffer(st_transform(poly, 2154), 1)
    geojson <- shp_to_geojson(x)
    simplified_geojson <- shp_to_geojson(x, 4326, 10)
    expect_true(nchar(geojson) > nchar(simplified_geojson))
@@ -90,10 +90,9 @@ with_mock_dir("get_wfs_default_crs", {
       skip_on_cran()
       skip_if_offline()
 
-      expect_error(get_wfs_default_crs("administratif", "badname"),
-                   "No crs found")
+      expect_error(get_wfs_default_crs("badname"), "No crs found")
 
-      crs <- get_wfs_default_crs("altimetrie", "ELEVATION.CONTOUR.LINE:courbe")
+      crs <- get_wfs_default_crs("ELEVATION.CONTOUR.LINE:courbe")
       expect_equal(crs, 4326)
 
    })

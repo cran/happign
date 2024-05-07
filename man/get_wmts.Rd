@@ -5,7 +5,6 @@
 \title{Download WMTS raster tiles}
 \usage{
 get_wmts(x,
-         apikey = "ortho",
          layer = "ORTHOIMAGERY.ORTHOPHOTOS",
          zoom = 10L,
          crs = 2154,
@@ -17,9 +16,6 @@ get_wmts(x,
 \item{x}{Object of class \code{sf} or \code{sfc}. Needs to be located in
 France.}
 
-\item{apikey}{\code{character}; API key from \code{get_apikeys()} or directly
-from \href{https://geoservices.ign.fr/services-web-experts}{IGN website}.}
-
 \item{layer}{\code{character}; layer name from
 \code{get_layers_metadata(apikey, "wms")} or directly from
 \href{https://geoservices.ign.fr/services-web-experts}{IGN website}.}
@@ -28,7 +24,7 @@ from \href{https://geoservices.ign.fr/services-web-experts}{IGN website}.}
 map tiles covers a large geographical area. In other words, the smaller
 the zoom level, the less precise the resolution. For conversion between zoom
 level and resolution see
-\href{https://geoservices.ign.fr/documentation/services/api-et-services-ogc/images-tuilees-wmts-ogc}{WMTS IGN Documentation}}
+\href{https://geoservices.ign.fr/documentation/services/services-geoplateforme/diffusion#70062}{WMTS IGN Documentation}}
 
 \item{crs}{\code{numeric}, \code{character}, or object of class \code{sf} or \code{sfc}.
 It is set to EPSG:2154 by default. See \code{\link[sf:st_crs]{sf::st_crs()}} for more detail.}
@@ -53,7 +49,29 @@ tiles.
 }
 \examples{
 \dontrun{
-TO-DO
+library(sf)
+library(tmap)
+
+penmarch <- read_sf(system.file("extdata/penmarch.shp", package = "happign"))
+
+# Get orthophoto
+layers <- get_layers_metadata("wmts", "ortho")$Identifier
+ortho <- get_wmts(penmarch, layer = layers[1], zoom = 21)
+plotRGB(ortho)
+
+# Get all available irc images
+layers <- get_layers_metadata("wmts", "orthohisto")$Identifier
+irc_names <- grep("irc", layers, value = TRUE, ignore.case = TRUE)
+
+irc <- lapply(irc_names, function(x) get_wmts(penmarch, layer = x, zoom = 18)) |>
+   setNames(irc_names)
+
+# remove empty layer (e.g. only NA)
+irc <- Filter(function(x) !all(is.na(values(x))), irc)
+
+# plot
+all_plots <- lapply(irc, plotRGB)
+
 }
 }
 \seealso{

@@ -1,3 +1,17 @@
+# happign 0.3.0
+* Refactor package to adapt to Géoplateforme
+
+## Breaking change :
+* `get_wms_raster()`, `get_wfs()` and `get_wmts()` do not use `apikey` arg anymore.
+* Order of arguments in `get_layers_metadata()` has been changed. The arg `data_type` now comes before `apikey`.
+* `get_iso()` has be temporary removed from `happign`
+
+## Other change :
+* Arg `apikey` isn't mandatory anymore in `get_layers_metadata`.
+* Vignettes have been adapted to happign 0.3.0.
+* `get_wms_raster()` now have a `verbose` argument
+* `get_wms_raster()` function uses the WMS driver provided by GDAL to download a raster image. Instead of downloading and merging multiple tiles, it retrieves the entire image at once from the WMS server.
+
 # happign 0.2.2
 * Fix bug when creating bbox for `get_wms_raster()` getMap request when crs isn't latlong.
 
@@ -30,12 +44,12 @@ There is no longer need to download several tiles.
 # happign 0.1.8
 * Correction of get_raw_lidar()
 * New vignette "completion_of_ign_data_road_example"
-* Precomputation of cran vignette
+* Pre-computation of cran vignette
 * Apply DRY principle to option("timeout") handling
 * Add "penmarch.shp" as internal data for test and example
 * Better handling of filename saving for `get_wfs()`
 * Adding support for spatial and ecql filter to `get_wfs()`
-* Remove dependecy to magritrr pipe `%>%` by `|>`
+* Remove dependency to magritrr pipe `%>%` by `|>`
 * Add internal shape for testing `point`, `multipoint`, `line`, `multiline`, `poly`, `multipoly`
 * add `get_wfs_attributes()` function
 * `NULL` is returned when no data found
@@ -95,7 +109,7 @@ merging for quiet faster results. `stars` package is not used anymore.
 
 * adding connection to isochrone and isodistance calculation of IGN with `get_iso()`
 * new vignette [happign for forester](https://paul-carteron.github.io/happign/articles/web_only/happign_for_foresters.html)
-* new vignette [SCAN 25, SCAN 100 et SCAN OACI](https://paul-carteron.github.io/happign/articles/SCAN_25_SCAN_100_SCAN_OACI.html)
+* new vignette SCAN 25, SCAN 100 et SCAN OACI
 
 # happign 0.1.2
 
