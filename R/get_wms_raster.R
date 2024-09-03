@@ -30,7 +30,7 @@
 #' @param filename `character` or `NULL`; specifies the filename or an
 #' open connection for writing (e.g., "test.tif" or "~/test.tif").
 #' If `NULL`, uses `layer` as the filename. The default format is ".tif",
-#' but all [GDAL drivers](https://gdal.org/drivers/raster/index.html)
+#' but all [GDAL drivers](https://gdal.org/en/latest/drivers/raster/index.html)
 #' are supported.
 #' @param verbose `boolean`; if TRUE, message are added.
 #' @param overwrite `boolean`; if TRUE, the existing raster will be overwritten.
@@ -51,7 +51,7 @@
 #' `filename` already exists. If it does, the file is imported into
 #' R without downloading again, unless `overwrite` is set to `TRUE`.
 #'
-#' @importFrom terra rast RGB<-
+#' @importFrom terra rast RGB<- minmax allNA
 #' @importFrom sf gdal_utils st_bbox st_crs
 #' @importFrom utils menu
 #'
@@ -147,12 +147,18 @@ get_wms_raster <- function(x,
    rast <- gdal_utils("warp",
                       source = desc_xml,
                       destination = filename,
-                      quiet=FALSE,
+                      quiet=!verbose,
                       options = c(warp_options, create_options()),
                       config_options = config_options()) |>
       suppressWarnings()
 
    rast <- rast(filename)
+
+
+   if (sum(minmax(allNA(rast))) == 2){
+      message("Raster is empty, NULL is returned")
+      return(NULL)
+   }
 
    if (rgb){
       RGB(rast) <- c(1, 2, 3)
