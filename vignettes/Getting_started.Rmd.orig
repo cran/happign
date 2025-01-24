@@ -38,7 +38,7 @@ library(tmap);tmap_mode("plot")
 *  WMTS : same as WMS raster but images are precalculated
 *  WFS : data in vector format (.shp, ...).
 
-More detailed information are available [here](https://www.ogc.org/standard/wms/) for WMS, [here](https://www.ogc.org/standard/wmts/) for WMTS and [here](https://www.ogc.org/standard/wfs/) for WFS.
+More detailed information are available [here](https://www.ogc.org/publications/standard/wms/) for WMS, [here](https://www.ogc.org/publications/standard/wmts/) for WMTS and [here](https://www.ogc.org/publications/standard/wfs/) for WFS.
 
 To download data from IGN web services at least two elements are needed :
 

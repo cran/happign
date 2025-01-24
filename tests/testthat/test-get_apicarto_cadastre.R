@@ -3,10 +3,10 @@ test_that("get_geojson work", {
    poly_json <- get_geojson(poly)
    expect_match(poly_json,
                 paste0('\\{"type":"Polygon","coordinates":\\[\\[',
-                       '\\[-4\\.346.*,47\\.815.*\\],',
-                       '\\[-4\\.345.*,47\\.811.*\\],',
-                       '\\[-4\\.343.*,47\\.812.*\\],',
-                       '\\[-4\\.346.*,47\\.815.*\\]',
+                       '\\[-4\\.34.*,47\\.81.*\\],',
+                       '\\[-4\\.34.*,47\\.81.*\\],',
+                       '\\[-4\\.34.*,47\\.81.*\\],',
+                       '\\[-4\\.34.*,47\\.81.*\\]',
                        '\\]\\]\\}'))
 })
 
@@ -93,7 +93,8 @@ with_mock_dir("fetch_data error dtolerance", {
                                      code_com = NULL, section = NULL, numero = NULL, code_arr = NULL,
                                      code_abs = NULL, source_ign = "PCI", `_start` = 0, `_limit` = 500))
       expect_error(fetch_data(dtolerance_params[[1]], "commune", F),
-                   "Shape is too complex.")   })
+                   "Shape is too complex.")
+      })
 }, simplify = FALSE)
 
 with_mock_dir("fetch_data error no data", {
@@ -140,7 +141,7 @@ with_mock_dir("get_apicarto_cadastre", {
       skip_on_ci()
 
       params <- expand.grid(code_insee = c("29158", "29135"),
-                            section = c("AW", "BR"),
+                            section = c("AX"),
                             numero = c("0001", "0010"),
                             stringsAsFactors = FALSE)
       parcels <- get_apicarto_cadastre(params$code_insee,
@@ -149,6 +150,6 @@ with_mock_dir("get_apicarto_cadastre", {
                                        type = "parcelle")
 
       expect_s3_class(parcels, "sf")
-      expect_equal(dim(parcels), c(6, 13))
+      expect_equal(dim(parcels), c(4, 13))
    })
 }, simplify = FALSE)

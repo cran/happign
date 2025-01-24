@@ -1,6 +1,6 @@
 Package: happign
 Title: R Interface to 'IGN' Web Services
-Version: 0.3.1
+Version: 0.3.2
 Authors@R: 
     person("Paul", "Carteron", , "carteronpaul@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-6942-6662"))
@@ -16,7 +16,7 @@ License: GPL (>= 3)
 URL: https://github.com/paul-carteron,
         https://paul-carteron.github.io/happign/
 BugReports: https://github.com/paul-carteron/happign/issues
-Depends: R (>= 3.3.0)
+Depends: R (>= 4.1.0)
 Imports: archive, dplyr, jsonlite, httr2 (>= 1.0.0), methods, sf (>=
         1.0-7), terra, xml2, yyjsonr
 Suggests: covr, httptest2, knitr, rmarkdown, testthat (>= 3.0.0), tmap
@@ -28,7 +28,7 @@ Encoding: UTF-8
 RoxygenNote: 7.3.2
 SystemRequirements: C++11, GDAL (>= 2.0.1), GEOS (>= 3.4.0), PROJ (>=
         4.8.0), sqlite3
-Packaged: 2024-09-03 11:49:08 UTC; PaulCarteron
+Packaged: 2025-01-24 09:04:58 UTC; PaulCarteron
 Author: Paul Carteron [aut, cre] (<https://orcid.org/0000-0002-6942-6662>)
 Repository: CRAN
-Date/Publication: 2024-09-03 13:40:03 UTC
+Date/Publication: 2025-01-24 09:30:05 UTC
