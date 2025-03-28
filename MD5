@@ -1,6 +1,6 @@
-5c741a8bd5771845776ab6014781805a *DESCRIPTION
-a2985bc1659ee08114060655a6699c04 *NAMESPACE
-9a0fc171f8cbac8507563ead73feb1d2 *NEWS.md
+d9c0cb3c8f83e639dfcb80cc65e4d2f5 *DESCRIPTION
+5e67ee96a1057f392c687e1874c80b2e *NAMESPACE
+82909eb3df5ed67d17844f1fc66dc629 *NEWS.md
 142ca7af2439135cf0fdb9087d91bba2 *R/check_input.R
 8dc4c27132522e5c3c822f840a19a816 *R/data.R
 9ad045c7fc7d4df70def329a1bf6819a *R/get_apicarto_cadastre.R
@@ -16,7 +16,7 @@ fbf79d7739243f6c5564cfd143013f58 *R/get_location_info.R
 6abc5c73cd6daa874b9d9c9262154b73 *R/get_raw_lidar.R
 3dd22e186c86e3a6b044129977c88b30 *R/get_wfs.R
 8280b72777cde17db3f2ef84b0585551 *R/get_wfs_attributes.R
-70f14c2dbe597ac0040d79f1a996b8f7 *R/get_wms_raster.R
+c5946bb9f8a518888afb0c6e3678d45a *R/get_wms_raster.R
 1050ca14b7000ac48cfcb66a9b058d44 *R/get_wmts.R
 fcee237e1ed909920c81f1984d7359de *R/hit_api.R
 2f48a0d39f334ef9fb9099d9fc03b11f *R/sysdata.rda
@@ -59,7 +59,7 @@ e9aba207f9b9ad06ed462b787bf540b7 *man/get_layers_metadata.Rd
 df4cc707d57360c6577772ac2f77f6c7 *man/get_raw_lidar.Rd
 3f111aacaa95bc1ac2501700025fb66c *man/get_wfs.Rd
 a5a15436fc80e0531eff1ec782a19f1e *man/get_wfs_attributes.Rd
-528c567e45901be97024f240e5dfa1b3 *man/get_wms_raster.Rd
+96d5feb4408cdde831f25271c189978a *man/get_wms_raster.Rd
 b4b801466a4102714c20d4ce1948a6bd *man/get_wmts.Rd
 3439d70e55851a6c32f5404b7077fd20 *tests/testthat.R
 ff4bc54fc5ed5e7fd99132e736fc6192 *tests/testthat/api_gpu_x_input/apicarto.ign.fr/api/gpu/document-07eb73.R
@@ -105,12 +105,12 @@ de04850253dbaaae53ce3aa779af38b4 *tests/testthat/test-get_apicarto_codes_postaux
 db4ae9b1e12924b48c2b2e76aa508edc *tests/testthat/test-get_apicarto_gpu.R
 5469827a34da5b30c736e680ce5da17e *tests/testthat/test-get_apicarto_rpg.R
 26de029a0ba1e2a1a90b568361c6636f *tests/testthat/test-get_apikeys.R
-bb505185a5b51cd0b8d08a09701a254a *tests/testthat/test-get_iso.R
+b194318f431aa4a3adfbd55d229451c1 *tests/testthat/test-get_iso.R
 71558868b4d3730a3406bf080443d7be *tests/testthat/test-get_last_news.R
 f3110f1d996c49bcd20aacd1d77460d1 *tests/testthat/test-get_layers_metadata.R
 3a65346a86776a68136790138c97a362 *tests/testthat/test-get_location_info.R
 05c16cb21e8428093368b3eff0397a6b *tests/testthat/test-get_wfs.R
-08a39084af375c23852360fc654659ad *tests/testthat/test-get_wms_raster.R
+04557e0e23705bd7e33acf6bc7e118ef *tests/testthat/test-get_wms_raster.R
 f72d29500068a9eb5a9326aba69a70e2 *tests/testthat/test-get_wmts.R
 751a06eb503391d651ca31d6ac6f9e25 *tests/testthat/test-hit_api.R
 851554ebc5eccd62d589daff02790c04 *tests/testthat/test-utils.R
@@ -131,5 +131,5 @@ b92f85ba071e5455cede0c7a73acae9e *tests/testthat/wfs_intersect/data.geopf.fr/wfs
 8aa13cb0f68e1cbfcc2d9085fd056bcf *vignettes/unnamed-chunk-5-1.png
 28ae7f2656838fc2ec51a9c4cb30905c *vignettes/unnamed-chunk-6-1.png
 2536047e77db25c1ed3d106926f8ff13 *vignettes/unnamed-chunk-7-1.png
-2c039f11b60034abe89c65b927302755 *vignettes/web_only/api_carto.Rmd
-91ef926eac70ae7063299f7825545861 *vignettes/web_only/happign_for_foresters.Rmd
+6879456c947296a8ce3db4d9952b5bbd *vignettes/web_only/api_carto.Rmd
+1e4e8cf34a131625d4dc62609adec862 *vignettes/web_only/happign_for_foresters.Rmd
