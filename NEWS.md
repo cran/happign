@@ -1,3 +1,23 @@
+# happign 0.3.6
+Function:
+   * Refactor `get_apicarto_cadastre` :
+      * Add explicite vectorization ;
+      * Remove `code_com` and `code_arr` which aren't mandatory ;
+      * Special arrondissement case for `Paris`, `Lyon` and `Marseille` is implemented
+   * Refactor `get_apicarto_codes_postaux`
+   * Refactor `get_apicarto_gpu`
+
+Vignettes :
+   * Refactor of [API Carto](https://paul-carteron.github.io/happign/articles/web_only/api_carto.html)
+
+Breaking changes:
+   * Remove `get_apicarto_rpg` which isn't update anymore
+   * Remove `get_apicarto_viticole` which doesn't exist anymore
+   * Arg `ressource` of `get_apicarto` is change to `layer`
+
+Other :
+   * Remove `yyjsonr` dependency
+   
 # happign 0.3.5
 Bug fixes:
 * add support to `get_wfs` to find geometry name [#40](https://github.com/paul-carteron/happign/issues/40)
