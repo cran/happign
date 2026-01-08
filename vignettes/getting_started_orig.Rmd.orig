@@ -9,14 +9,21 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	collapse = TRUE,
+	comment = "#>",
+	dpi = 300,
+	out.width = "75%",
+	fig.align = "center"
+)
+```
 
 # Before starting
 
 We can load the `happign` package, and some additional packages we will need (`sf` to manipulate spatial data and `tmap` to create maps)
 
-
-``` r
+```{r package, message=FALSE, warning=FALSE}
 library(happign)
 library(sf)
 library(tmap)
@@ -58,8 +65,7 @@ To avoid copying layer names manually, `happign` provides the `get_layers_metada
 
 This function can be used with **WFS**, **WMS**, and **WMTS** services:
 
-
-``` r
+```{r get_layers_metadata}
 wfs_layers <- get_layers_metadata(data_type = "wfs")
 wms_layers <- get_layers_metadata(data_type = "wms-r")
 wmts_layers <- get_layers_metadata(data_type = "wmts")
@@ -73,8 +79,7 @@ After selecting layer name, downloading data with `happign` only requires a few 
 
 In the following example, we focus on the town of **Penmarc’h** (France). A polygon representing part of this municipality is included in `happign` and will be used as the area of interest.
 
-
-``` r
+```{r penmarch}
 penmarch <- sf::read_sf(system.file("extdata/penmarch.shp", package = "happign"))
 ```
 
@@ -84,16 +89,14 @@ The `get_wfs()` function is used to download vector data from IGN WFS services.
 
 In this first example, we retrieve the administrative boundaries of Penmarc’h.
 
-
-``` r
+```{r get_wfs}
 penmarch_borders <- get_wfs(
   x = penmarch,
   layer = "LIMITES_ADMINISTRATIVES_EXPRESS.LATEST:commune"
 )
 ```
 
-
-``` r
+```{r plot_wfs}
 # Plotting result
 tm_shape(penmarch_borders) +
   tm_polygons() +
@@ -116,10 +119,6 @@ tm_shape(penmarch_borders) +
   )
 ```
 
-<div class="figure" style="text-align: center">
-<img src="plot_wfs-1.png" alt="plot of chunk plot_wfs" width="75%" />
-</div>
-
 That is all it takes to retrieve vector data using WFS !
 
 From there, you can explore the wide range of datasets provided by IGN. For instance, you may wonder how many roundabout are recorded in Penmarc’h (*Spoiler: there are 8 of them!*)
@@ -130,8 +129,7 @@ In the example below, spatial predicate is used to refined the query using the a
 
 Default predicate is `bbox()` (generally fastest). All available are documented in `?spatial_predicates` : `intersects()`, `within()`, `disjoint()`, `contains()`, `touches()`, `crosses()`, `overlaps()`, `equals()`, `bbox()`, `dwithin()`, `beyond()`, `relate()`.
 
-
-``` r
+```{r get_wfs_roundabout}
 roundabout <- get_wfs(
   x = penmarch_borders,
   layer = "BDCARTO_V5:rond_point",
@@ -139,8 +137,7 @@ roundabout <- get_wfs(
 )
 ```
 
-
-``` r
+```{r plot_roundabout}
 # Plotting result
 tm_shape(penmarch_borders) +
   tm_polygons() +
@@ -161,11 +158,8 @@ tm_shape(roundabout) +
     "Roundabout recorded by IGN in Penmarc’h",
     position = tm_pos_out("center", "top", pos.h = "center")
   )
-```
 
-<div class="figure" style="text-align: center">
-<img src="plot_roundabout-1.png" alt="plot of chunk plot_roundabout" width="75%" />
-</div>
+```
 
 ### WMS raster
 
@@ -177,8 +171,7 @@ The [*Altimétrie* category](https://geoservices.ign.fr/services-web-experts-alt
 
 In the example below, the administrative boundaries of Penmarc’h are used to download a DEM. For elevation data, we are interested in numeric pixel values rather than RGB colors, which is why `rgb = FALSE` is used.
 
-
-``` r
+```{r dem}
 layers_metadata <- get_layers_metadata("wms-r", "altimetrie")
 dem_layer <- layers_metadata[3, 1] # ELEVATION.ELEVATIONGRIDCOVERAGE.HIGHRES
 
@@ -189,15 +182,12 @@ mnt <- get_wms_raster(
   crs = 2154,
   rgb = FALSE
 )
-#> 0...10...20...30...40...50...60...70...80...90...100 - done.
-#> Warp executed successfully.
 
 # Remove negative values (possible edge artefacts)
 mnt[mnt < 0] <- NA
 ```
 
-
-``` r
+```{r plot_dem}
 tm_shape(mnt) +
   tm_raster(
     col.scale  = tm_scale_continuous(values = "terrain", value.na = "grey"),
@@ -209,11 +199,8 @@ tm_shape(penmarch_borders, is.main = TRUE) +
     "Digital Elevation Model of Penmarc’h",
     position = tm_pos_out("center", "top", pos.h = "center")
   )
-```
 
-<div class="figure" style="text-align: center">
-<img src="plot_dem-1.png" alt="plot of chunk plot_dem" width="75%" />
-</div>
+```
 
 *Note:* Rasters returned by `get_wms_raster()` are `SpatRaster` objects from the `{terra}` package.
 For an overview of raster class conversions in R, see: https://geocompx.org/post/2021/spatial-classes-conversion/
@@ -224,8 +211,7 @@ For WMTS services, no spatial resolution needs to be specified because the image
 
 When the goal is visualization rather than quantitative analysis, **WMTS is generally preferable to WMS**, as it is faster and better suited for map display.
 
-
-``` r
+```{r ortho}
 layers_metadata <- get_layers_metadata("wmts", "ortho")
 ortho_layer <- layers_metadata[1, 3] # ORTHOIMAGERY.ORTHOPHOTOS
 tiny_penmarch <- read_sf(system.file("extdata/penmarch.shp", package = "happign"))
@@ -237,8 +223,7 @@ hr_ortho <- get_wmts(
 )
 ```
 
-
-``` r
+```{r plot_ortho}
 tm_shape(hr_ortho) +
   tm_rgb() +
   tm_shape(penmarch_borders) +
@@ -248,9 +233,5 @@ tm_shape(hr_ortho) +
     position = tm_pos_out("center", "top", pos.h = "center")
   )
 ```
-
-<div class="figure" style="text-align: center">
-<img src="plot_ortho-1.png" alt="plot of chunk plot_ortho" width="75%" />
-</div>
 
 WMTS layers are ideal for background maps, orthophotography, and any use case where visual clarity and performance are more important than direct access to raw pixel values.
