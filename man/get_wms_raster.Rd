@@ -11,8 +11,7 @@ get_wms_raster(x,
                rgb = TRUE,
                filename = NULL,
                overwrite = FALSE,
-               verbose = TRUE,
-               interactive = FALSE)
+               verbose = TRUE)
 }
 \arguments{
 \item{x}{Object of class \code{sf} or \code{sfc}, located in France.}
@@ -44,9 +43,6 @@ will directly load the raster from that file instead of re-downloading it.}
 \item{overwrite}{\code{boolean}; if TRUE, the existing raster will be overwritten.}
 
 \item{verbose}{\code{boolean}; if TRUE, message are added.}
-
-\item{interactive}{\code{logical}; if TRUE, an interactive menu prompts for
-\code{apikey} and \code{layer} argument.}
 }
 \value{
 \code{SpatRaster} object from \code{terra} package.
@@ -73,9 +69,6 @@ library(tmap)
 
 # Shape from the best town in France
 penmarch <- read_sf(system.file("extdata/penmarch.shp", package = "happign"))
-
-# For quick testing use interactive = TRUE
-raster <- get_wms_raster(x = penmarch, res = 25, interactive = TRUE)
 
 # For specific data, choose apikey with get_apikey() and layer with get_layers_metadata()
 apikey <- get_apikeys()[4]  # altimetrie

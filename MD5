@@ -1,6 +1,6 @@
-43121693af22a4c3602bad707e27918e *DESCRIPTION
+50bc20c0100d9f3b55cebcfb8aba60b6 *DESCRIPTION
 41bd60654c11dfe8bcc5951f49e90096 *NAMESPACE
-1dccf0bb512e9ff6166b18cbb4a56a67 *NEWS.md
+8e40be66b1a5a92471ecc40d9c9b6cc0 *NEWS.md
 142ca7af2439135cf0fdb9087d91bba2 *R/check_input.R
 1d3d74919352474f1f2930636973dc35 *R/data.R
 a384baae5b2488ddc47d21e612fbab76 *R/get_apicarto_cadastre.R
@@ -13,13 +13,13 @@ a384baae5b2488ddc47d21e612fbab76 *R/get_apicarto_cadastre.R
 fbf79d7739243f6c5564cfd143013f58 *R/get_location_info.R
 90d3e0f7b06c984d2ece4bd6b539c5bf *R/get_wfs.R
 907d1e27b13cf8a37a3bcb4b2248c665 *R/get_wfs_attributes.R
-7b5c4665992b6b1e68916068f0d8bafa *R/get_wms_raster.R
+d46d3b19f3878fec464f85a1bdc4f332 *R/get_wms_raster.R
 1050ca14b7000ac48cfcb66a9b058d44 *R/get_wmts.R
 c533508665c4f436797bd19455f05ced *R/predicates.R
 2f48a0d39f334ef9fb9099d9fc03b11f *R/sysdata.rda
 000be95a54cb519ea00617fe0f936f2c *R/utils.R
 c357137c537f7952e08f7278ef817ae5 *R/zzz.R
-e73a62296a3b7b3636b6f543ad3a51bd *README.md
+3d4653ada75d5620bec1fc109756b09f *README.md
 c0728c5813b51cc7ed05c466aabf8d19 *build/vignette.rds
 0363cda6f51426fc14c2492419060d69 *data/com_2025.rda
 344366547a14233595d95d7aaf7f8811 *data/dep_2025.rda
@@ -46,7 +46,7 @@ e9aba207f9b9ad06ed462b787bf540b7 *man/get_layers_metadata.Rd
 75ae49358365d8cd57d9a86a8732c666 *man/get_location_info.Rd
 56748d42aa992f2e0a310e203a383533 *man/get_wfs.Rd
 1d6d707a1cb7d5478e767ae4c7828a1c *man/get_wfs_attributes.Rd
-96d5feb4408cdde831f25271c189978a *man/get_wms_raster.Rd
+1aee65afdeff537f0d22cc815259ee4a *man/get_wms_raster.Rd
 b4b801466a4102714c20d4ce1948a6bd *man/get_wmts.Rd
 c3d2d716b6db8c1d00d33596acb047b7 *man/reg_2025.Rd
 22aefbe19752117a32a7c858be502cf2 *man/spatial_cql.Rd
@@ -106,7 +106,7 @@ e0ad964b7c851e8ca3e68dfe66d9ad92 *tests/testthat/test-get_iso.R
 71558868b4d3730a3406bf080443d7be *tests/testthat/test-get_last_news.R
 f3110f1d996c49bcd20aacd1d77460d1 *tests/testthat/test-get_layers_metadata.R
 57659a4b8df5aec2ee3b1bc720f9d8e5 *tests/testthat/test-get_wfs.R
-2280b880968da26746564bcd479ed973 *tests/testthat/test-get_wms_raster.R
+318ea4b84ec7577e8e3c6223811f0ccb *tests/testthat/test-get_wms_raster.R
 81051bcc2cf1bedf378224b0a93e2877 *tests/testthat/test-get_wmts.R
 b15ff692e3e5af36141044348f0e0e31 *tests/testthat/test-predicates.R
 ce6a2b5ae28f120b6d36fdaca1b94d22 *tests/testthat/test-spatial_cql.R
